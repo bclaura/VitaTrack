@@ -1,0 +1,157 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="VitaTrack.LoginPage"
+             BackgroundColor="White"
+             NavigationPage.HasNavigationBar="False">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="20">
+
+            <!-- Back Button & Title -->
+            <HorizontalStackLayout>
+                <ImageButton Source="back_icon.png"
+                             HeightRequest="24"
+                             WidthRequest="24"
+                             BackgroundColor="Transparent"
+                             Clicked="OnBackClicked"/>
+                <Label Text="Log In"
+                       FontSize="22"
+                       FontFamily="LeagueSpartan"
+                       FontAttributes="Bold"
+                       TextColor="#006CFF"
+                       VerticalOptions="Center"
+                       Margin="110,0,0,0"
+                       HorizontalOptions="CenterAndExpand" />
+            </HorizontalStackLayout>
+
+            <!-- Welcome Title -->
+            <Label Text="Welcome"
+                   FontSize="22"
+                   FontFamily="LeagueSpartan"
+                   FontAttributes="Bold"
+                   TextColor="#006CFF" />
+
+            <!-- Subtext -->
+            <Label Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                   FontSize="13"
+                   FontFamily="LeagueSpartan"
+                   TextColor="Gray"
+                   LineHeight="1.3"
+                   Margin="0,-15,0,20"/>
+
+            <!-- Email Entry -->
+            <Label Text="Email or Mobile Number"
+               FontSize="18"
+               FontFamily="LeagueSpartan"
+               FontAttributes="Bold"
+               TextColor="Black" />
+            
+            <Frame BackgroundColor="#E9F1FF"
+               CornerRadius="12"
+               HasShadow="False"
+               Padding="5"
+               BorderColor="Transparent"
+               HeightRequest="50"
+               Margin="0,-10,0,0">
+                
+            <Entry x:Name="emailEntry"
+               Placeholder="example@example.com"
+               BackgroundColor="Transparent"
+               TextColor="#006CFF"
+               FontSize="16"
+               Margin="0"/>
+            </Frame>
+
+            <!-- Password Entry with Eye -->
+            <Label Text="Password"
+       FontSize="18"
+       FontFamily="LeagueSpartan"
+       FontAttributes="Bold"
+       TextColor="Black"/>
+            
+
+            <Frame BackgroundColor="#E9F1FF"
+       CornerRadius="12"
+       HasShadow="False"
+       Padding="5"
+       BorderColor="Transparent"
+       HeightRequest="50"
+       Margin="0,-10,0,0">
+
+                <Grid>
+                    <Entry x:Name="passwordEntry"
+               Placeholder="*************"
+               IsPassword="True"
+               BackgroundColor="Transparent"
+               />
+
+                    <ImageButton x:Name="eyeButton"
+                     Source="eye_icon_black.png"
+                     BackgroundColor="Transparent"
+                     HorizontalOptions="End"
+                     VerticalOptions="Center"
+                     HeightRequest="24"
+                     WidthRequest="24"
+                     Margin="0,0,5,0"
+                     Clicked="OnEyeClicked"/>
+                </Grid>
+            </Frame>
+
+
+            <!-- Forget Password -->
+            <Label Text="Forgot Your Password?"
+                   FontSize="14"
+                   FontFamily="LeagueSpartan"
+                   FontAttributes="Bold"
+                   TextColor="#006CFF"
+                   Margin="0,-15,0,0"
+                   HorizontalOptions="End" />
+
+            <!-- Log In Button -->
+            <Button Text="Log In"
+            FontFamily="LeagueSpartan"
+            FontSize="25"
+            FontAttributes="Bold"
+            Padding="0,-6,0,0"
+            BackgroundColor="#006CFF"
+            TextColor="White"
+            CornerRadius="25"
+            HeightRequest="50"
+            WidthRequest="220"
+            Margin="0,20,0,0"
+            Clicked="OnLoginClicked" />
+
+            <!-- Or sign up with -->
+            <Label Text="or sign up with"
+                   FontSize="14"
+                   FontFamily="LeagueSpartan"
+                   HorizontalOptions="Center"
+                   Margin="0,-5,0,0"
+                   TextColor="Gray" />
+
+            <!-- Social Buttons -->
+            <HorizontalStackLayout Spacing="15" HorizontalOptions="Center" Margin="0,-5,0,0">
+                <ImageButton Source="google_icon.png" HeightRequest="40" WidthRequest="40" BackgroundColor="Transparent"/>
+                <ImageButton Source="facebook_icon.png" HeightRequest="40" WidthRequest="40" BackgroundColor="Transparent"/>
+                <ImageButton Source="print_icon.png" HeightRequest="40" WidthRequest="40" BackgroundColor="Transparent"/>
+            </HorizontalStackLayout>
+
+            <!-- Bottom text -->
+            <HorizontalStackLayout HorizontalOptions="Center" Margin="0,20,0,0">
+                <Label Text="Don't have an account?" FontSize="14" FontFamily="LeagueSpartan"/>
+                <Label Text=" Sign Up"
+                       FontSize="14"
+                       FontFamily="LeagueSpartan"
+                       TextColor="#006CFF"
+                       FontAttributes="Bold">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnSignUpTapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
+

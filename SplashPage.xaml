@@ -1,0 +1,43 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="VitaTrack.SplashPage"
+             BackgroundColor="#006CFF"
+             NavigationPage.HasNavigationBar="False">
+
+    <Grid Margin="0,0,0,85">
+        <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Fill" Padding="0">
+            <Image Source="vitaline2.png"
+           Aspect="AspectFit"
+           HorizontalOptions="Fill"
+           HeightRequest="180" 
+           Margin="0,0,0,0"/>
+            <VerticalStackLayout Spacing="0"
+                     HorizontalOptions="Center">
+                <Label Text="Vita"
+           FontSize="43"
+           FontFamily="LeagueSpartan"
+           FontAttributes="None"
+           TextColor="White"
+           HorizontalTextAlignment="Start"
+           WidthRequest="120"
+           Margin="10,0,0,10"/>
+                <!-- Ajustați lățimea după necesitate -->
+
+                <Label Text="Track"
+           FontSize="43"
+           FontFamily="LeagueSpartan"
+           FontAttributes="None"
+           TextColor="White"
+           HorizontalTextAlignment="Start"
+           WidthRequest="120" 
+           Margin="10,-24,0,35"/>
+                <!-- Aceeași lățime ca pentru "Vita" -->
+            </VerticalStackLayout>
+
+
+
+
+        </VerticalStackLayout>
+
+    </Grid>
+</ContentPage>
