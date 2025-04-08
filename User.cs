@@ -2,6 +2,7 @@ namespace VitaTrack;
 
 public class User
 {
+    public string ProfileImagePath { get; set; } = "default_user_icon.png";
     public string FullName { get; set; }
     public string Email { get; set; }
     public string Password { get; set; }

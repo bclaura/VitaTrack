@@ -105,7 +105,11 @@
                    FontAttributes="Bold"
                    TextColor="#006CFF"
                    Margin="0,-15,0,0"
-                   HorizontalOptions="End" />
+                   HorizontalOptions="End">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnForgotPasswordTapped" />
+                </Label.GestureRecognizers>
+            </Label>
 
             <!-- Log In Button -->
             <Button Text="Log In"

@@ -9,8 +9,35 @@ public partial class LoginPage : ContentPage
 
     private async void OnLoginClicked(object sender, EventArgs e)
     {
-        await DisplayAlert("Login", "Autentificare simulată!", "OK");
+        string email = emailEntry.Text?.Trim();
+        string password = passwordEntry.Text;
+
+        if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+        {
+            await DisplayAlert("Error", "Please enter both email and password.", "OK");
+            return;
+        }
+
+        var user = MockDatabase.GetUserByEmail(email);
+
+        if (user == null)
+        {
+            await DisplayAlert("Error", "Email not found.", "OK");
+            return;
+        }
+
+        if (user.Password != password)
+        {
+            await DisplayAlert("Error", "Incorrect password.", "OK");
+            return;
+        }
+
+        SessionManager.Login(user);
+        await Navigation.PushAsync(new UserDashboardPage());
+
+
     }
+
 
     private async void OnBackClicked(object sender, EventArgs e)
     {
@@ -26,6 +53,11 @@ public partial class LoginPage : ContentPage
     private async void OnSignUpTapped(object sender, EventArgs e)
     {
         await Navigation.PushAsync(new SignUpPage());
+    }
+
+    private async void OnForgotPasswordTapped(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new ForgotPasswordPage());
     }
 
 

@@ -1,0 +1,153 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="VitaTrack.UserDashboardPage"
+             BackgroundColor="White">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="10" Spacing="20">
+
+            <!-- Header -->
+            <!-- HEADER: Nume utilizator + notificări + setări -->
+            <Grid ColumnDefinitions="*, Auto" Padding="20,10,20,10">
+                <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
+                <!-- Imagine profil -->
+                <Image Source="{Binding ProfileImage}"
+                   WidthRequest="40"
+                   HeightRequest="40"
+                   Aspect="AspectFill"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center"
+                   Margin="0,-10,10,0">
+                    <Image.Clip>
+                        <EllipseGeometry Center="20,20" RadiusX="20" RadiusY="20" />
+                    </Image.Clip>
+                </Image>
+                <!-- Bine ai venit + nume -->
+                <VerticalStackLayout Grid.Column="0" Spacing="2">
+                    <Label Text="Hi, Welcome Back"
+               FontSize="13"
+               FontFamily="LeagueSpartan"
+               FontAttributes="None"
+               TextColor="#006CFF" />
+                    <Label x:Name="nameLabel"
+               Text="John Doe"
+               FontSize="18"
+               FontAttributes="Bold"
+               TextColor="Black" />
+                </VerticalStackLayout>
+                </HorizontalStackLayout>
+
+                <!-- Iconițe notificări + setări -->
+                <HorizontalStackLayout Grid.Column="1" Spacing="10" VerticalOptions="Center">
+                    <ImageButton Source="notification_off_icon.png"
+                     BackgroundColor="Transparent"
+                     WidthRequest="30"
+                     HeightRequest="30"/>
+                    <ImageButton Source="settings_small_icon.png"
+                     BackgroundColor="Transparent"
+                     WidthRequest="30"
+                     HeightRequest="30"
+                     Margin="-7,0,0,0"/>
+                </HorizontalStackLayout>
+            </Grid>
+
+            <Grid ColumnDefinitions="Auto, *" Margin="0,-10,-3,10">
+                <!-- Coloana 1 - Doctors + Favorite -->
+                <HorizontalStackLayout Grid.Column="0" Spacing="30" VerticalOptions="Center">
+                    <VerticalStackLayout Spacing="2" HorizontalOptions="Center" Margin="10,0,0,0">
+                        <Image Source="doctors_icon.png" HeightRequest="22" >
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnDoctorsTapped" />
+                            </Image.GestureRecognizers>
+                        </Image>
+                        <Label Text="Doctors" FontSize="12" FontFamily="LeagueSpartan" TextColor="#006CFF" HorizontalTextAlignment="Center">
+                        </Label>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Spacing="2" HorizontalOptions="Center" Margin="-20,0,0,0">
+                        <Image Source="favorite_icon.png" HeightRequest="22" />
+                        <Label Text="Favorite" FontSize="12" FontFamily="LeagueSpartan" TextColor="#006CFF" HorizontalTextAlignment="Center"/>
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>
+
+                <!-- Coloana 2 - Search Bar -->
+                <Frame Grid.Column="1"
+       BackgroundColor="#E9F1FF"
+       CornerRadius="20"
+       Padding="0"
+       Margin="15,0,20,0"
+       HeightRequest="40"
+       VerticalOptions="Center"
+       HasShadow="False">
+
+                    <Grid ColumnDefinitions="Auto,*,Auto" VerticalOptions="Center" Padding="10,0">
+                        <!-- FILTRU (stânga) -->
+                        <Image Source="filter_circle_icon.png"
+               WidthRequest="30"
+               HeightRequest="30"
+               VerticalOptions="Center"
+               Margin="-5,0,10,0"/>
+
+                        <!-- ENTRY -->
+                        <Entry Placeholder="Search..."
+               BackgroundColor="#ccdcff"
+               FontSize="14"
+               PlaceholderColor="Gray"
+               TextColor="Black"
+               VerticalOptions="Center"
+               Margin="0"
+               Grid.Column="1"/>
+
+                        <!-- LUPĂ (dreapta) -->
+                        <Image Source="search_icon.png"
+               Grid.Column="2"
+               WidthRequest="20"
+               HeightRequest="20"
+               VerticalOptions="Center"
+               Margin="10,0,0,0"/>
+                    </Grid>
+                </Frame>
+            </Grid>
+
+            <!-- Dashboard Buttons -->
+            <Grid RowDefinitions="135,135,135,135"
+                  ColumnDefinitions="*,*"
+                  ColumnSpacing="-10"
+                  RowSpacing="15"
+                  Padding="20,10">
+
+                <!-- Row 1 -->
+                <ImageButton Source="profile_icon.png"
+                             Grid.Row="0" Grid.Column="0"
+                             BackgroundColor="Transparent"/>
+                <ImageButton Source="messages_icon.png"
+                             Grid.Row="0" Grid.Column="1"
+                             BackgroundColor="Transparent"/>
+
+                <!-- Row 2 -->
+                <ImageButton Source="recommandations_icon.png"
+                             Grid.Row="1" Grid.Column="0"
+                             BackgroundColor="Transparent"/>
+                <ImageButton Source="historic_icon.png"
+                             Grid.Row="1" Grid.Column="1"
+                             BackgroundColor="Transparent"/>
+
+                <!-- Row 3 -->
+                <ImageButton Source="localisation_icon.png"
+                             Grid.Row="2" Grid.Column="0"
+                             BackgroundColor="Transparent"/>
+                <ImageButton Source="health_icon.png"
+                             Grid.Row="2" Grid.Column="1"
+                             BackgroundColor="Transparent"/>
+
+                <!-- Row 4 -->
+                <ImageButton Source="settings_icon.png"
+                             Grid.Row="3" Grid.Column="0"
+                             BackgroundColor="Transparent"/>
+                <ImageButton Source="logout_icon.png"
+                             Grid.Row="3" Grid.Column="1"
+                             BackgroundColor="Transparent"/>
+            </Grid>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
