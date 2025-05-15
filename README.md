@@ -1,1 +1,12 @@
 # VitaTrack
+![image](https://github.com/user-attachments/assets/d8ef9a10-db78-4ab3-aca7-886ef51c806f)
+![image](https://github.com/user-attachments/assets/1c9e3202-e0c0-4fb7-864e-ae53b22b8051)
+![image](https://github.com/user-attachments/assets/760c7b55-2004-4081-8beb-22d9514e24d9)
+![image](https://github.com/user-attachments/assets/68e2a316-16f9-462b-9c21-3b0a302a96db)
+![image](https://github.com/user-attachments/assets/7b6df4a0-6ec1-4319-acfa-45fd631c55fc)
+![image](https://github.com/user-attachments/assets/af9230ca-586f-4775-805a-8d4abfbdfc4d)
+![image](https://github.com/user-attachments/assets/716be65b-6a07-461c-a2d9-dae6f011c5d2)
+![image](https://github.com/user-attachments/assets/64581eec-adc7-4aa0-a489-3733c3b7f9af)
+![image](https://github.com/user-attachments/assets/a486e972-c2d4-4613-9633-dc2942b74fdf)
+![image](https://github.com/user-attachments/assets/262b3ff7-7627-49b6-afbf-35555cc14723)
+![image](https://github.com/user-attachments/assets/e613f009-b2c1-47e6-abaa-5fda800dcfc4)
