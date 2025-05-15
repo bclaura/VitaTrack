@@ -60,6 +60,7 @@
 	  <None Remove="Resources\Fonts\LeagueSpartan-Regular.ttf" />
 	  <None Remove="Resources\Images\back_icon.png" />
 	  <None Remove="Resources\Images\calendar_icon.png" />
+	  <None Remove="Resources\Images\click_profile.png" />
 	  <None Remove="Resources\Images\default_user_icon.png" />
 	  <None Remove="Resources\Images\doctor1.jpeg" />
 	  <None Remove="Resources\Images\doctor2.jpeg" />
@@ -67,12 +68,18 @@
 	  <None Remove="Resources\Images\doctor4.jpeg" />
 	  <None Remove="Resources\Images\doctor5.jpeg" />
 	  <None Remove="Resources\Images\doctor6.jpeg" />
+	  <None Remove="Resources\Images\doctors_filter_icon.png" />
 	  <None Remove="Resources\Images\doctors_icon.png" />
+	  <None Remove="Resources\Images\doctor_search_icon.png" />
+	  <None Remove="Resources\Images\edit_icon.png" />
 	  <None Remove="Resources\Images\eye_icon_black.png" />
 	  <None Remove="Resources\Images\eye_icon_black_cut.png" />
 	  <None Remove="Resources\Images\facebook_icon.png" />
+	  <None Remove="Resources\Images\faq_icon_profile.png" />
 	  <None Remove="Resources\Images\favorite_icon.png" />
+	  <None Remove="Resources\Images\favorite_icon_profile.png" />
 	  <None Remove="Resources\Images\fav_icon.png" />
+	  <None Remove="Resources\Images\fav_icon_active.png" />
 	  <None Remove="Resources\Images\filter_az_icon.png" />
 	  <None Remove="Resources\Images\filter_az_icon_active.png" />
 	  <None Remove="Resources\Images\filter_circle_icon.png" />
@@ -91,15 +98,26 @@
 	  <None Remove="Resources\Images\i_icon.png" />
 	  <None Remove="Resources\Images\localisation_icon.png" />
 	  <None Remove="Resources\Images\logout_icon.png" />
+	  <None Remove="Resources\Images\logout_icon_profile.png" />
 	  <None Remove="Resources\Images\messages_icon.png" />
+	  <None Remove="Resources\Images\nav_calendary_icon.png" />
+	  <None Remove="Resources\Images\nav_calendary_icon_active.png" />
+	  <None Remove="Resources\Images\nav_chat_icon.png" />
+	  <None Remove="Resources\Images\nav_chat_icon_active.png" />
+	  <None Remove="Resources\Images\nav_home_icon.png" />
+	  <None Remove="Resources\Images\nav_profile_icon.png" />
+	  <None Remove="Resources\Images\nav_profile_icon_active.png" />
 	  <None Remove="Resources\Images\notification_off_icon.png" />
 	  <None Remove="Resources\Images\notification_on_icon.png" />
 	  <None Remove="Resources\Images\print_icon.png" />
+	  <None Remove="Resources\Images\privacy_policy_icon_profile.png" />
 	  <None Remove="Resources\Images\profile_icon.png" />
+	  <None Remove="Resources\Images\profile_icon_profile.png" />
 	  <None Remove="Resources\Images\questionmark_icon.png" />
 	  <None Remove="Resources\Images\recommandations_icon.png" />
 	  <None Remove="Resources\Images\search_icon.png" />
 	  <None Remove="Resources\Images\settings_icon.png" />
+	  <None Remove="Resources\Images\settings_icon_profile.png" />
 	  <None Remove="Resources\Images\settings_small_icon.png" />
 	  <None Remove="Resources\Images\vitaline2.png" />
 	</ItemGroup>
@@ -112,7 +130,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="DoctorDetailPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="DoctorsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="FavoritePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="ForgotPasswordPage.xaml">
@@ -131,6 +155,12 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="UserDashboardPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="UserProfileEditPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="UserProfilePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="WelcomePage.xaml">

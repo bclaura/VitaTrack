@@ -17,9 +17,8 @@ namespace VitaTrack
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                     fonts.AddFont("LeagueSpartan-Regular.ttf", "LeagueSpartan");
                 });
-
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();

@@ -64,7 +64,11 @@
                         </Label>
                     </VerticalStackLayout>
                     <VerticalStackLayout Spacing="2" HorizontalOptions="Center" Margin="-20,0,0,0">
-                        <Image Source="favorite_icon.png" HeightRequest="22" />
+                        <Image Source="favorite_icon.png" HeightRequest="22" >
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnFavoriteTapped" />
+                            </Image.GestureRecognizers>
+                        </Image>
                         <Label Text="Favorite" FontSize="12" FontFamily="LeagueSpartan" TextColor="#006CFF" HorizontalTextAlignment="Center"/>
                     </VerticalStackLayout>
                 </HorizontalStackLayout>
@@ -118,7 +122,8 @@
                 <!-- Row 1 -->
                 <ImageButton Source="profile_icon.png"
                              Grid.Row="0" Grid.Column="0"
-                             BackgroundColor="Transparent"/>
+                             BackgroundColor="Transparent"
+                             Clicked="OnProfileClicked"/>
                 <ImageButton Source="messages_icon.png"
                              Grid.Row="0" Grid.Column="1"
                              BackgroundColor="Transparent"/>

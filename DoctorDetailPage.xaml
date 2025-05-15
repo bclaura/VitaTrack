@@ -1,0 +1,105 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="VitaTrack.DoctorDetailPage"
+             BackgroundColor="White"
+             Title="Doctor Details">
+    <Grid RowDefinitions="*, Auto">
+        <ScrollView Grid.Row="0">
+        <VerticalStackLayout Padding="30" Spacing="10">
+            <HorizontalStackLayout>
+                <ImageButton Source="back_icon.png"
+                             HeightRequest="24"
+                             WidthRequest="24"
+                             BackgroundColor="Transparent"
+                             Clicked="OnBackClicked"/>
+                <Label
+                       FontSize="22"
+                       FontFamily="LeagueSpartan"
+                       FontAttributes="Bold"
+                       TextColor="#006CFF"
+                       VerticalOptions="Center"
+                       Margin="110,0,0,0"
+                       HorizontalOptions="CenterAndExpand" />
+            </HorizontalStackLayout>
+            <Image Source="{Binding ImagePath}"
+           WidthRequest="130"
+           HeightRequest="130"
+           Aspect="AspectFill"
+           Margin="0,-20,0,0"
+           HorizontalOptions="Center">
+                <Image.Clip>
+                    <EllipseGeometry Center="65,65" RadiusX="65" RadiusY="65" />
+                </Image.Clip>
+            </Image>
+
+            <Label Text="{Binding Name}"
+           FontSize="22"
+           FontAttributes="Bold"
+           FontFamily="LeagueSpartan"
+           HorizontalOptions="Center"
+           TextColor="#2260FF" />
+
+            <Label Text="{Binding Specialization}"
+           FontSize="20"
+           Margin="0,-10,0,10"
+           FontFamily="LeagueSpartan"
+           HorizontalOptions="Center"
+           TextColor="Black" />
+
+            <Label Text="{Binding Bio}"
+           FontSize="18"
+           TextColor="Gray"
+           FontFamily="LeagueSpartan"
+           HorizontalOptions="Center"
+           LineBreakMode="WordWrap"
+           MaxLines="30" />
+
+
+            <!-- Log In Button -->
+            <Button Text="Book Appointment"
+            FontFamily="LeagueSpartan"
+            FontSize="25"
+            FontAttributes="Bold"
+            Padding="0,-6,0,0"
+            BackgroundColor="#006CFF"
+            TextColor="White"
+            CornerRadius="25"
+            HeightRequest="50"
+            WidthRequest="220"
+            Margin="0,20,0,0" />
+
+            </VerticalStackLayout>
+    </ScrollView>
+    
+    <!-- Bottom Navigation Bar: fixată -->
+    <Frame Grid.Row="1"
+       BackgroundColor="#2260FF"
+       CornerRadius="30"
+       Padding="20,10"
+       Margin="20"
+       HasShadow="True"
+       HorizontalOptions="Fill"
+       VerticalOptions="End">
+
+        <HorizontalStackLayout HorizontalOptions="Center" Spacing="40">
+            <ImageButton Source="nav_home_icon.png"
+                     BackgroundColor="Transparent"
+                     WidthRequest="30"
+                     HeightRequest="30"
+                     Clicked="OnHomeClicked"/>
+            <ImageButton Source="nav_chat_icon.png"
+                     BackgroundColor="Transparent"
+                     WidthRequest="30"
+                     HeightRequest="30" />
+            <ImageButton Source="nav_profile_icon.png"
+                     BackgroundColor="Transparent"
+                     WidthRequest="30"
+                     HeightRequest="30" />
+            <ImageButton Source="nav_calendary_icon.png"
+                     BackgroundColor="Transparent"
+                     WidthRequest="30"
+                     HeightRequest="30" />
+        </HorizontalStackLayout>
+    </Frame>
+    </Grid>
+</ContentPage>

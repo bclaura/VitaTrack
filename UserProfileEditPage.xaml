@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="VitaTrack.UserProfileEditPage"
+             BackgroundColor="White"
+             Title="Profile">
+
+    <VerticalStackLayout Padding="20" Spacing="20">
+
+        <!-- Imagine de profil -->
+        <Grid HorizontalOptions="Center" Margin="0,0,0,0">
+            <Frame BackgroundColor="Transparent" Padding="0" BorderColor="Transparent" HasShadow="False">
+                <Image Source="{Binding ProfileImage}"
+                       WidthRequest="160"
+                       HeightRequest="160"
+                       Aspect="AspectFill">
+                    <Image.Clip>
+                        <EllipseGeometry Center="80,80" RadiusX="80" RadiusY="80"/>
+                    </Image.Clip>
+                </Image>
+            </Frame>
+
+            <!-- Iconița de Editare -->
+            <Frame BackgroundColor="#2260FF" 
+                   WidthRequest="50" 
+                   HeightRequest="50" 
+                   CornerRadius="25" 
+                   Padding="0" 
+                   HorizontalOptions="End" 
+                   VerticalOptions="End"
+                   Margin="-30,0,0,0">
+                <ImageButton Source="edit_icon.png" 
+                             BackgroundColor="Transparent"
+                             WidthRequest="30"
+                             HeightRequest="30"
+                             Clicked="OnEditProfileImageClicked"/>
+            </Frame>
+        </Grid>
+
+        <!-- Full Name -->
+        <Label Text="Full Name" FontSize="16" FontAttributes="Bold" />
+        <Entry Text="{Binding FullName}" BackgroundColor="#F0F4FF" />
+
+        <!-- Phone Number -->
+        <Label Text="Phone Number" FontSize="16" FontAttributes="Bold" />
+        <Entry Text="{Binding Phone}" BackgroundColor="#F0F4FF" />
+
+        <!-- Email -->
+        <Label Text="Email" FontSize="16" FontAttributes="Bold" />
+        <Entry Text="{Binding Email}" BackgroundColor="#F0F4FF" />
+
+        <!-- Date of Birth -->
+        <Label Text="Date Of Birth" FontSize="16" FontAttributes="Bold" />
+        <Entry Text="{Binding DateOfBirth}" BackgroundColor="#F0F4FF" />
+
+        <!-- Save Button -->
+        <Button Text="Update Profile"
+                BackgroundColor="#2260FF"
+                TextColor="White"
+                FontSize="18"
+                CornerRadius="30"
+                Clicked="OnSaveProfileClicked" />
+
+    </VerticalStackLayout>
+</ContentPage>

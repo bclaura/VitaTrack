@@ -2,26 +2,48 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="VitaTrack.DoctorsPage"
              BackgroundColor="White">
+    <Grid RowDefinitions="*, Auto">
 
-    <ScrollView>
+        <ScrollView Grid.Row="0">
         <VerticalStackLayout Padding="30" Spacing="20">
 
-            <!-- Back button + Title -->
-            <HorizontalStackLayout>
+            <Grid ColumnDefinitions="Auto,*,Auto" Padding="0,-10,0,0">
+                <!-- Back button -->
                 <ImageButton Source="back_icon.png"
-                             BackgroundColor="Transparent"
-                             WidthRequest="24"
-                             HeightRequest="24"
-                             Clicked="OnBackClicked"/>
+                 BackgroundColor="Transparent"
+                 WidthRequest="24"
+                 HeightRequest="24"
+                 Clicked="OnBackClicked"
+                 Grid.Column="0"
+                 VerticalOptions="Center"/>
+
+                <!-- Titlu "Doctors" -->
                 <Label Text="Doctors"
-                       FontSize="28"
-                       FontFamily="LeagueSpartan"
-                       FontAttributes="Bold"
-                       TextColor="#006CFF"
-                       Margin="100,0,0,0"
-                       HorizontalOptions="CenterAndExpand"
-                       VerticalOptions="Center"/>
-            </HorizontalStackLayout>
+           FontSize="28"
+           FontFamily="LeagueSpartan"
+           FontAttributes="Bold"
+           TextColor="#006CFF"
+           Margin="0,0,-20,0"
+           HorizontalOptions="Center"
+           VerticalOptions="Center"
+           Grid.Column="1"/>
+
+                <!-- Search & Filter Icons -->
+                <HorizontalStackLayout Spacing="10"
+                           HorizontalOptions="End"
+                           VerticalOptions="Center"
+                           Grid.Column="2">
+                    <ImageButton Source="doctor_search_icon.png"
+                     BackgroundColor="Transparent"
+                     WidthRequest="25"
+                     HeightRequest="25"
+                     Margin="0,0,-7,0"/>
+                    <ImageButton Source="doctors_filter_icon.png"
+                     BackgroundColor="Transparent"
+                     WidthRequest="25"
+                     HeightRequest="25" />
+                </HorizontalStackLayout>
+            </Grid>
 
 
 
@@ -125,7 +147,9 @@
                             FontSize="17"
                             HeightRequest="30"
                             Margin="-12,0,5,0"
-                            VerticalOptions="Center" />
+                            VerticalOptions="Center"
+                            Clicked="OnInfoClicked"
+                            CommandParameter="{Binding}"/>
 
                                     <!-- Calendar -->
                                     <ImageButton Source="calendar_icon.png"
@@ -139,22 +163,28 @@
                              BackgroundColor="White"
                              CornerRadius="12"
                              WidthRequest="25"
-                             HeightRequest="25" />
+                             HeightRequest="25" 
+                             Clicked="OnInfoIconClicked"
+                             CommandParameter="{Binding}"/>
 
                                     <!-- ? -->
                                     <ImageButton Source="questionmark_icon.png"
                              BackgroundColor="White"
                              CornerRadius="12"
                              WidthRequest="25"
-                             HeightRequest="25" />
+                             HeightRequest="25" 
+                             Clicked="OnHelpIconClicked" 
+                             CommandParameter="{Binding}"/>
 
                                     <!-- Inimioară -->
-                                    <ImageButton Source="fav_icon.png"
+                                        <ImageButton Source="{Binding IsFavorite, Converter={StaticResource FavoriteIconConverter}}"
                              BackgroundColor="White"
                              CornerRadius="12"
                              WidthRequest="25"
-                             HeightRequest="25" />
-                                </HorizontalStackLayout>
+                             HeightRequest="25"
+                             Clicked="OnFavoriteClicked"
+                             CommandParameter="{Binding}" />
+                                    </HorizontalStackLayout>
 
                             </Grid>
 
@@ -166,5 +196,36 @@
 
         </VerticalStackLayout>
     </ScrollView>
+        
+        <!-- Bottom Navigation Bar: fixată -->
+        <Frame Grid.Row="1"
+               BackgroundColor="#2260FF"
+               CornerRadius="30"
+               Padding="20,10"
+               Margin="20"
+               HasShadow="True"
+               HorizontalOptions="Fill"
+               VerticalOptions="End">
 
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="40">
+                <ImageButton Source="nav_home_icon.png"
+                             BackgroundColor="Transparent"
+                             WidthRequest="30"
+                             HeightRequest="30"
+                             Clicked="OnHomeClicked"/>
+                <ImageButton Source="nav_chat_icon.png"
+                             BackgroundColor="Transparent"
+                             WidthRequest="30"
+                             HeightRequest="30" />
+                <ImageButton Source="nav_profile_icon.png"
+                             BackgroundColor="Transparent"
+                             WidthRequest="30"
+                             HeightRequest="30" />
+                <ImageButton Source="nav_calendary_icon.png"
+                             BackgroundColor="Transparent"
+                             WidthRequest="30"
+                             HeightRequest="30" />
+            </HorizontalStackLayout>
+        </Frame>
+    </Grid>
 </ContentPage>

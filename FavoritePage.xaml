@@ -1,0 +1,192 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="VitaTrack.FavoritePage"
+             BackgroundColor="White">
+    <Grid RowDefinitions="*, Auto">
+
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="30" Spacing="20">
+
+                <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,*">
+                    <!-- Back button -->
+                    <HorizontalStackLayout Grid.Row="0" Grid.ColumnSpan="2" HorizontalOptions="Fill" Padding="0,0,0,10">
+                    <ImageButton Source="back_icon.png"
+                         BackgroundColor="Transparent"
+                         WidthRequest="24"
+                         HeightRequest="24"
+                         Clicked="OnBackClicked"
+                         Margin="0,0,0,0"
+                         Grid.Column="0"
+                         VerticalOptions="Center"/>
+
+                    <!-- Titlu "Doctors" -->
+                    <Label Text="Favorite Doctors"
+                       FontSize="28"
+                       FontFamily="LeagueSpartan"
+                       FontAttributes="Bold"
+                       TextColor="#006CFF"
+                       Margin="45,0,0,0"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       Grid.Column="1"/>
+                    </HorizontalStackLayout>
+
+                    <!-- Aici vine Label-ul dacă lista e goală -->
+                    <VerticalStackLayout Grid.Row="1" Grid.ColumnSpan="2" Spacing="10" HorizontalOptions="Center">
+                        <Label Text="You don't have any favorite doctors yet."
+               FontSize="16"
+               TextColor="Gray"
+               HorizontalOptions="Center"
+               VerticalOptions="CenterAndExpand"
+               IsVisible="{Binding FavoriteDoctors.Count, Converter={StaticResource ZeroToBoolConverter}}" />
+
+                    <Button Text="See All Doctors"
+                BackgroundColor="#2260FF"
+                TextColor="White"
+                CornerRadius="20"
+                Padding="15,5"
+                Margin="0,10,0,0"
+                HorizontalOptions="Center"
+                Clicked="OnDoctorsClicked"
+                IsVisible="{Binding FavoriteDoctors.Count, Converter={StaticResource ZeroToBoolConverter}}" />
+                    </VerticalStackLayout>
+                </Grid>
+
+                <!-- Lista doctori -->
+                <CollectionView x:Name="FavoritesCollectionView"
+                            ItemsSource="{Binding FavoriteDoctors}"
+                            SelectionMode="None"
+                            Margin="0,-25,0,0">
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame CornerRadius="20"
+                               Padding="15"
+                               Margin="0,10,0,0"
+                               BorderColor="Transparent"
+                               BackgroundColor="#CAD6FF">
+
+                                <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto, Auto">
+                                    <!-- Poza doctor -->
+                                    <Image Source="{Binding ImagePath}"
+                                       WidthRequest="130"
+                                       HeightRequest="130"
+                                       Grid.RowSpan="2"
+                                       Aspect="AspectFill"
+                                       Margin="0,0,0,0"
+                                       VerticalOptions="Center">
+                                        <Image.Clip>
+                                            <EllipseGeometry Center="65,65" RadiusX="65" RadiusY="65"/>
+                                        </Image.Clip>
+                                    </Image>
+
+                                    <!-- Nume doctor -->
+                                    <Label Text="{Binding Name}"
+                                       FontSize="18"
+                                       FontAttributes="Bold"
+                                       TextColor="#2260FF"
+                                       Margin="10,10,0,0"
+                                       FontFamily="LeagueSpartan"
+                                       Grid.Column="1"/>
+
+                                    <!-- Specializare -->
+                                    <Label Text="{Binding Specialization}"
+                                       FontSize="16"
+                                       TextColor="Black"
+                                       FontFamily="LeagueSpartan"
+                                       Grid.Row="1"
+                                       Margin="10,-40,0,0"
+                                       Grid.Column="1"/>
+
+                                    <HorizontalStackLayout Grid.Column="1"
+                           Grid.Row="2"
+                           Spacing="3"
+                           Margin="-5,-15,0,0"
+                           VerticalOptions="Start">
+                                        <!-- Buton Info -->
+                                        <Button Text="Info"
+                            BackgroundColor="#2260FF"
+                            TextColor="White"
+                            FontAttributes="Bold"
+                            Padding="16,2"
+                            CornerRadius="22"
+                            FontSize="17"
+                            HeightRequest="30"
+                            Margin="-12,0,5,0"
+                            VerticalOptions="Center" />
+
+                                        <!-- Calendar -->
+                                        <ImageButton Source="calendar_icon.png"
+                             BackgroundColor="White"
+                             CornerRadius="12"
+                             WidthRequest="25"
+                             HeightRequest="25" />
+
+                                        <!-- i -->
+                                        <ImageButton Source="i_icon.png"
+                             BackgroundColor="White"
+                             CornerRadius="12"
+                             WidthRequest="25"
+                             HeightRequest="25" />
+
+                                        <!-- ? -->
+                                        <ImageButton Source="questionmark_icon.png"
+                             BackgroundColor="White"
+                             CornerRadius="12"
+                             WidthRequest="25"
+                             HeightRequest="25" />
+
+                                        <!-- Inimioară -->
+                                        <ImageButton
+                            Source="fav_icon_active.png"
+                            BackgroundColor="White"
+                            CornerRadius="12"
+                            WidthRequest="25"
+                            HeightRequest="25"
+                            Command="{Binding BindingContext.ToggleFavoriteCommand, Source={x:Reference FavoritesCollectionView}}"
+                            CommandParameter="{Binding}" />
+                                    </HorizontalStackLayout>
+
+                                </Grid>
+
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+
+                </CollectionView>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Bottom Navigation Bar: fixată -->
+        <Frame Grid.Row="1"
+               BackgroundColor="#2260FF"
+               CornerRadius="30"
+               Padding="20,10"
+               Margin="20"
+               HasShadow="True"
+               HorizontalOptions="Fill"
+               VerticalOptions="End">
+
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="40">
+                <ImageButton Source="nav_home_icon.png"
+                             BackgroundColor="Transparent"
+                             WidthRequest="30"
+                             HeightRequest="30"
+                             Clicked="OnHomeClicked"/>
+                <ImageButton Source="nav_chat_icon.png"
+                             BackgroundColor="Transparent"
+                             WidthRequest="30"
+                             HeightRequest="30" />
+                <ImageButton Source="nav_profile_icon.png"
+                             BackgroundColor="Transparent"
+                             WidthRequest="30"
+                             HeightRequest="30" />
+                <ImageButton Source="nav_calendary_icon.png"
+                             BackgroundColor="Transparent"
+                             WidthRequest="30"
+                             HeightRequest="30" />
+            </HorizontalStackLayout>
+        </Frame>
+    </Grid>
+</ContentPage>

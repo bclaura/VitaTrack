@@ -8,4 +8,7 @@ public class User
     public string Password { get; set; }
     public string Phone { get; set; }
     public string DateOfBirth { get; set; }
+
+    public List<string> FavoriteDoctorNames { get; set; } = new();
+
 }
