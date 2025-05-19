@@ -1,10 +1,15 @@
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text.Json;
 
 namespace VitaTrack;
 
 public static class SessionManager
 {
+    private static HttpClient _httpClient => Application.Current.Handler.MauiContext.Services.GetService<HttpClient>();
     public static User LoggedInUser { get; private set; }
+
+    public static List<int> FavoriteDoctorIds { get; set; } = new List<int>();
 
     private static readonly string UserFilePath = Path.Combine(FileSystem.AppDataDirectory, "user.json");
 
@@ -61,11 +66,77 @@ public static class SessionManager
         if (LoggedInUser != null)
         {
             // Actualizeaz? datele utilizatorului
-            LoggedInUser.FullName = user.FullName;
+            LoggedInUser.Id = user.Id;
+            LoggedInUser.FirstName = user.FirstName;
+            LoggedInUser.LastName = user.LastName;
             LoggedInUser.Email = user.Email;
             LoggedInUser.Phone = user.Phone;
             LoggedInUser.DateOfBirth = user.DateOfBirth;
             SaveUserData();
         }
+    }
+
+    // Verific? dac? utilizatorul este logat
+    public static async Task<bool> IsUserLoggedInAsync()
+    {
+        string userId = await SecureStorage.GetAsync("UserId");
+        return !string.IsNullOrEmpty(userId);
+    }
+
+    public static async Task<User> GetUserByEmailAsync(string email)
+    {
+        try
+        {
+            var response = await _httpClient.GetFromJsonAsync<User>($"/api/users/by-email?email={email}");
+            return response;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading user: {ex.Message}");
+            return null;
+        }
+    }
+
+
+    // Logout ?i ?tergere date utilizator
+    public static async Task LogoutAsync()
+    {
+        try
+        {
+            // ?tergem datele de sesiune
+            SecureStorage.Remove("UserId");
+            SecureStorage.Remove("UserFirstName");
+            SecureStorage.Remove("UserLastName");
+            SecureStorage.Remove("UserEmail");
+            SecureStorage.Remove("UserRole");
+            SecureStorage.Remove("ProfilePictureBase64");
+
+            await Application.Current.MainPage.DisplayAlert("Logout", "Successfully logged out.", "OK");
+
+            // Schimb?m pagina principal?
+            Application.Current.MainPage = new NavigationPage(new LoginPage());
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Logout failed: {ex.Message}");
+        }
+    }
+
+    public static async Task<int?> GetLoggedInUserIdAsync()
+    {
+        try
+        {
+            string userIdString = await SecureStorage.GetAsync("UserId");
+            if (!string.IsNullOrEmpty(userIdString) && int.TryParse(userIdString, out int userId))
+            {
+                return userId;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Failed to get UserId from SecureStorage: {ex.Message}");
+        }
+
+        return null;
     }
 }

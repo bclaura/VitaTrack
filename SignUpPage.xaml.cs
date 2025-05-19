@@ -1,11 +1,44 @@
-﻿namespace VitaTrack;
+﻿using System.Net.Http.Json;
+using System.Text;
+using System.Text.Json;
+
+namespace VitaTrack;
 
 public partial class SignUpPage : ContentPage
 {
+    private readonly HttpClient _httpClient;
+
     public SignUpPage()
     {
         InitializeComponent();
         NavigationPage.SetHasNavigationBar(this, false);
+
+        var handler = new HttpClientHandler
+        {
+            ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+        };
+
+#if ANDROID
+        // IP-ul emulatorului Android
+        _httpClient = new HttpClient(handler)
+        {
+            BaseAddress = new Uri("https://10.0.2.2:7203/")
+        };
+
+        Console.WriteLine($"Client Base Address: {_httpClient.BaseAddress}");
+#elif IOS
+        // Simulator iOS
+        _httpClient = new HttpClient(handler)
+        {
+            BaseAddress = new Uri("https://localhost:7203/")
+        };
+#else
+        // Windows/MacCatalyst
+        _httpClient = new HttpClient(handler)
+        {
+            BaseAddress = new Uri("https://localhost:7203/")
+        };
+#endif
     }
 
     private void OnEyeClicked(object sender, EventArgs e)
@@ -26,39 +59,69 @@ public partial class SignUpPage : ContentPage
 
     private async void OnSignUpClicked(object sender, EventArgs e)
     {
-        string fullName = fullNameEntry.Text?.Trim();
-        string email = emailEntry.Text?.Trim();
-        string password = passwordEntry.Text?.Trim();
-        string phone = mobileEntry.Text?.Trim();
-        string dob = dobEntry.Text?.Trim();
-
-        if (string.IsNullOrWhiteSpace(fullName) || string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+        if (!DateTime.TryParse(dobEntry.Text?.Trim(), out DateTime dob))
         {
-            await DisplayAlert("Eroare", "Completează toate câmpurile obligatorii.", "OK");
+            await DisplayAlert("Error", "Please enter a valid date of birth.", "OK");
             return;
         }
-
-        if (MockDatabase.EmailExists(email))
+        var registrationDto = new UserRegistrationDto
         {
-            await DisplayAlert("Eroare", "Acest email este deja folosit.", "OK");
-            return;
-        }
-
-        var user = new User
-        {
-            FullName = fullName,
-            Email = email,
-            Password = password,
-            Phone = phone,
-            DateOfBirth = dob
+            FirstName = firstNameEntry.Text?.Trim(),
+            LastName = lastNameEntry.Text?.Trim(),
+            Email = emailEntry.Text?.Trim(),
+            Password = passwordEntry.Text,
+            MobileNumber = mobileEntry.Text?.Trim(),
+            DateOfBirth = dob //maybe change dob to some picker
         };
 
-        MockDatabase.AddUser(user);
+        try
+        {
+            Console.WriteLine($"Sending request to: {_httpClient.BaseAddress}api/Users/Register");
 
-        await DisplayAlert("Succes", "Contul a fost creat cu succes!", "OK");
+            // 4) Trimiterea POST-ului
+            var response = await _httpClient.PostAsJsonAsync("api/Users/Register", registrationDto);
 
-        // Opțional: Navighează spre LoginPage
-        await Navigation.PopAsync();
+            Console.WriteLine($"Response status: {response.StatusCode}");
+            var responseContent = await response.Content.ReadAsStringAsync();
+            Console.WriteLine($"Response content: {responseContent}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                // 5a) Dacă e ok, poate deserializezi răspunsul
+                var createdUser = await response.Content.ReadFromJsonAsync<User>();
+
+                await DisplayAlert("Succes", "Cont creat cu email: " + createdUser.Email, "OK");
+                // navighează mai departe, de ex. la pagina de login:
+                await Navigation.PushAsync(new LoginPage());
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
+            {
+                // 5b) Email duplicat
+                await DisplayAlert("Eroare", "Email-ul există deja.", "OK");
+            }
+            else
+            {
+                // 5c) Orice alt cod
+                var error = await response.Content.ReadAsStringAsync();
+                await DisplayAlert("Eroare", error, "OK");
+            }
+        }
+        catch (Exception ex)
+        {
+            // 6) Probleme de rețea, JSON invalid, etc
+            await DisplayAlert("Eroare", "Nu am putut lua legătura cu serverul:\n" + ex.Message, "OK");
+        }
+
+    }
+
+    public class UserRegistrationDto
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public string MobileNumber { get; set; }
+        public DateTime DateOfBirth { get; set; }
     }
 
 

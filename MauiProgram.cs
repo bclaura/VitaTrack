@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using Syncfusion.Maui.Core.Hosting;
 
 namespace VitaTrack
 {
@@ -10,7 +9,6 @@ namespace VitaTrack
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
-                .ConfigureSyncfusionCore()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -20,6 +18,20 @@ namespace VitaTrack
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
+            builder.Services.AddSingleton(sp =>
+            {
+                var handler = new HttpClientHandler
+                {
+                    ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true
+                };
+
+                var client = new HttpClient(handler)
+                {
+                    BaseAddress = new Uri("https://10.0.2.2:7203/")
+                };
+
+                return client;
+            });
 
             return builder.Build();
         }

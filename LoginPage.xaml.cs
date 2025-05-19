@@ -1,11 +1,26 @@
-﻿namespace VitaTrack;
+﻿using System.Net.Http.Json;
+
+namespace VitaTrack;
 
 public partial class LoginPage : ContentPage
 {
-	public LoginPage()
+    private readonly HttpClient _httpClient;
+    public LoginPage()
 	{
 		InitializeComponent();
-	}
+
+        var handler = new HttpClientHandler
+        {
+            ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+        };
+
+        // IP-ul emulatorului Android
+        _httpClient = new HttpClient(handler)
+        {
+            BaseAddress = new Uri("https://10.0.2.2:7203/")
+        };
+
+    }
 
     private async void OnLoginClicked(object sender, EventArgs e)
     {
@@ -18,25 +33,48 @@ public partial class LoginPage : ContentPage
             return;
         }
 
-        var user = MockDatabase.GetUserByEmail(email);
-
-        if (user == null)
+        try
         {
-            await DisplayAlert("Error", "Email not found.", "OK");
-            return;
-        }
+            // Construim DTO-ul pentru login
+            var loginDto = new
+            {
+                Email = email,
+                Password = password
+            };
 
-        if (user.Password != password)
+            // Trimitem cererea de login la API
+            var response = await _httpClient.PostAsJsonAsync("api/Users/Login", loginDto);
+
+            if (response.IsSuccessStatusCode)
+            {
+                // Citim datele utilizatorului din răspuns
+                var user = await response.Content.ReadFromJsonAsync<UserDto>();
+
+                // Salvăm ID-ul utilizatorului pentru sesiune
+                await SecureStorage.SetAsync("UserId", user.Id.ToString());
+                await SecureStorage.SetAsync("UserFirstName", user.FirstName);
+                await SecureStorage.SetAsync("UserLastName", user.LastName);
+                await SecureStorage.SetAsync("UserEmail", user.Email);
+                await SecureStorage.SetAsync("UserRole", user.Role);
+                await SecureStorage.SetAsync("ProfilePictureBase64", user.ProfilePictureBase64 ?? "");
+
+                // Navigăm la dashboard
+                await Navigation.PushAsync(new UserDashboardPage());
+            }
+            else
+            {
+                await DisplayAlert("Error", "Invalid email or password.", "OK");
+            }
+        }
+        catch (Exception ex)
         {
-            await DisplayAlert("Error", "Incorrect password.", "OK");
-            return;
+            await DisplayAlert("Error", $"Unable to connect to server: {ex.Message}", "OK");
         }
-
-        SessionManager.Login(user);
-        await Navigation.PushAsync(new UserDashboardPage());
-
-
     }
+
+
+
+
 
 
     private async void OnBackClicked(object sender, EventArgs e)
@@ -62,4 +100,14 @@ public partial class LoginPage : ContentPage
 
 
 
+}
+
+public class UserDto
+{
+    public int Id { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string Email { get; set; }
+    public string Role { get; set; }
+    public string ProfilePictureBase64 { get; set; }
 }

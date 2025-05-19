@@ -22,8 +22,8 @@
                        HorizontalOptions="CenterAndExpand" />
             </HorizontalStackLayout>
 
-            <!-- Full Name -->
-            <Label Text="Full Name"
+            <!-- First Name -->
+            <Label Text="First Name"
                FontSize="18"
                FontFamily="LeagueSpartan"
                FontAttributes="Bold"
@@ -37,8 +37,31 @@
                HeightRequest="50"
                Margin="0,-10,0,0">
 
-                <Entry x:Name="fullNameEntry"
-               Placeholder="Full Name"
+                <Entry x:Name="firstNameEntry"
+               Placeholder="First Name"
+               BackgroundColor="Transparent"
+               TextColor="#006CFF"
+               FontSize="16"
+               Margin="0"/>
+            </Frame>
+
+            <!-- Last Name -->
+            <Label Text="Last Name"
+               FontSize="18"
+               FontFamily="LeagueSpartan"
+               FontAttributes="Bold"
+               TextColor="Black" />
+
+            <Frame BackgroundColor="#E9F1FF"
+               CornerRadius="12"
+               HasShadow="False"
+               Padding="5"
+               BorderColor="Transparent"
+               HeightRequest="50"
+               Margin="0,-10,0,0">
+
+                <Entry x:Name="lastNameEntry"
+               Placeholder="Last Name"
                BackgroundColor="Transparent"
                TextColor="#006CFF"
                FontSize="16"

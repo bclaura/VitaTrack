@@ -11,7 +11,8 @@ namespace VitaTrack
         {
             _profileImage = SessionManager.GetProfileImage();
         }
-        public string UserName => SessionManager.LoggedInUser?.FullName ?? "Guest";
+        public string fullName = SessionManager.LoggedInUser?.FirstName + SessionManager.LoggedInUser?.LastName;
+        public string UserName => fullName ?? "Guest";
         public string ProfileImage
         {
             get => _profileImage;

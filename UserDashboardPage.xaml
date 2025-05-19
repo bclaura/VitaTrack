@@ -11,7 +11,7 @@
             <Grid ColumnDefinitions="*, Auto" Padding="20,10,20,10">
                 <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
                 <!-- Imagine profil -->
-                <Image Source="{Binding ProfileImage}"
+                    <Image x:Name="profileImage"
                    WidthRequest="40"
                    HeightRequest="40"
                    Aspect="AspectFill"
@@ -30,7 +30,6 @@
                FontAttributes="None"
                TextColor="#006CFF" />
                     <Label x:Name="nameLabel"
-               Text="John Doe"
                FontSize="18"
                FontAttributes="Bold"
                TextColor="Black" />
@@ -150,6 +149,7 @@
                              BackgroundColor="Transparent"/>
                 <ImageButton Source="logout_icon.png"
                              Grid.Row="3" Grid.Column="1"
+                             Clicked="OnLogoutClicked"
                              BackgroundColor="Transparent"/>
             </Grid>
 

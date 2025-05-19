@@ -31,7 +31,7 @@
         <Grid HorizontalOptions="Center" Margin="0,0,0,0">
                     <!-- Imagine profil + nume -->
                 <Frame BackgroundColor="Transparent" Padding="0" BorderColor="Transparent" HasShadow="False">
-                    <Image Source="{Binding ProfileImage}"
+                        <Image x:Name="profileImage"
                            WidthRequest="120"
                            HeightRequest="120"
                            Aspect="AspectFill"
@@ -61,7 +61,7 @@
                 
 
                 <!-- User Name -->
-                <Label Text="John Doe"
+                <Label x:Name="nameLabel"
                        FontSize="22"
                        FontAttributes="Bold"
                        Margin="0,-10,0,0"

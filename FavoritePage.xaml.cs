@@ -1,17 +1,25 @@
 ﻿using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Net.Http;
+using System.Net.Http.Json;
 
 namespace VitaTrack;
 
 public partial class FavoritePage : ContentPage
 {
 
+    private readonly HttpClient _httpClient;
+
+    private List<Doctor> allDoctors = new List<Doctor>();
+    private ObservableCollection<Doctor> Doctors = new();
+
     public FavoritePage()
     {
         InitializeComponent();
         NavigationPage.SetHasNavigationBar(this, false);
+        _httpClient = Application.Current.Handler.MauiContext.Services.GetService<HttpClient>();
         BindingContext = new FavoriteDoctorsViewModel();
-        LoadFavoriteDoctors();
+        //LoadFavoriteDoctors();
     }
 
     protected override void OnAppearing()
@@ -22,22 +30,44 @@ public partial class FavoritePage : ContentPage
         {
             vm.LoadFavoriteDoctors();
         }
+
     }
 
     public ObservableCollection<Doctor> FavoriteDoctors { get; set; } = new();
 
-    private void LoadFavoriteDoctors()
+    /*private async void LoadFavoriteDoctors()
     {
-        var updatedFavorites = DoctorRepository.Doctors
-                .Where(d => SessionManager.LoggedInUser.FavoriteDoctorNames.Contains(d.Name))
-                .ToList();
+        try
+        {
+            int? userId = await SessionManager.GetLoggedInUserIdAsync();
+            if (userId == null)
+            {
+                await DisplayAlert("Error", "User not logged in. Please log in again.", "OK");
+                return;
+            }
 
-        FavoriteDoctors.Clear();
-        foreach (var doc in updatedFavorites)
-            FavoriteDoctors.Add(doc);
+            var docsResponse = await _httpClient.GetFromJsonAsync<List<Doctor>>("/api/Doctors");
+            var response = await _httpClient.GetFromJsonAsync<List<Doctor>>($"/api/users/{userId}/favorites");
+            if (response != null)
+            {
+                allDoctors = docsResponse;
+                var favoriteDoctorIds = await GetFavoriteDoctorIds(userId.Value);
 
-        OnPropertyChanged(nameof(FavoriteDoctors));
-    }
+                var filteredDoctors = allDoctors.Where(d => favoriteDoctorIds.Contains(d.Id)).ToList();
+
+                Doctors.Clear();
+                foreach (var doc in filteredDoctors)
+                {
+                    Doctors.Add(doc);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading doctors: {ex.Message}");
+            await DisplayAlert("Error", "Failed to load doctors. Please try again.", "OK");
+        }
+    }*/
 
     private async void OnBackClicked(object sender, EventArgs e)
     {
@@ -54,6 +84,24 @@ public partial class FavoritePage : ContentPage
     private void OnDoctorsClicked(object sender, EventArgs e)
     {
         Navigation.PushAsync(new DoctorsPage());
+    }
+
+    private async Task<List<int>> GetFavoriteDoctorIds(int userId)
+    {
+        try
+        {
+            var response = await _httpClient.GetFromJsonAsync<List<Doctor>>($"/api/users/{userId}/favorites");
+            if (response != null)
+            {
+                return response.Select(d => d.Id).ToList();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading favorites: {ex.Message}");
+        }
+
+        return new List<int>();
     }
 
 }

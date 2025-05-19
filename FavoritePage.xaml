@@ -81,7 +81,7 @@
                                     </Image>
 
                                     <!-- Nume doctor -->
-                                    <Label Text="{Binding Name}"
+                                    <Label Text="{Binding NameTitle}"
                                        FontSize="18"
                                        FontAttributes="Bold"
                                        TextColor="#2260FF"
@@ -91,7 +91,7 @@
 
                                     <!-- Specializare -->
                                     <Label Text="{Binding Specialization}"
-                                       FontSize="16"
+                                       FontSize="15"
                                        TextColor="Black"
                                        FontFamily="LeagueSpartan"
                                        Grid.Row="1"

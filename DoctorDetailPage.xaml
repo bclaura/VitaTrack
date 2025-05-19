@@ -32,7 +32,7 @@
                 </Image.Clip>
             </Image>
 
-            <Label Text="{Binding Name}"
+                <Label Text="{Binding NameTitle}"
            FontSize="22"
            FontAttributes="Bold"
            FontFamily="LeagueSpartan"

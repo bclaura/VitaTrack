@@ -102,7 +102,7 @@
 
                             <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto, Auto">
                                 <!-- Poza doctor -->
-                                <Image Source="{Binding ImagePath}"
+                                    <Image Source="{Binding ImagePath}"
                                        WidthRequest="130"
                                        HeightRequest="130"
                                        Grid.RowSpan="2"
@@ -115,7 +115,7 @@
                                 </Image>
 
                                 <!-- Nume doctor -->
-                                <Label Text="{Binding Name}"
+                                    <Label Text="{Binding NameTitle}"
                                        FontSize="18"
                                        FontAttributes="Bold"
                                        TextColor="#2260FF"
@@ -125,7 +125,7 @@
 
                                 <!-- Specializare -->
                                 <Label Text="{Binding Specialization}"
-                                       FontSize="16"
+                                       FontSize="15"
                                        TextColor="Black"
                                        FontFamily="LeagueSpartan"
                                        Grid.Row="1"

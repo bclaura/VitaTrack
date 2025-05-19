@@ -1,99 +1,65 @@
-﻿using Android.Graphics;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
+using System.Net.Http;
+using System.Net.Http.Json;
+
 
 namespace VitaTrack;
 
 public partial class DoctorsPage : ContentPage
 {
-    private List<Doctor> AllDoctors = new();
+
+    private readonly HttpClient _httpClient;
+
     private ObservableCollection<Doctor> Doctors = new();
-    private bool isSortAscending = true;
     private bool isFilterApplied = false;
+    private bool isSortAscending = true;
+    private List<Doctor> allDoctors = new List<Doctor>();
+
+
     public DoctorsPage()
-	{
-		InitializeComponent();
-
-
+    {
+        InitializeComponent();
         NavigationPage.SetHasNavigationBar(this, false);
 
-        AllDoctors = new List<Doctor>
-        {
-        new Doctor {
-            Name = "Dr. Alexander Bennett, Ph.D.",
-            Specialization = "Dermato-Genetics",
-            Gender = "M",
-            ImagePath = "doctor1.jpeg",
-            IsFavorite = false,
-            Bio = "Dr. Bennett is a leading expert in skin genetics and personalized dermatology. He has published over 50 research papers on rare dermato-genetic conditions and is a passionate advocate for early genetic screening in dermatology.",
-            InfoDetails = "Graduated from Oxford Medical School.\n20+ years in clinical research.\nLead author of the Dermatogenetics Handbook (3rd Edition).",
-            HelpDetails = "Specializes in rare genetic skin disorders. Tap Info for background or schedule a consultation to explore treatment options."
-        },
-        new Doctor {
-            Name = "Dr. Michael Davidson, M.D.",
-            Specialization = "Solar Dermatology",
-            Gender = "M",
-            ImagePath = "doctor2.jpeg",
-            IsFavorite = false,
-            Bio = "Dr. Davidson specializes in the effects of sun exposure on skin health. With over 15 years of experience, he is renowned for his work on skin cancer prevention and advanced treatment of sun-related skin disorders.",
-            InfoDetails = "Board-certified in Solar Dermatology.\n15+ years of patient care in UV-related skin damage.\nResearch collaborator with NASA on skin exposure in space.",
-            HelpDetails = "Focuses on prevention and treatment of sun-induced skin conditions. Use the Info tab to read more, or schedule a personalized UV evaluation."
-        },
-        new Doctor {
-            Name = "Dr. Olivia Turner, M.D.",
-            Specialization = "Dermato-Endocrinology",
-            Gender = "F",
-            ImagePath = "doctor3.jpeg",
-            IsFavorite = false,
-            Bio = "Dr. Turner blends dermatology with hormonal science to treat conditions like acne, hair loss, and pigmentation disorders. She's highly appreciated for her holistic approach and dedication to patient care.",
-            InfoDetails = "Trained in Endocrine Dermatology at Harvard.\nExpert in hormonal skin disorders and acne.\nFeatured speaker at the Global Skin Congress 2023.",
-            HelpDetails = "Handles cases where skin issues are linked to hormone imbalances. Tap Info for credentials or book a consultation to begin assessment."
-        },
-        new Doctor {
-            Name = "Dr. Sophia Martinez, Ph.D.",
-            Specialization = "Cosmetic Bioengineering",
-            Gender = "F",
-            ImagePath = "doctor4.jpeg",
-            IsFavorite = false,
-            Bio = "Dr. Martinez is a pioneer in cosmetic bioengineering, focusing on skin rejuvenation through biocompatible treatments. She collaborates with top biotech labs to develop innovative solutions for aging skin.",
-            InfoDetails = "PhD in Cosmetic Bioengineering from UCLA.\nInnovator in dermal nanotechnology.\nOver 50 procedures developed for scar reduction and anti-aging.",
-            HelpDetails = "Offers advanced cosmetic solutions using biomedical research. Read more under Info or request an appointment for custom skin care plans."
-        },
-        new Doctor {
-            Name = "Dr. Ethan White, M.D.",
-            Specialization = "Medical Aesthetics",
-            Gender = "M",
-            ImagePath = "doctor5.jpeg",
-            IsFavorite = false,
-            Bio = "With a refined eye for facial harmony, Dr. White is a sought-after name in non-invasive aesthetics. His patient-centric techniques emphasize natural beauty and long-term skin health.",
-            InfoDetails = "Certified in Medical Aesthetics and Regenerative Dermatology.\nCo-founder of SkinForma Clinics.\n10+ years experience in minimally invasive procedures.",
-            HelpDetails = "Specializes in facial symmetry, rejuvenation, and non-surgical interventions. Learn more in Info or reach out to schedule a consult."
+        _httpClient = Application.Current.Handler.MauiContext.Services.GetService<HttpClient>();
 
-        },
-        new Doctor {
-            Name = "Dr. Amelia Stone, M.D.",
-            Specialization = "Pediatric Dermatology",
-            Gender = "F",
-            ImagePath = "doctor6.jpeg",
-            IsFavorite = false,
-            Bio = "Dr. Stone is known for her gentle and effective treatments for children with skin conditions. She has helped thousands of families navigate complex pediatric dermatological needs with compassion and clarity.",
-            InfoDetails = "Pediatric dermatologist trained at Johns Hopkins.\nKnown for gentle, child-centered skin care.\nPublished author on eczema in early childhood.",
-            HelpDetails = "Focuses exclusively on children's dermatology. Tap Info to read more or schedule a session for your child’s evaluation."
+        LoadDoctors();
 
-        }
-        };
-
-        Doctors = new ObservableCollection<Doctor>(AllDoctors);
-        DoctorsCollectionView.ItemsSource = Doctors;
-
-        //marcheaza doctorii favoriti cand porneste aplicatia
-        foreach (var doc in Doctors)
-        {
-            doc.IsFavorite = SessionManager.LoggedInUser.FavoriteDoctorNames.Contains(doc.Name);
-        }
-
-        BindingContext = this;
     }
 
+    private async void LoadDoctors()
+    {
+        try
+        {
+            int? userId = await SessionManager.GetLoggedInUserIdAsync();
+            if (userId == null)
+            {
+                await DisplayAlert("Error", "User not logged in. Please log in again.", "OK");
+                return;
+            }
+
+            var favoriteDoctorIds = await GetFavoriteDoctorIds(userId.Value);
+
+            var response = await _httpClient.GetFromJsonAsync<List<Doctor>>("/api/Doctors");
+            if (response != null)
+            {
+                allDoctors = response;
+
+                foreach (var doctor in allDoctors)
+                {
+                    doctor.IsFavorite = favoriteDoctorIds.Contains(doctor.Id);
+                }
+
+                Doctors = new ObservableCollection<Doctor>(allDoctors);
+                DoctorsCollectionView.ItemsSource = Doctors;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading doctors: {ex.Message}");
+            await DisplayAlert("Error", "Failed to load doctors. Please try again.", "OK");
+        }
+    }
 
     private async void OnBackClicked(object sender, EventArgs e)
     {
@@ -118,15 +84,15 @@ public partial class DoctorsPage : ContentPage
 
         // Sortează doctorii
         var sortedDoctors = isSortAscending
-            ? Doctors.OrderBy(d => d.FirstName).ToList()
-            : Doctors.OrderByDescending(d => d.FirstName).ToList();
+            ? allDoctors.OrderBy(d => d.LastName).ToList()
+            : allDoctors.OrderByDescending(d => d.LastName).ToList();
 
         Doctors.Clear();
         foreach (var doc in sortedDoctors)
-            Doctors.Add(doc);
+        Doctors.Add(doc);
     }
 
-    private void OnFavoriteFilterClicked(object sender, EventArgs e)
+    private async void OnFavoriteFilterClicked(object sender, EventArgs e)
     {
         if (isFilterApplied)
         {
@@ -137,30 +103,52 @@ public partial class DoctorsPage : ContentPage
         isFilterApplied = true;
         FavoriteFilter.Source = "filter_fav_icon_active.png";
 
-        ResetDoctorList();
+        try
+        {
+            int? userId = await SessionManager.GetLoggedInUserIdAsync();
+            if (userId == null)
+            {
+                await DisplayAlert("Error", "User not logged in. Please log in again.", "OK");
+                return;
+            }
 
-        var filtered = Doctors.Where(d => d.IsFavorite).ToList();
-        Doctors.Clear();
-        foreach (var doc in filtered)
-            Doctors.Add(doc);
+            var favoriteDoctorIds = await GetFavoriteDoctorIds(userId.Value);
+
+            var filteredDoctors = allDoctors.Where(d => favoriteDoctorIds.Contains(d.Id)).ToList();
+
+            Doctors.Clear();
+            foreach (var doc in filteredDoctors)
+            {
+                Doctors.Add(doc);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading favorites: {ex.Message}");
+            await DisplayAlert("Error", "Failed to load favorite doctors. Please try again.", "OK");
+        }
     }
+
 
     private void OnMaleFilterClicked(object sender, EventArgs e)
     {
+        // Resetează alte filtre dacă este cazul
         if (isFilterApplied)
         {
             ResetFilterIcons();
             isFilterApplied = false;
         }
 
+        // Aplică filtrul pentru doctorii bărbați
         isFilterApplied = true;
         MaleFilter.Source = "filter_male_icon_active.png";
 
-        ResetDoctorList();
+        // Filtrează lista principală
+        var filteredDoctors = allDoctors.Where(d => d.Gender.Equals("M", StringComparison.OrdinalIgnoreCase)).ToList();
 
-        var filtered = Doctors.Where(d => d.Gender.Equals("M")).ToList();
+        // Actualizează colecția observabilă
         Doctors.Clear();
-        foreach(var doc in filtered)
+        foreach (var doc in filteredDoctors)
         {
             Doctors.Add(doc);
         }
@@ -177,11 +165,10 @@ public partial class DoctorsPage : ContentPage
         isFilterApplied = true;
         FemaleFilter.Source = "filter_female_icon_active.png";
 
-        ResetDoctorList();
+        var filteredDoctors = allDoctors.Where(d => d.Gender.Equals("F", StringComparison.OrdinalIgnoreCase)).ToList();
 
-        var filtered = Doctors.Where(d => d.Gender.Equals("F")).ToList();
         Doctors.Clear();
-        foreach (var doc in filtered)
+        foreach (var doc in filteredDoctors)
         {
             Doctors.Add(doc);
         }
@@ -198,33 +185,13 @@ public partial class DoctorsPage : ContentPage
     private void ResetDoctorList()
     {
         Doctors.Clear();
-        foreach (var doc in AllDoctors)
+        foreach (var doc in allDoctors)
             Doctors.Add(doc);
     }
 
     private void OnHomeClicked(object sender, EventArgs e)
     {
         Navigation.PushAsync(new UserDashboardPage());
-    }
-
-    private void OnFavoriteClicked(object sender, EventArgs e)
-    {
-        if (sender is ImageButton button && button.CommandParameter is Doctor selectedDoctor)
-        {
-            if (SessionManager.LoggedInUser.FavoriteDoctorNames.Contains(selectedDoctor.Name))
-            {
-                SessionManager.LoggedInUser.FavoriteDoctorNames.Remove(selectedDoctor.Name);
-                selectedDoctor.IsFavorite = false;
-            }
-            else
-            {
-                SessionManager.LoggedInUser.FavoriteDoctorNames.Add(selectedDoctor.Name);
-                selectedDoctor.IsFavorite = true;
-            }
-
-            // Salvează în MockDatabase
-            MockDatabase.SaveUsers();
-        }
     }
 
     private async void OnInfoClicked(object sender, EventArgs e)
@@ -237,22 +204,71 @@ public partial class DoctorsPage : ContentPage
 
     private async void OnInfoIconClicked(object sender, EventArgs e)
     {
-        if (sender is ImageButton button && button.CommandParameter is Doctor doctor)
-        {
-            await DisplayAlert("More Info", doctor.InfoDetails ?? "No additional info available.", "OK");
-        }
+
     }
 
     private async void OnHelpIconClicked(object sender, EventArgs e)
     {
-        if (sender is ImageButton button && button.CommandParameter is Doctor doctor)
+
+    }
+
+    private async void OnFavoriteClicked(object sender, EventArgs e)
+    {
+        if (sender is ImageButton button && button.CommandParameter is Doctor selectedDoctor)
         {
-            await DisplayAlert("Help", doctor.HelpDetails ?? "This doctor specializes in dermatology. You can tap Info for more or favorite to save.", "OK");
+            int? userId = await SessionManager.GetLoggedInUserIdAsync();
+            try
+            {
+                if (selectedDoctor.IsFavorite)
+                {
+                    // Elimină din favoriți
+                    var response = await _httpClient.DeleteAsync($"/api/users/{userId}/favorites/{selectedDoctor.Id}");
+                    if (response.IsSuccessStatusCode)
+                    {
+                        selectedDoctor.IsFavorite = false;
+                        Doctors.Remove(selectedDoctor);
+                    }
+                }
+                else
+                {
+                    // Adaugă la favoriți
+                    var response = await _httpClient.PostAsync($"/api/users/{userId}/favorites/{selectedDoctor.Id}", null);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        selectedDoctor.IsFavorite = true;
+                    }
+                }
+
+                // Actualizează UI-ul
+                DoctorsCollectionView.ItemsSource = null;
+                DoctorsCollectionView.ItemsSource = Doctors;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating favorite: {ex.Message}");
+                await DisplayAlert("Error", "Failed to update favorite status. Please try again.", "OK");
+            }
         }
     }
 
 
+    private async Task<List<int>> GetFavoriteDoctorIds(int userId)
+    {
+        try
+        {
+            var response = await _httpClient.GetFromJsonAsync<List<Doctor>>($"/api/users/{userId}/favorites");
+            if (response != null)
+            {
+                return response.Select(d => d.Id).ToList();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading favorites: {ex.Message}");
+        }
 
+        return new List<int>();
+    }
 
 
 
