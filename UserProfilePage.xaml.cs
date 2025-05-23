@@ -1,3 +1,6 @@
+using Microsoft.Maui.Graphics;
+using System.Globalization;
+using System.Net.Http.Json;
 using System.Xml;
 
 namespace VitaTrack;
@@ -10,6 +13,7 @@ public partial class UserProfilePage : ContentPage
     {
         InitializeComponent();
         NavigationPage.SetHasNavigationBar(this, false);
+
         //BindingContext = new UserProfileViewModel();
 
         _viewModel = new UserProfileViewModel();
@@ -54,6 +58,8 @@ public partial class UserProfilePage : ContentPage
         {
             nameLabel.Text = "Guest";
         }
+
+        await LoadProfileAsync();
     }
 
 
@@ -65,6 +71,16 @@ public partial class UserProfilePage : ContentPage
     private void OnHomeClicked(object sender, EventArgs e)
     {
         Navigation.PushAsync(new UserDashboardPage());
+    }
+
+    private void OnMessagesClicked(object sender, EventArgs e)
+    {
+        Navigation.PushAsync(new MessageDoctorPage());
+    }
+
+    private void OnCalendaryClicked(object sender, EventArgs e)
+    {
+        Navigation.PushAsync(new CalendarPage());
     }
 
     private async void OnEditProfileClicked(object sender, EventArgs e)
@@ -79,6 +95,27 @@ public partial class UserProfilePage : ContentPage
         {
             await PickPhotoAsync();
         }
+    }
+
+    private async Task LoadProfileAsync()
+    {
+        int? userId = await SessionManager.GetLoggedInUserIdAsync();
+        if (userId == null) return;
+
+        var user = await _httpClient.GetFromJsonAsync<User>($"api/users/{userId}");
+        var patient = await _httpClient.GetFromJsonAsync<Patient>($"api/patients/byUserId/{userId}");
+
+        _viewModel.FirstName = user.FirstName;
+        _viewModel.LastName = user.LastName;
+        _viewModel.FullName = $"{user.FirstName} {user.LastName}";
+        _viewModel.Email = user.Email;
+        _viewModel.DateOfBirth = user.DateOfBirth ?? "";
+        _viewModel.Phone = patient?.PhoneNumber ?? "";
+        _viewModel.AddressStreet = patient?.AdressStreet ?? "";
+        _viewModel.AddressCity = patient?.AdressCity ?? "";
+        _viewModel.AddressCounty = patient?.AdressCounty ?? "";
+        _viewModel.Occupation = patient?.Occupation ?? "";
+        _viewModel.Workplace = patient?.Workplace ?? "";
     }
 
     private async Task TakePhotoAsync()
@@ -148,6 +185,16 @@ public partial class UserProfilePage : ContentPage
     private async void OnProfileRowTapped(object sender, EventArgs e)
     {
         await Navigation.PushAsync(new UserProfileEditPage());
+    }
+
+    private async void OnMedicalHistoryTapped(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new MedicalHistoryPage());
+    }
+
+    private async void OnPrivacyPolicyTapped(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new PrivacyPolicy());
     }
 
     // Codificare imagine în Base64

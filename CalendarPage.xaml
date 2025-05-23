@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="VitaTrack.CalendarPage"
+             BackgroundColor="#F9F9FB">
+
+    <!-- Structură principală pe 2 rânduri: conținut + bară jos -->
+    <Grid RowDefinitions="*,Auto">
+
+        <!-- CONȚINUT SCROLLABIL -->
+        <ScrollView Grid.Row="0">
+            <StackLayout Padding="20" Spacing="10">
+
+                <!-- Titlu -->
+                <Grid ColumnDefinitions="Auto,*,Auto" VerticalOptions="Center">
+                    <Label Text="Health Calendar"
+                           FontSize="24"
+                           FontAttributes="Bold"
+                           TextColor="#2260FF"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           Grid.Column="1" />
+                </Grid>
+
+                <!-- Spațiu -->
+                <BoxView HeightRequest="10" BackgroundColor="Transparent" />
+
+                <!-- Rând lună -->
+                <Grid ColumnDefinitions="Auto,*,Auto" VerticalOptions="Center" Margin="0,-10,0,15">
+                    <ImageButton Source="arrow_left.png"
+                                 BackgroundColor="Transparent"
+                                 WidthRequest="30"
+                                 HeightRequest="30"
+                                 Clicked="OnPrevMonthClicked"
+                                 Grid.Column="0"
+                                 VerticalOptions="Center"/>
+
+                    <Label x:Name="MonthLabel"
+                                 FontSize="20"
+                                 FontAttributes="Bold"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center"
+                                 Grid.Column="1"
+                                 TextColor="#2260FF"/>
+
+                    <ImageButton Source="arrow_right.png"
+                                 BackgroundColor="Transparent"
+                                 WidthRequest="30"
+                                 HeightRequest="30"
+                                 Clicked="OnNextMonthClicked"
+                                 Grid.Column="2"
+                                 VerticalOptions="Center"/>
+                </Grid>
+
+                <!-- Calendar -->
+                <Grid x:Name="CalendarGrid"
+                      ColumnSpacing="5"
+                      RowSpacing="5"
+                      Padding="0"
+                      HorizontalOptions="FillAndExpand" />
+
+                <!-- Zi selectată -->
+                <Frame BackgroundColor="White"
+                       CornerRadius="10"
+                       Padding="10"
+                       HasShadow="True"
+                       IsVisible="{Binding IsDaySelected}">
+                    <Label x:Name="SelectedDateLabel"
+                           Text="No date selected"
+                           FontSize="16"
+                           TextColor="Black"/>
+                </Frame>
+
+                <!-- Legendă -->
+                <StackLayout Orientation="Horizontal"
+                             HorizontalOptions="Center"
+                             Spacing="20"
+                             Margin="0,10,0,0">
+
+                    <!-- Activitate -->
+                    <StackLayout Orientation="Horizontal" Spacing="5">
+                        <Frame WidthRequest="20" HeightRequest="20"
+                               BackgroundColor="#4CAF50"
+                               BorderColor="Black"
+                               CornerRadius="10"
+                               HasShadow="False"
+                               Padding="0"/>
+                        <Label Text="Physical Activity"
+                               VerticalTextAlignment="Center"
+                               FontSize="12"/>
+                    </StackLayout>
+
+                    <!-- Nimic -->
+                    <StackLayout Orientation="Horizontal" Spacing="5">
+                        <Frame WidthRequest="20" HeightRequest="20"
+                               BackgroundColor="White"
+                               BorderColor="Black"
+                               CornerRadius="10"
+                               HasShadow="False"
+                               Padding="0"/>
+                        <Label Text="No Activity"
+                               VerticalTextAlignment="Center"
+                               FontSize="12"/>
+                    </StackLayout>
+
+                </StackLayout>
+
+                <!-- ACTIVITĂȚI PE ZI SELECTATĂ -->
+                <StackLayout x:Name="SelectedDayActivitiesPanel"
+             IsVisible="False"
+             Margin="0,10,0,0"
+             Spacing="5">
+
+                    <Label Text="Physical Activity"
+           FontSize="18"
+           FontAttributes="Bold"
+           TextColor="#4CAF50"
+           HorizontalOptions="Center"/>
+
+                    <CollectionView x:Name="SelectedDayActivitiesCollectionView"
+                    Margin="0,0,0,10">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame BackgroundColor="White"
+                       CornerRadius="10"
+                       Padding="10"
+                       BorderColor="#4CAF50"
+                       HasShadow="True"
+                       Margin="0,5">
+                                    <VerticalStackLayout Spacing="3">
+                                        <Label Text="{Binding ActivityType}" 
+                               FontAttributes="Bold" 
+                               TextColor="#4CAF50"
+                               FontSize="15"/>
+                                        <Label Text="{Binding Duration, StringFormat='Duration: {0} min'}"
+                               FontSize="13"
+                               TextColor="Gray"/>
+                                        <Label Text="{Binding StartTime, StringFormat='From {0:dd MMM yyyy}'}"
+                               FontSize="13"
+                               TextColor="Gray"/>
+                                        <Label Text="{Binding EndTime, StringFormat='To {0:dd MMM yyyy}'}"
+                               FontSize="13"
+                               TextColor="Gray"/>
+                                    </VerticalStackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+
+                <Label Text="Recommendations"
+       FontSize="18"
+       FontAttributes="Bold"
+       TextColor="#2260FF"
+       Margin="0,20,0,5"
+       HorizontalOptions="Center"/>
+
+                <CollectionView x:Name="RecommendationsCollectionView"
+                ItemsSource="{Binding Recommendations}"
+                Margin="0,0,0,20">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame BackgroundColor="White"
+                   BorderColor="#E0E0E0"
+                   CornerRadius="12"
+                   Padding="15"
+                   Margin="0,5">
+                                <VerticalStackLayout Spacing="5">
+                                    <Label Text="{Binding RecommendationType}" 
+                           FontAttributes="Bold" 
+                           FontSize="16" 
+                           TextColor="#2260FF"/>
+                                    <Label Text="{Binding AdditionalInstructions}" 
+                           FontSize="14" 
+                           TextColor="Black" 
+                           LineBreakMode="WordWrap"/>
+                                    <Label Text="{Binding DailyDuration, StringFormat='Daily: {0} min'}"
+                           FontSize="13"
+                           TextColor="Gray"/>
+                                </VerticalStackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <Label x:Name="NoRecommendationsLabel"
+       Text="There are no recommendations available."
+       TextColor="Gray"
+       FontSize="14"
+       HorizontalOptions="Center"
+       IsVisible="False" />
+
+
+            </StackLayout>
+        </ScrollView>
+
+        <!-- BARĂ DE NAVIGARE FIXĂ JOS -->
+        <Frame Grid.Row="1"
+               BackgroundColor="#2260FF"
+               CornerRadius="30"
+               Padding="20,10"
+               Margin="20"
+               HasShadow="True"
+               HorizontalOptions="Fill"
+               VerticalOptions="End">
+
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="40">
+                <ImageButton Source="nav_home_icon.png"
+                             BackgroundColor="Transparent"
+                             WidthRequest="30"
+                             HeightRequest="30"
+                             Clicked="OnHomeClicked"/>
+                <ImageButton Source="nav_chat_icon.png"
+                             BackgroundColor="Transparent"
+                             WidthRequest="30"
+                             HeightRequest="30"
+                             Clicked="OnMessagesClicked"/>
+                <ImageButton Source="nav_profile_icon.png"
+                             BackgroundColor="Transparent"
+                             WidthRequest="30"
+                             HeightRequest="30"
+                             Clicked="OnProfileClicked"/>
+                <ImageButton Source="nav_calendary_icon_active.png"
+                             BackgroundColor="Transparent"
+                             WidthRequest="30"
+                             HeightRequest="30"/>
+            </HorizontalStackLayout>
+
+        </Frame>
+    </Grid>
+</ContentPage>

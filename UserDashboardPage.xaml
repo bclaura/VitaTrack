@@ -125,12 +125,14 @@
                              Clicked="OnProfileClicked"/>
                 <ImageButton Source="messages_icon.png"
                              Grid.Row="0" Grid.Column="1"
+                             Clicked="OnMessagesClicked"
                              BackgroundColor="Transparent"/>
 
                 <!-- Row 2 -->
                 <ImageButton Source="recommandations_icon.png"
                              Grid.Row="1" Grid.Column="0"
-                             BackgroundColor="Transparent"/>
+                             BackgroundColor="Transparent"
+                             Clicked="OnCalendaryClicked"/>
                 <ImageButton Source="historic_icon.png"
                              Grid.Row="1" Grid.Column="1"
                              BackgroundColor="Transparent"/>

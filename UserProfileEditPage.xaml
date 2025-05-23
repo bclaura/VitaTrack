@@ -3,63 +3,221 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="VitaTrack.UserProfileEditPage"
              BackgroundColor="White"
-             Title="Profile">
+             Title="Edit Profile">
 
-    <VerticalStackLayout Padding="20" Spacing="20">
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="20">
 
-        <!-- Imagine de profil -->
-        <Grid HorizontalOptions="Center" Margin="0,0,0,0">
-            <Frame BackgroundColor="Transparent" Padding="0" BorderColor="Transparent" HasShadow="False">
-                <Image Source="{Binding ProfileImage}"
-                       WidthRequest="160"
-                       HeightRequest="160"
-                       Aspect="AspectFill">
-                    <Image.Clip>
-                        <EllipseGeometry Center="80,80" RadiusX="80" RadiusY="80"/>
-                    </Image.Clip>
-                </Image>
-            </Frame>
-
-            <!-- Iconița de Editare -->
-            <Frame BackgroundColor="#2260FF" 
-                   WidthRequest="50" 
-                   HeightRequest="50" 
-                   CornerRadius="25" 
-                   Padding="0" 
-                   HorizontalOptions="End" 
-                   VerticalOptions="End"
-                   Margin="-30,0,0,0">
-                <ImageButton Source="edit_icon.png" 
+            <!-- Back & Title -->
+            <HorizontalStackLayout>
+                <ImageButton Source="back_icon.png"
+                             HeightRequest="24"
+                             WidthRequest="24"
                              BackgroundColor="Transparent"
-                             WidthRequest="30"
-                             HeightRequest="30"
-                             Clicked="OnEditProfileImageClicked"/>
+                             Clicked="OnBackClicked"/>
+                <Label Text="Edit Profile"
+                       FontSize="22"
+                       FontAttributes="Bold"
+                       FontFamily="LeagueSpartan"
+                       TextColor="#006CFF"
+                       VerticalOptions="Center"
+                       Margin="85,0,0,0"
+                       HorizontalOptions="CenterAndExpand" />
+            </HorizontalStackLayout>
+
+            <!-- CNP -->
+            <Label Text="CNP"
+                   FontSize="18"
+                   FontAttributes="Bold"
+                   FontFamily="LeagueSpartan"
+                   TextColor="Black" />
+            <Frame BackgroundColor="#E9F1FF"
+                   CornerRadius="12"
+                   Padding="5"
+                   HeightRequest="50"
+                   HasShadow="False"
+                   BorderColor="Transparent"
+                   Margin="0,-10,0,0">
+                <Entry Text="{Binding Cnp}"
+                       Placeholder="Cnp"
+                       BackgroundColor="Transparent"
+                       TextColor="#006CFF"
+                       FontSize="16" />
             </Frame>
-        </Grid>
 
-        <!-- Full Name -->
-        <Label Text="Full Name" FontSize="16" FontAttributes="Bold" />
-        <Entry Text="{Binding FullName}" BackgroundColor="#F0F4FF" />
+            <!-- Phone -->
+            <Label Text="Phone Number"
+                   FontSize="18"
+                   FontAttributes="Bold"
+                   FontFamily="LeagueSpartan"
+                   TextColor="Black" />
+            <Frame BackgroundColor="#E9F1FF"
+                   CornerRadius="12"
+                   Padding="5"
+                   HeightRequest="50"
+                   HasShadow="False"
+                   BorderColor="Transparent"
+                   Margin="0,-10,0,0">
+                <Entry Text="{Binding Phone}"
+                       Placeholder="Phone Number"
+                       BackgroundColor="Transparent"
+                       TextColor="#006CFF"
+                       FontSize="16" />
+            </Frame>
 
-        <!-- Phone Number -->
-        <Label Text="Phone Number" FontSize="16" FontAttributes="Bold" />
-        <Entry Text="{Binding Phone}" BackgroundColor="#F0F4FF" />
+            <!-- Email -->
+            <Label Text="Email"
+                   FontSize="18"
+                   FontAttributes="Bold"
+                   FontFamily="LeagueSpartan"
+                   TextColor="Black" />
+            <Frame BackgroundColor="#E9F1FF"
+                   CornerRadius="12"
+                   Padding="5"
+                   HeightRequest="50"
+                   HasShadow="False"
+                   BorderColor="Transparent"
+                   Margin="0,-10,0,0">
+                <Entry Text="{Binding Email}"
+                       Placeholder="example@example.com"
+                       BackgroundColor="Transparent"
+                       TextColor="#006CFF"
+                       FontSize="16"
+                       IsReadOnly="True"/>
+            </Frame>
 
-        <!-- Email -->
-        <Label Text="Email" FontSize="16" FontAttributes="Bold" />
-        <Entry Text="{Binding Email}" BackgroundColor="#F0F4FF" />
+            <!-- Date of Birth -->
+            <Label Text="Date Of Birth"
+                   FontSize="18"
+                   FontAttributes="Bold"
+                   FontFamily="LeagueSpartan"
+                   TextColor="Black" />
+            <Frame BackgroundColor="#E9F1FF"
+                   CornerRadius="12"
+                   Padding="5"
+                   HeightRequest="50"
+                   HasShadow="False"
+                   BorderColor="Transparent"
+                   Margin="0,-10,0,0">
+                <Entry Text="{Binding DateOfBirth}"
+                       Placeholder="YYYY-MM-DD"
+                       BackgroundColor="Transparent"
+                       TextColor="#006CFF"
+                       FontSize="16"/>
+            </Frame>
 
-        <!-- Date of Birth -->
-        <Label Text="Date Of Birth" FontSize="16" FontAttributes="Bold" />
-        <Entry Text="{Binding DateOfBirth}" BackgroundColor="#F0F4FF" />
+            <!-- Street Address -->
+            <Label Text="Street Address"
+                   FontSize="18"
+                   FontAttributes="Bold"
+                   FontFamily="LeagueSpartan"
+                   TextColor="Black" />
+            <Frame BackgroundColor="#E9F1FF"
+                   CornerRadius="12"
+                   Padding="5"
+                   HeightRequest="50"
+                   HasShadow="False"
+                   BorderColor="Transparent"
+                   Margin="0,-10,0,0">
+                <Entry Text="{Binding AddressStreet}"
+                       Placeholder="Street"
+                       BackgroundColor="Transparent"
+                       TextColor="#006CFF"
+                       FontSize="16"/>
+            </Frame>
 
-        <!-- Save Button -->
-        <Button Text="Update Profile"
-                BackgroundColor="#2260FF"
-                TextColor="White"
-                FontSize="18"
-                CornerRadius="30"
-                Clicked="OnSaveProfileClicked" />
+            <!-- City -->
+            <Label Text="City"
+                   FontSize="18"
+                   FontAttributes="Bold"
+                   FontFamily="LeagueSpartan"
+                   TextColor="Black" />
+            <Frame BackgroundColor="#E9F1FF"
+                   CornerRadius="12"
+                   Padding="5"
+                   HeightRequest="50"
+                   HasShadow="False"
+                   BorderColor="Transparent"
+                   Margin="0,-10,0,0">
+                <Entry Text="{Binding AddressCity}"
+                       Placeholder="City"
+                       BackgroundColor="Transparent"
+                       TextColor="#006CFF"
+                       FontSize="16"/>
+            </Frame>
 
-    </VerticalStackLayout>
+            <!-- County -->
+            <Label Text="County"
+                   FontSize="18"
+                   FontAttributes="Bold"
+                   FontFamily="LeagueSpartan"
+                   TextColor="Black" />
+            <Frame BackgroundColor="#E9F1FF"
+                   CornerRadius="12"
+                   Padding="5"
+                   HeightRequest="50"
+                   HasShadow="False"
+                   BorderColor="Transparent"
+                   Margin="0,-10,0,0">
+                <Entry Text="{Binding AddressCounty}"
+                       Placeholder="County"
+                       BackgroundColor="Transparent"
+                       TextColor="#006CFF"
+                       FontSize="16"/>
+            </Frame>
+
+            <!-- Occupation -->
+            <Label Text="Occupation"
+                   FontSize="18"
+                   FontAttributes="Bold"
+                   FontFamily="LeagueSpartan"
+                   TextColor="Black" />
+            <Frame BackgroundColor="#E9F1FF"
+                   CornerRadius="12"
+                   Padding="5"
+                   HeightRequest="50"
+                   HasShadow="False"
+                   BorderColor="Transparent"
+                   Margin="0,-10,0,0">
+                <Entry Text="{Binding Occupation}"
+                       Placeholder="Occupation"
+                       BackgroundColor="Transparent"
+                       TextColor="#006CFF"
+                       FontSize="16"/>
+            </Frame>
+
+            <!-- Workplace -->
+            <Label Text="Workplace"
+                   FontSize="18"
+                   FontAttributes="Bold"
+                   FontFamily="LeagueSpartan"
+                   TextColor="Black" />
+            <Frame BackgroundColor="#E9F1FF"
+                   CornerRadius="12"
+                   Padding="5"
+                   HeightRequest="50"
+                   HasShadow="False"
+                   BorderColor="Transparent"
+                   Margin="0,-10,0,0">
+                <Entry Text="{Binding Workplace}"
+                       Placeholder="Workplace"
+                       BackgroundColor="Transparent"
+                       TextColor="#006CFF"
+                       FontSize="16"/>
+            </Frame>
+
+            <!-- Submit Button -->
+            <Button Text="Update Profile"
+                    BackgroundColor="#006CFF"
+                    TextColor="White"
+                    FontSize="18"
+                    FontAttributes="Bold"
+                    CornerRadius="20"
+                    HeightRequest="50"
+                    Clicked="OnUpdateProfileClicked"
+                    Margin="0,10,0,20"/>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
+
+

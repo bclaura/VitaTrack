@@ -59,6 +59,16 @@ public partial class UserDashboardPage : ContentPage
         await Navigation.PushAsync(new UserProfilePage());
     }
 
+    private async void OnMessagesClicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new MessageDoctorPage());
+    }
+
+    private async void OnCalendaryClicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new CalendarPage());
+    }
+
     private async void OnLogoutClicked(object sender, EventArgs e)
     {
         await SessionManager.LogoutAsync();

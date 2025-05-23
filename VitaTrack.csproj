@@ -63,6 +63,8 @@
 	<ItemGroup>
 	  <None Remove="Resources\AppIcon\appiconfg.svg" />
 	  <None Remove="Resources\Fonts\LeagueSpartan-Regular.ttf" />
+	  <None Remove="Resources\Images\arrow_left.png" />
+	  <None Remove="Resources\Images\arrow_right.png" />
 	  <None Remove="Resources\Images\back_icon.png" />
 	  <None Remove="Resources\Images\calendar_icon.png" />
 	  <None Remove="Resources\Images\click_profile.png" />
@@ -104,6 +106,7 @@
 	  <None Remove="Resources\Images\localisation_icon.png" />
 	  <None Remove="Resources\Images\logout_icon.png" />
 	  <None Remove="Resources\Images\logout_icon_profile.png" />
+	  <None Remove="Resources\Images\medical_history_icon.png" />
 	  <None Remove="Resources\Images\messages_icon.png" />
 	  <None Remove="Resources\Images\nav_calendary_icon.png" />
 	  <None Remove="Resources\Images\nav_calendary_icon_active.png" />
@@ -140,6 +143,12 @@
 		</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="CalendarPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="ChatPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="DoctorDetailPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -153,6 +162,15 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="LoginPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="MedicalHistoryPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="MessageDoctorPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="PrivacyPolicy.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="ResetPasswordPage.xaml">

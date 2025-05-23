@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="VitaTrack.MedicalHistoryPage"
+             BackgroundColor="White">
+
+    <Grid RowDefinitions="*, Auto">
+
+        <!-- CONȚINUT SCROLLABIL -->
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="30" Spacing="20">
+
+                <!-- Header cu buton back și titlu -->
+                <Grid ColumnDefinitions="Auto,*,Auto" Padding="0,-10,0,0">
+                    <ImageButton Source="back_icon.png"
+                                 BackgroundColor="Transparent"
+                                 WidthRequest="24"
+                                 HeightRequest="24"
+                                 Clicked="OnBackClicked"
+                                 Grid.Column="0"
+                                 VerticalOptions="Center"/>
+
+                    <Label Text="Medical History"
+                           FontSize="28"
+                           FontFamily="LeagueSpartan"
+                           FontAttributes="Bold"
+                           TextColor="#006CFF"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           Grid.Column="1"
+                           Margin="0,0,-20,0"/>
+                </Grid>
+
+                <!-- Card cu informații despre pacient -->
+                <Frame BackgroundColor="#E9F1FF"
+                       CornerRadius="16"
+                       Padding="20"
+                       HasShadow="True"
+                       Margin="0,10,0,0"
+                       WidthRequest="250">
+                    <VerticalStackLayout Spacing="5"
+                     HorizontalOptions="Fill"
+                     VerticalOptions="Start">
+                        <Label Text="{Binding Patient.FullName}" 
+                               FontSize="20" 
+                               FontAttributes="Bold"
+                               TextColor="#006CFF"
+                               HorizontalTextAlignment="Center"/>
+                        <Label Text="{Binding Patient.Age, StringFormat='{}{0} ani'}" 
+                               FontSize="16" 
+                               TextColor="Black"
+                               HorizontalTextAlignment="Center"/>
+                        <Label Text="{Binding Patient.PhoneNumber}" 
+                               FontSize="14" 
+                               TextColor="Black"
+                               HorizontalTextAlignment="Center"/>
+                        <Label Text="{Binding Patient.Email}" 
+                               FontSize="14" 
+                               TextColor="Black"
+                               HorizontalTextAlignment="Center"/>
+                        <Label Text="{Binding Patient.Address}" 
+                               FontSize="14" 
+                               TextColor="Black"
+                               HorizontalTextAlignment="Center"/>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Titlu secțiune -->
+                <Label Text="Medical Reports"
+                       FontSize="22"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       TextColor="#006CFF"
+                       Margin="0,10,0,5" />
+
+                <!-- Istoric medical (dacă există) -->
+                <CollectionView x:Name="MedicalHistory"
+                                ItemsSource="{Binding MedicalHistoryList}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame BackgroundColor="White"
+                                   BorderColor="#E0E0E0"
+                                   CornerRadius="12"
+                                   Padding="15"
+                                   Margin="0,5,0,5">
+                                <VerticalStackLayout Spacing="6">
+                                    <Label Text="{Binding Diagnosis}" 
+                                           FontAttributes="Bold"
+                                           FontSize="16"
+                                           TextColor="#2260FF"/>
+                                    <Label Text="Allergies:"
+                                           FontAttributes="Bold"
+                                           FontSize="14"/>
+                                    <Label Text="{Binding Allergies}" 
+                                           FontSize="14"/>
+                                    <Label Text="Cardiology:"
+                                           FontAttributes="Bold"
+                                           FontSize="14"/>
+                                    <Label Text="{Binding CardiologyConsultation}" 
+                                           FontSize="14"/>
+                                    <Label Text="{Binding Date, StringFormat='{}Date: {0:dd MMM yyyy}'}" 
+                                           FontSize="12"
+                                           TextColor="Gray"
+                                           HorizontalOptions="End"/>
+                                </VerticalStackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <!-- Dacă nu există istoric -->
+                <Label Text="There are no medical reports available." 
+                       FontSize="14" 
+                       IsVisible="{Binding NoHistoryFound}" 
+                       TextColor="Gray" 
+                       HorizontalOptions="Center"
+                       Margin="0,10,0,0"/>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- BARA DE NAVIGARE (dacă vrei să adaugi) -->
+        <!-- poți adăuga aici dacă o folosești în toate paginile -->
+        <Frame Grid.Row="1"
+       BackgroundColor="#2260FF"
+       CornerRadius="30"
+       Padding="20,10"
+       Margin="20"
+       HasShadow="True"
+       HorizontalOptions="Fill"
+       VerticalOptions="End">
+
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="40">
+                <ImageButton Source="nav_home_icon.png"
+                     BackgroundColor="Transparent"
+                     WidthRequest="30"
+                     HeightRequest="30"
+                     Clicked="OnHomeClicked"/>
+                <ImageButton Source="nav_chat_icon.png"
+                     BackgroundColor="Transparent"
+                     WidthRequest="30"
+                     HeightRequest="30" 
+                     Clicked="OnMessagesClicked"/>
+                <ImageButton Source="nav_profile_icon.png"
+                     BackgroundColor="Transparent"
+                     WidthRequest="30"
+                     HeightRequest="30" 
+                     Clicked="OnProfileClicked"/>
+                <ImageButton Source="nav_calendary_icon.png"
+                     BackgroundColor="Transparent"
+                     WidthRequest="30"
+                     HeightRequest="30" 
+                     Clicked="OnCalendaryClicked"/>
+            </HorizontalStackLayout>
+        </Frame>
+    </Grid>
+</ContentPage>

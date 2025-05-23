@@ -104,6 +104,21 @@ public partial class FavoritePage : ContentPage
         return new List<int>();
     }
 
+    private void OnProfileClicked(object sender, EventArgs e)
+    {
+        Navigation.PushAsync(new UserProfilePage());
+    }
+
+    private void OnMessagesClicked(object sender, EventArgs e)
+    {
+        Navigation.PushAsync(new MessageDoctorPage());
+    }
+
+    private void OnCalendaryClicked(object sender, EventArgs e)
+    {
+        Navigation.PushAsync(new CalendarPage());
+    }
+
 }
 
 public class ZeroToBoolConverter : IValueConverter

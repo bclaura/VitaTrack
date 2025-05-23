@@ -177,15 +177,18 @@
                 <ImageButton Source="nav_chat_icon.png"
                              BackgroundColor="Transparent"
                              WidthRequest="30"
-                             HeightRequest="30" />
+                             HeightRequest="30" 
+                             Clicked="OnMessagesClicked"/>
                 <ImageButton Source="nav_profile_icon.png"
                              BackgroundColor="Transparent"
                              WidthRequest="30"
-                             HeightRequest="30" />
+                             HeightRequest="30" 
+                             Clicked="OnProfileClicked"/>
                 <ImageButton Source="nav_calendary_icon.png"
                              BackgroundColor="Transparent"
                              WidthRequest="30"
-                             HeightRequest="30" />
+                             HeightRequest="30" 
+                             Clicked="OnCalendaryClicked"/>
             </HorizontalStackLayout>
         </Frame>
     </Grid>

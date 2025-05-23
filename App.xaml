@@ -7,6 +7,9 @@
         <ResourceDictionary>
             <local:ZeroToBoolConverter x:Key="ZeroToBoolConverter"/>
             <local:FavoriteIconConverter x:Key="FavoriteIconConverter" />
+            <local:MessageColorConverter x:Key="MessageColorConverter" />
+            <local:MessageAlignmentConverter x:Key="MessageAlignmentConverter" />
+            <local:ReadIconConverter x:Key="ReadIconConverter" />
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />

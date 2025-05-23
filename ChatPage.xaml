@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="VitaTrack.ChatPage"
+             BackgroundColor="#F9F9FB">
+
+    <Grid RowDefinitions="Auto,*,Auto"
+          BackgroundColor="#F9F9FB">
+
+        <Frame HasShadow="True" 
+       Padding="5" 
+       Margin="0"
+       CornerRadius="0"
+       BackgroundColor="Transparent">
+            <Grid Grid.Row="0"
+          ColumnDefinitions="Auto,*"
+          Padding="20,10,20,10">
+
+                <!-- Back button -->
+                <ImageButton Source="back_icon.png"
+                     BackgroundColor="Transparent"
+                     WidthRequest="30"
+                     HeightRequest="30"
+                     Clicked="OnBackClicked"
+                     VerticalOptions="Center"
+                     Grid.Column="0" />
+
+                <!-- Nume doctor -->
+                <Label x:Name="DoctorNameLabel"
+               FontSize="24"
+               FontAttributes="Bold"
+               TextColor="#2260FF"
+               VerticalOptions="Center"
+               HorizontalOptions="Center"
+               Margin="0,0,0,0"
+               Grid.Column="1" />
+            </Grid>
+        </Frame>
+
+        <!-- Rând 1: Lista de mesaje -->
+        <CollectionView x:Name="MessagesCollectionView"
+                        Grid.Row="1"
+                        ItemsSource="{Binding Messages}"
+                        BackgroundColor="Transparent"
+                        SelectionMode="None"
+                        Margin="10,0,10,0">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="5">
+                        <Frame BackgroundColor="{Binding IsOwnMessage, Converter={StaticResource MessageColorConverter}}"
+                               HorizontalOptions="{Binding IsOwnMessage, Converter={StaticResource MessageAlignmentConverter}}"
+                               CornerRadius="15"
+                               Padding="10"
+                               HasShadow="False"
+                               MinimumWidthRequest="100"
+                               MaximumWidthRequest="280">
+                            <StackLayout>
+                                <Label Text="{Binding Message}" FontSize="14" TextColor="Black" />
+                                <StackLayout Orientation="Horizontal" HorizontalOptions="End">
+                                    <Label Text="{Binding SentAt, StringFormat='{0:HH:mm}'}"
+                                           FontSize="10"
+                                           TextColor="Gray" />
+                                    <Image Source="{Binding IsRead, Converter={StaticResource ReadIconConverter}}"
+                                           WidthRequest="14"
+                                           HeightRequest="14"
+                                           Margin="5,0,0,0"
+                                           IsVisible="{Binding IsOwnMessage}" />
+                                </StackLayout>
+                            </StackLayout>
+                        </Frame>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Rând 2: Composer mesaj -->
+        <StackLayout Orientation="Horizontal"
+                     Padding="10"
+                     BackgroundColor="White"
+                     Grid.Row="2">
+            <Entry x:Name="MessageEntry"
+                   Placeholder="Type a message"
+                   HorizontalOptions="FillAndExpand"
+                   Completed="OnMessageEntryCompleted"/>
+            <ImageButton Source="send_icon.png"
+                         WidthRequest="30"
+                         HeightRequest="30"
+                         Clicked="OnSendMessageClicked" />
+        </StackLayout>
+
+    </Grid>
+</ContentPage>

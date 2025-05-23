@@ -9,8 +9,8 @@
     <Grid RowDefinitions="*,Auto">
 
         <!-- Partea principală a paginii -->
-        <ScrollView Grid.Row="0" Padding="10" Margin="0,0,0,0">
-            <VerticalStackLayout Spacing="20">
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="30" Spacing="20">
 
                 <!-- Back Button + Title -->
                 <HorizontalStackLayout>
@@ -80,12 +80,19 @@
                     </Grid>
 
                     <Grid Padding="20,10" ColumnDefinitions="50,*,30">
-                        <Image Grid.Column="0" Source="favorite_icon_profile.png" WidthRequest="40" HeightRequest="40"/>
-                        <Label Grid.Column="1" Text="Favorite" FontSize="20" VerticalOptions="Center"/>
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnMedicalHistoryTapped" />
+                        </Grid.GestureRecognizers>
+                        
+                        <Image Grid.Column="0" Source="medical_history_icon.png" WidthRequest="40" HeightRequest="40"/>
+                        <Label Grid.Column="1" Text="Medical History" FontSize="20" VerticalOptions="Center"/>
                         <Image Grid.Column="2" Source="click_profile.png" WidthRequest="20" HeightRequest="20" HorizontalOptions="End"/>
                     </Grid>
 
                     <Grid Padding="20,10" ColumnDefinitions="50,*,30">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnPrivacyPolicyTapped" />
+                        </Grid.GestureRecognizers>
                         <Image Grid.Column="0" Source="privacy_policy_icon_profile.png" WidthRequest="40" HeightRequest="40"/>
                         <Label Grid.Column="1" Text="Privacy Policy" FontSize="20" VerticalOptions="Center"/>
                         <Image Grid.Column="2" Source="click_profile.png" WidthRequest="20" HeightRequest="20" HorizontalOptions="End"/>
@@ -131,7 +138,8 @@
                 <ImageButton Source="nav_chat_icon.png"
                              BackgroundColor="Transparent"
                              WidthRequest="30"
-                             HeightRequest="30" />
+                             HeightRequest="30"
+                             Clicked="OnMessagesClicked"/>
                 <ImageButton Source="nav_profile_icon_active.png"
                              BackgroundColor="Transparent"
                              WidthRequest="30"
@@ -139,7 +147,8 @@
                 <ImageButton Source="nav_calendary_icon.png"
                              BackgroundColor="Transparent"
                              WidthRequest="30"
-                             HeightRequest="30" />
+                             HeightRequest="30" 
+                             Clicked="OnCalendaryClicked"/>
             </HorizontalStackLayout>
 
         </Frame>
