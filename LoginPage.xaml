@@ -25,14 +25,14 @@
             </HorizontalStackLayout>
 
             <!-- Welcome Title -->
-            <Label Text="Welcome"
+            <Label Text="Welcome back"
                    FontSize="22"
                    FontFamily="LeagueSpartan"
                    FontAttributes="Bold"
                    TextColor="#006CFF" />
 
             <!-- Subtext -->
-            <Label Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+            <Label Text="Welcome back. Please log in to securely access your health records, track your heart rate and ECG results, and collaborate with your care team. All your data remains private and secure."
                    FontSize="13"
                    FontFamily="LeagueSpartan"
                    TextColor="Gray"

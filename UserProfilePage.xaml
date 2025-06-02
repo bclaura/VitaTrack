@@ -125,7 +125,8 @@
                CornerRadius="30"
                Padding="20,10"
                Margin="20,0,20,20"
-               HasShadow="True"
+               HasShadow="False"
+               BorderColor="#E0E0E0"
                HorizontalOptions="Fill"
                VerticalOptions="End">
 

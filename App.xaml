@@ -5,6 +5,13 @@
              x:Class="VitaTrack.App">
     <Application.Resources>
         <ResourceDictionary>
+
+            <Style TargetType="Label">
+                <Setter Property="FontFamily" Value="LeagueSpartan" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="TextColor" Value="Black" />
+            </Style>
+
             <local:ZeroToBoolConverter x:Key="ZeroToBoolConverter"/>
             <local:FavoriteIconConverter x:Key="FavoriteIconConverter" />
             <local:MessageColorConverter x:Key="MessageColorConverter" />
@@ -14,6 +21,8 @@
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

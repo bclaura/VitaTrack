@@ -80,6 +80,7 @@
        Margin="15,0,20,0"
        HeightRequest="40"
        VerticalOptions="Center"
+       BorderColor="#E0E0E0"
        HasShadow="False">
 
                     <Grid ColumnDefinitions="Auto,*,Auto" VerticalOptions="Center" Padding="10,0">
@@ -135,15 +136,18 @@
                              Clicked="OnCalendaryClicked"/>
                 <ImageButton Source="historic_icon.png"
                              Grid.Row="1" Grid.Column="1"
-                             BackgroundColor="Transparent"/>
+                             BackgroundColor="Transparent"
+                             />
 
                 <!-- Row 3 -->
                 <ImageButton Source="localisation_icon.png"
                              Grid.Row="2" Grid.Column="0"
-                             BackgroundColor="Transparent"/>
+                             BackgroundColor="Transparent"
+                             Clicked="OnLocationClicked"/>
                 <ImageButton Source="health_icon.png"
                              Grid.Row="2" Grid.Column="1"
-                             BackgroundColor="Transparent"/>
+                             BackgroundColor="Transparent"
+                             Clicked="OnHealthClicked"/>
 
                 <!-- Row 4 -->
                 <ImageButton Source="settings_icon.png"

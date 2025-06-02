@@ -9,21 +9,14 @@ public partial class LoginPage : ContentPage
 	{
 		InitializeComponent();
 
-        var handler = new HttpClientHandler
-        {
-            ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
-        };
-
-        // IP-ul emulatorului Android
-        _httpClient = new HttpClient(handler)
-        {
-            BaseAddress = new Uri("https://10.0.2.2:7203/")
-        };
+        _httpClient = Application.Current.Handler.MauiContext.Services.GetService<HttpClient>();
 
     }
 
     private async void OnLoginClicked(object sender, EventArgs e)
     {
+        Console.WriteLine("Trimitem POST către: " + _httpClient.BaseAddress + "api/Users/Login");
+
         string email = emailEntry.Text?.Trim();
         string password = passwordEntry.Text;
 
@@ -32,6 +25,10 @@ public partial class LoginPage : ContentPage
             await DisplayAlert("Error", "Please enter both email and password.", "OK");
             return;
         }
+
+        Console.WriteLine("Email: " + email);
+        Console.WriteLine("Password: " + password);
+
 
         try
         {

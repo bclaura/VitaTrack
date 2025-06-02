@@ -18,27 +18,7 @@ public partial class SignUpPage : ContentPage
             ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
         };
 
-#if ANDROID
-        // IP-ul emulatorului Android
-        _httpClient = new HttpClient(handler)
-        {
-            BaseAddress = new Uri("https://10.0.2.2:7203/")
-        };
-
-        Console.WriteLine($"Client Base Address: {_httpClient.BaseAddress}");
-#elif IOS
-        // Simulator iOS
-        _httpClient = new HttpClient(handler)
-        {
-            BaseAddress = new Uri("https://localhost:7203/")
-        };
-#else
-        // Windows/MacCatalyst
-        _httpClient = new HttpClient(handler)
-        {
-            BaseAddress = new Uri("https://localhost:7203/")
-        };
-#endif
+        _httpClient = Application.Current.Handler.MauiContext.Services.GetService<HttpClient>();
     }
 
     private void OnEyeClicked(object sender, EventArgs e)

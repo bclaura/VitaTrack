@@ -7,7 +7,7 @@
     <Grid RowDefinitions="Auto,*,Auto"
           BackgroundColor="#F9F9FB">
 
-        <Frame HasShadow="True" 
+        <Frame HasShadow="True"
        Padding="5" 
        Margin="0"
        CornerRadius="0"
@@ -52,6 +52,7 @@
                                CornerRadius="15"
                                Padding="10"
                                HasShadow="False"
+                               BorderColor="#E0E0E0"
                                MinimumWidthRequest="100"
                                MaximumWidthRequest="280">
                             <StackLayout>

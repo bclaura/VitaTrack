@@ -58,6 +58,8 @@
 
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+
+		<MauiFont Include="Resources\Fonts\LeagueSpartan-Regular.ttf" Alias="LeagueSpartan" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -101,6 +103,7 @@
 	  <None Remove="Resources\Images\filter_za_icon.png" />
 	  <None Remove="Resources\Images\google_icon.png" />
 	  <None Remove="Resources\Images\health_icon.png" />
+	  <None Remove="Resources\Images\heart_icon.png" />
 	  <None Remove="Resources\Images\historic_icon.png" />
 	  <None Remove="Resources\Images\i_icon.png" />
 	  <None Remove="Resources\Images\localisation_icon.png" />
@@ -128,19 +131,14 @@
 	  <None Remove="Resources\Images\settings_icon_profile.png" />
 	  <None Remove="Resources\Images\settings_small_icon.png" />
 	  <None Remove="Resources\Images\vitaline2.png" />
-	  <None Remove="Resources\xml\network_security_config.xml" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <AndroidResource Include="Resources\xml\network_security_config.xml" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.3" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.3" />
+		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="8.0.3" />
 	</ItemGroup>
-
-	<ItemGroup>
-    <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
-    <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="$(MauiVersion)" />
-    		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.5" />
-		</ItemGroup>
 
 	<ItemGroup>
 	  <MauiXaml Update="CalendarPage.xaml">
@@ -159,6 +157,12 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="ForgotPasswordPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="HealthPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="LocationPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="LoginPage.xaml">
@@ -195,5 +199,17 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
+
+	<ItemGroup>
+		<AndroidResource Include="Platforms\Android\Resources\xml\network_security_config.xml" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+	  <Folder Include="Resources\xml\" />
+	</ItemGroup>
+
+	
+
 
 </Project>

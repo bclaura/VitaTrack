@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="VitaTrack.HealthPage"
+             BackgroundColor="White"
+             Title="HealthPage">
+    <Grid RowDefinitions="*,Auto">
+
+        <!-- CONTINUT PRINCIPAL -->
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout Padding="30" Spacing="20">
+
+                <Grid ColumnDefinitions="Auto,*,Auto" Padding="0,0,0,0">
+
+                    <ImageButton Source="back_icon.png"
+                 HeightRequest="24"
+                 WidthRequest="24"
+                 BackgroundColor="Transparent"
+                 Clicked="OnBackClicked"
+                 Grid.Column="0"
+                 VerticalOptions="Center" />
+
+                    <Label Text="Health Overview"
+                   FontSize="22"
+                   FontFamily="LeagueSpartan"
+                   FontAttributes="Bold"
+                   TextColor="#006CFF"
+                   HorizontalTextAlignment="Center"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   Grid.Column="1" />
+
+                </Grid>
+
+
+
+                <!-- Card cu inima + BPM -->
+                <Frame CornerRadius="20"
+                       Padding="20"
+                       BackgroundColor="#F5F7FF"
+                       HasShadow="True">
+
+                    <Grid ColumnDefinitions="Auto,*"
+                          VerticalOptions="Center"
+                          ColumnSpacing="20">
+
+                        <!-- Inima animată -->
+                        <Image x:Name="HeartIcon"
+                               Source="heart_icon.png"
+                               WidthRequest="80"
+                               HeightRequest="80"
+                               HorizontalOptions="Start"/>
+
+                        <!-- BPM curent -->
+                        <VerticalStackLayout Grid.Column="1"
+                                             VerticalOptions="Center">
+                            <Label Text="Bătăi pe minut"
+                                   TextColor="#889"
+                                   FontSize="14"/>
+                            <Label x:Name="BpmLabel"
+                                   Text="--"
+                                   FontSize="36"
+                                   FontAttributes="Bold"
+                                   TextColor="#2260FF"/>
+                        </VerticalStackLayout>
+                    </Grid>
+                </Frame>
+
+                <!-- Titlu secțiune -->
+                <Label Text="Normal BPM Interval"
+       FontSize="18"
+       FontAttributes="Bold"
+       TextColor="#006CFF"
+       FontFamily="LeagueSpartan"
+       HorizontalOptions="Center"
+       Margin="0,20,0,10"/>
+
+                <!-- Tabel informativ -->
+                <Frame BackgroundColor="#F5F7FF"
+       CornerRadius="20"
+       Padding="15"
+       HasShadow="True">
+
+                    <Grid ColumnSpacing="0"
+          RowSpacing="10">
+
+                        <!-- Header -->
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Rândul 0 - Headere -->
+                        <Label Text="Vârstă" FontAttributes="Bold" TextColor="#333" Grid.Row="0" Grid.Column="0"/>
+                        <Label Text="Bărbați" FontAttributes="Bold" TextColor="#333" Grid.Row="0" Grid.Column="1"/>
+                        <Label Text="Femei" FontAttributes="Bold" TextColor="#333" Grid.Row="0" Grid.Column="2"/>
+
+                        <!-- Rândul 1 -->
+                        <Label x:Name="AgeLabel_0_1" Text="0-1 ani" Grid.Row="1" Grid.Column="0"/>
+                        <Label x:Name="MaleLabel_0_1" Text="100–160 bpm" Grid.Row="1" Grid.Column="1"/>
+                        <Label x:Name="FemaleLabel_0_1" Text="100–160 bpm" Grid.Row="1" Grid.Column="2"/>
+
+                        <!-- Rândul 2 -->
+                        <Label x:Name="AgeLabel_1_10" Text="1–10 ani" Grid.Row="2" Grid.Column="0"/>
+                        <Label x:Name="MaleLabel_1_10" Text="70–120 bpm" Grid.Row="2" Grid.Column="1"/>
+                        <Label x:Name="FemaleLabel_1_10" Text="70–130 bpm" Grid.Row="2" Grid.Column="2"/>
+
+                        <!-- Rândul 3 -->
+                        <Label x:Name="AgeLabel_11_17" Text="11–17 ani" Grid.Row="3" Grid.Column="0"/>
+                        <Label x:Name="MaleLabel_11_17" Text="60–100 bpm" Grid.Row="3" Grid.Column="1"/>
+                        <Label x:Name="FemaleLabel_11_17" Text="60–105 bpm" Grid.Row="3" Grid.Column="2"/>
+
+                        <!-- Rândul 4 -->
+                        <Label x:Name="AgeLabel_18_45" Text="18–45 ani" Grid.Row="4" Grid.Column="0"/>
+                        <Label x:Name="MaleLabel_18_45" Text="60–80 bpm" Grid.Row="4" Grid.Column="1"/>
+                        <Label x:Name="FemaleLabel_18_45" Text="60–90 bpm" Grid.Row="4" Grid.Column="2"/>
+
+                        <!-- Rândul 5 -->
+                        <Label x:Name="AgeLabel_45Plus" Text="45+ ani" Grid.Row="5" Grid.Column="0"/>
+                        <Label x:Name="MaleLabel_45Plus" Text="70–90 bpm" Grid.Row="5" Grid.Column="1"/>
+                        <Label x:Name="FemaleLabel_45Plus" Text="70–95 bpm" Grid.Row="5" Grid.Column="2"/>
+                    </Grid>
+                </Frame>
+
+                <!-- Afişarea – opţional – a ultimului mesaj de la Arduino -->
+                <Label x:Name="StatusLabel"
+                       FontSize="12"
+                       TextColor="#999"/>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Bara de Navigare -->
+        <Frame Grid.Row="1"
+           BackgroundColor="#2260FF"
+           CornerRadius="30"
+           Padding="20,10"
+           Margin="20,0,20,20"
+           HasShadow="False"
+           BorderColor="#E0E0E0"
+           HorizontalOptions="Fill"
+           VerticalOptions="End">
+
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="40">
+                <ImageButton Source="nav_home_icon.png"
+                         BackgroundColor="Transparent"
+                         WidthRequest="30"
+                         HeightRequest="30"
+                         Clicked="OnHomeClicked"/>
+                <ImageButton Source="nav_chat_icon.png"
+                         BackgroundColor="Transparent"
+                         WidthRequest="30"
+                         HeightRequest="30"
+                         Clicked="OnMessagesClicked"/>
+                <ImageButton Source="nav_profile_icon.png"
+                         BackgroundColor="Transparent"
+                         WidthRequest="30"
+                         HeightRequest="30"
+                         Clicked="OnProfileClicked"/>
+                <ImageButton Source="nav_calendary_icon.png"
+                         BackgroundColor="Transparent"
+                         WidthRequest="30"
+                         HeightRequest="30" 
+                         Clicked="OnCalendaryClicked"/>
+            </HorizontalStackLayout>
+
+        </Frame>
+
+    </Grid>
+</ContentPage>

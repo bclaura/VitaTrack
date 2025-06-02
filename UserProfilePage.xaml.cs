@@ -24,11 +24,7 @@ public partial class UserProfilePage : ContentPage
             ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
         };
 
-        // IP-ul emulatorului Android
-        _httpClient = new HttpClient(handler)
-        {
-            BaseAddress = new Uri("https://10.0.2.2:7203/")
-        };
+        _httpClient = Application.Current.Handler.MauiContext.Services.GetService<HttpClient>();
     }
 
     protected override async void OnAppearing()
