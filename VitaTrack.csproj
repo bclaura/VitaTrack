@@ -63,6 +63,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Platforms\Android\Resources\values\google_maps_key.xml" />
 	  <None Remove="Resources\AppIcon\appiconfg.svg" />
 	  <None Remove="Resources\Fonts\LeagueSpartan-Regular.ttf" />
 	  <None Remove="Resources\Images\arrow_left.png" />
@@ -138,10 +139,15 @@
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.3" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.3" />
 		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="8.0.3" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Plugin.BLE" Version="3.1.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <MauiXaml Update="CalendarPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="ChartDataPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="ChatPage.xaml">

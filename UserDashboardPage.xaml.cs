@@ -36,6 +36,14 @@ public partial class UserDashboardPage : ContentPage
         {
             nameLabel.Text = "Guest";
         }
+
+#if ANDROID
+        var bluetoothService = Application.Current.Handler.MauiContext.Services.GetService<IBluetoothClassicService>();
+        if (bluetoothService != null)
+        {
+            await bluetoothService.EnsurePermissionsAsync();
+        }
+#endif
     }
 
     private ImageSource ConvertFromBase64(string base64String)
@@ -77,6 +85,11 @@ public partial class UserDashboardPage : ContentPage
     private async void OnHealthClicked(object sender, EventArgs e)
     {
         await Navigation.PushAsync(new HealthPage());
+    }
+
+    private async void OnChartDataClicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new ChartDataPage());
     }
 
     private async void OnLogoutClicked(object sender, EventArgs e)

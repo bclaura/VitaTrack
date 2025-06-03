@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# API keys
+Platforms/Android/Resources/values/google_maps_api.xml

@@ -36,25 +36,31 @@
 
                 <!-- Card cu inima + BPM -->
                 <Frame CornerRadius="20"
-                       Padding="20"
-                       BackgroundColor="#F5F7FF"
-                       HasShadow="True">
+               Padding="20"
+               BackgroundColor="#F5F7FF"
+               HasShadow="True"
+               IsClippedToBounds="False">
+                       <!-- IMPORTANT -->
 
-                    <Grid ColumnDefinitions="Auto,*"
-                          VerticalOptions="Center"
-                          ColumnSpacing="20">
+                            <Grid ColumnDefinitions="Auto,*"
+                  VerticalOptions="Center"
+                  ColumnSpacing="20"
+                  IsClippedToBounds="False">
+                        <!-- IMPORTANT -->
 
                         <!-- Inima animată -->
                         <Image x:Name="HeartIcon"
-                               Source="heart_icon.png"
-                               WidthRequest="80"
-                               HeightRequest="80"
-                               HorizontalOptions="Start"/>
+                           Source="heart_icon.png"
+                           WidthRequest="80"
+                           HeightRequest="80"
+                           HorizontalOptions="Start"
+                           VerticalOptions="Center"
+                           Margin="10"/>
 
                         <!-- BPM curent -->
                         <VerticalStackLayout Grid.Column="1"
                                              VerticalOptions="Center">
-                            <Label Text="Bătăi pe minut"
+                            <Label Text="Beats per minute"
                                    TextColor="#889"
                                    FontSize="14"/>
                             <Label x:Name="BpmLabel"
@@ -100,41 +106,75 @@
                         </Grid.ColumnDefinitions>
 
                         <!-- Rândul 0 - Headere -->
-                        <Label Text="Vârstă" FontAttributes="Bold" TextColor="#333" Grid.Row="0" Grid.Column="0"/>
-                        <Label Text="Bărbați" FontAttributes="Bold" TextColor="#333" Grid.Row="0" Grid.Column="1"/>
-                        <Label Text="Femei" FontAttributes="Bold" TextColor="#333" Grid.Row="0" Grid.Column="2"/>
+                        <Label Text="Age" FontAttributes="Bold" TextColor="#333" Grid.Row="0" Grid.Column="0"/>
+                        <Label Text="Men" FontAttributes="Bold" TextColor="#333" Grid.Row="0" Grid.Column="1"/>
+                        <Label Text="Women" FontAttributes="Bold" TextColor="#333" Grid.Row="0" Grid.Column="2"/>
 
                         <!-- Rândul 1 -->
-                        <Label x:Name="AgeLabel_0_1" Text="0-1 ani" Grid.Row="1" Grid.Column="0"/>
+                        <Label x:Name="AgeLabel_0_1" Text="0-1 years" Grid.Row="1" Grid.Column="0"/>
                         <Label x:Name="MaleLabel_0_1" Text="100–160 bpm" Grid.Row="1" Grid.Column="1"/>
                         <Label x:Name="FemaleLabel_0_1" Text="100–160 bpm" Grid.Row="1" Grid.Column="2"/>
 
                         <!-- Rândul 2 -->
-                        <Label x:Name="AgeLabel_1_10" Text="1–10 ani" Grid.Row="2" Grid.Column="0"/>
+                        <Label x:Name="AgeLabel_1_10" Text="1–10 years" Grid.Row="2" Grid.Column="0"/>
                         <Label x:Name="MaleLabel_1_10" Text="70–120 bpm" Grid.Row="2" Grid.Column="1"/>
                         <Label x:Name="FemaleLabel_1_10" Text="70–130 bpm" Grid.Row="2" Grid.Column="2"/>
 
                         <!-- Rândul 3 -->
-                        <Label x:Name="AgeLabel_11_17" Text="11–17 ani" Grid.Row="3" Grid.Column="0"/>
+                        <Label x:Name="AgeLabel_11_17" Text="11–17 years" Grid.Row="3" Grid.Column="0"/>
                         <Label x:Name="MaleLabel_11_17" Text="60–100 bpm" Grid.Row="3" Grid.Column="1"/>
                         <Label x:Name="FemaleLabel_11_17" Text="60–105 bpm" Grid.Row="3" Grid.Column="2"/>
 
                         <!-- Rândul 4 -->
-                        <Label x:Name="AgeLabel_18_45" Text="18–45 ani" Grid.Row="4" Grid.Column="0"/>
+                        <Label x:Name="AgeLabel_18_45" Text="18–45 years" Grid.Row="4" Grid.Column="0"/>
                         <Label x:Name="MaleLabel_18_45" Text="60–80 bpm" Grid.Row="4" Grid.Column="1"/>
                         <Label x:Name="FemaleLabel_18_45" Text="60–90 bpm" Grid.Row="4" Grid.Column="2"/>
 
                         <!-- Rândul 5 -->
-                        <Label x:Name="AgeLabel_45Plus" Text="45+ ani" Grid.Row="5" Grid.Column="0"/>
+                        <Label x:Name="AgeLabel_45Plus" Text="45+ years" Grid.Row="5" Grid.Column="0"/>
                         <Label x:Name="MaleLabel_45Plus" Text="70–90 bpm" Grid.Row="5" Grid.Column="1"/>
                         <Label x:Name="FemaleLabel_45Plus" Text="70–95 bpm" Grid.Row="5" Grid.Column="2"/>
                     </Grid>
                 </Frame>
 
-                <!-- Afişarea – opţional – a ultimului mesaj de la Arduino -->
+                <!-- DEBUGGING & ISTORIC TEMPORAR DEZACTIVATE -->
+
+                <!--
                 <Label x:Name="StatusLabel"
                        FontSize="12"
                        TextColor="#999"/>
+
+                <VerticalStackLayout Padding="20">
+                    <Label Text="Ultima valoare EKG și BPM:" FontAttributes="Bold" />
+                    <Label x:Name="LatestReadingLabel" Text="Aștept date..." TextColor="Black" FontSize="18" />
+
+                    <Label Text="Istoric bătăi (debug):" FontAttributes="Bold" Margin="0,20,0,0" />
+                    <ScrollView HeightRequest="200">
+                        <Label x:Name="DebugLogLabel" Text="" TextColor="Gray" FontSize="14" />
+                    </ScrollView>
+                </VerticalStackLayout>
+
+                <Button Text="Vezi toate citirile"
+                        Clicked="OnShowAllReadingsClicked"
+                        BackgroundColor="LightGray"
+                        TextColor="Black"
+                        Padding="10"
+                        Margin="0,10,0,0"/>
+
+                <Button Text="Trimite date la API"
+                        Clicked="OnTrimiteDateClicked"
+                        BackgroundColor="LightGray"
+                        TextColor="Black"
+                        Padding="10"
+                        Margin="0,10,0,0"/>
+                -->
+                <Label x:Name="LastUploadLabel"
+                   Text=""
+                   FontSize="12"
+                   TextColor="#666"
+                   HorizontalOptions="Center"
+                   Margin="0,10,0,0"/>
+
 
             </VerticalStackLayout>
         </ScrollView>

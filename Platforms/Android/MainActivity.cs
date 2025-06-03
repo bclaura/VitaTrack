@@ -9,9 +9,19 @@ namespace VitaTrack
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
+
+            Platform.Init(this, savedInstanceState);
+
             base.OnCreate(savedInstanceState);
 
             Window.SetSoftInputMode(Android.Views.SoftInput.AdjustResize);
         }
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
+        {
+            Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
     }
 }

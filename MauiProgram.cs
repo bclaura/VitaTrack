@@ -2,6 +2,7 @@
 using Microsoft.Maui.Controls.Hosting;
 using Microsoft.Maui.Maps;
 using Microsoft.Maui.Maps.Handlers;
+using VitaTrack.Platforms.Android;
 
 namespace VitaTrack
 {
@@ -47,6 +48,11 @@ namespace VitaTrack
                     BaseAddress = new Uri("http://192.168.100.16:5000/")
                 };
             });
+
+#if ANDROID
+            // Adăugăm serviciul Bluetooth
+            builder.Services.AddSingleton<IBluetoothClassicService, BluetoothClassicService>();
+#endif
 
             return builder.Build();
         }
