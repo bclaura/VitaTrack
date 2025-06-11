@@ -1,5 +1,8 @@
+using Android.OS;
 using AndroidX.CardView.Widget;
+using Microcharts;
 using Newtonsoft.Json;
+using SkiaSharp;
 using System.Diagnostics;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -30,31 +33,13 @@ public partial class ChartDataPage : ContentPage
         int? userId = await SessionManager.GetLoggedInUserIdAsync();
         if (userId == null) return;
 
-        var response = await _httpClient.GetAsync($"api/patients/byUserId/{userId}");
-        var json = await response.Content.ReadAsStringAsync();
-        Console.WriteLine(json);
-
 
         var patient = await _httpClient.GetFromJsonAsync<Patient>($"api/patients/byUserId/{userId}");
         if (patient == null) return;
 
         int patientId = patient.Id;
-        var ecgSignals = await GetEcgSignalsAsync(patientId);
 
-
-        if (ecgSignals.Any())
-        {
-            Debug.WriteLine($"Ai primit {ecgSignals.Count} înregistr?ri de la API.");
-
-            foreach (var signal in ecgSignals)
-            {
-                Debug.WriteLine($"[{signal.Timestamp}] => {signal.Signal}");
-            }
-        }
-        else
-        {
-            Debug.WriteLine("Nu s-au primit date de la API.");
-        }
+        GetEcgSignalSummariesAsync(patientId);
 
     }
 
@@ -85,7 +70,7 @@ public partial class ChartDataPage : ContentPage
         return dataPoints;
     }
 
-    private List<EcgDataPoint> CalculateGroupedAverages(List<EcgDataPoint> rawData, int groupSize = 10)
+    private List<EcgDataPoint> CalculateGroupedAverages(List<EcgDataPoint> rawData, int groupSize = 5)
     {
         var grouped = new List<EcgDataPoint>();
 
@@ -135,31 +120,25 @@ public partial class ChartDataPage : ContentPage
     }
 
 
-    private async Task<List<EcgSignalEntry>> GetEcgSignalsAsync(int patientId)
+    private List<EcgSignalSummary> _signalSummaries = new();
+
+    private async Task<List<EcgSignalSummary>> GetEcgSignalSummariesAsync(int patientId)
     {
-        var response = await _httpClient.GetAsync($"api/EcgSignal/{patientId}");
+        var response = await _httpClient.GetAsync($"api/EcgSignal/patient/{patientId}/summaries");
 
         if (response.IsSuccessStatusCode)
         {
             var json = await response.Content.ReadAsStringAsync();
-            var apiResponse = JsonConvert.DeserializeObject<List<EcgSignal>>(json); // folose?te modelul din backend
+            var summaries = JsonConvert.DeserializeObject<List<EcgSignalSummary>>(json);
 
-            _ecgSignals = apiResponse
-                .Select(x => new EcgSignalEntry
-                {
-                    Id = x.Id,
-                    Timestamp = x.Timestamp,
-                    Signal = x.Signal ?? ""
-                })
-                .OrderByDescending(e => e.Timestamp)
-                .ToList();
-
-            SignalPicker.ItemsSource = _ecgSignals;
-            return _ecgSignals;
+            _signalSummaries = summaries.OrderByDescending(s => s.Timestamp).ToList();
+            SignalPicker.ItemsSource = _signalSummaries;
+            return _signalSummaries;
         }
 
-        return new List<EcgSignalEntry>();
+        return new List<EcgSignalSummary>();
     }
+
 
     /*private void OnSignalSelected(object sender, EventArgs e)
     {
@@ -175,14 +154,14 @@ public partial class ChartDataPage : ContentPage
 
 
 
-    /*private void DisplayChart(List<EcgDataPoint> data)
+    private void DisplayChart(List<EcgDataPoint> data)
     {
         var entries = data.Select(p =>
             new ChartEntry(p.Bpm)
             {
-                Label = p.Index.ToString(),
-                ValueLabel = p.Bpm.ToString(),
+                ValueLabel = $"BPM:{p.Bpm}",
                 Color = SKColor.Parse("#2260FF")
+
             }).ToList();
 
         ChartView.Chart = new LineChart
@@ -191,21 +170,89 @@ public partial class ChartDataPage : ContentPage
             LineMode = LineMode.Straight,
             LineSize = 4,
             PointSize = 6,
-            BackgroundColor = SKColors.White
+            BackgroundColor = SKColors.White,
+            LabelTextSize = 30
         };
-    }*/
+    }
+
+    private void DisplayChart2(List<EcgDataPoint> data)
+    {
+        var entries2 = data.Select(p =>
+            new ChartEntry(p.Ecg)
+            {
+                ValueLabel = $"ECG:{p.Ecg}",
+                Color = SKColor.Parse("#ff2259")
+
+            }).ToList();
+
+        ChartView2.Chart = new LineChart
+        {
+            Entries = entries2,
+            LineMode = LineMode.Straight,
+            LineSize = 4,
+            PointSize = 6,
+            BackgroundColor = SKColors.White,
+            LabelTextSize = 30
+        };
+    }
 
     private async void OnSignalSelected(object sender, EventArgs e)
     {
         if (SignalPicker.SelectedIndex == -1) return;
 
-        var selectedSignal = (EcgSignal)SignalPicker.ItemsSource[SignalPicker.SelectedIndex];
-        if (selectedSignal == null) return;
+        var selectedSummary = (EcgSignalSummary)SignalPicker.SelectedItem;
+        if (selectedSummary == null) return;
 
-        var rawData = ParseSignalString(selectedSignal.Signal);
+        int signalId = selectedSummary.Id;
+
+        var fullSignal = await GetEcgSignalById(signalId);
+        if (fullSignal == null) return;
+
+        var rawData = ParseSignalString(fullSignal.Signal);
         var groupedData = CalculateGroupedAverages(rawData);
-        //DisplayChart(groupedData);
+        DisplayChart(groupedData);
+        DisplayChart2(groupedData);
+
+        int avgBpm = (int)rawData.Average(p => p.Bpm);
+        int maxBpm = rawData.Max(p => p.Bpm);
+        int minBpm = rawData.Min(p => p.Bpm);
+
+        string evaluation;
+        if(avgBpm < 60)
+        {
+            evaluation = "Low heart rate (possible bradycardia)";
+        }
+        else if(avgBpm > 100)
+        {
+            evaluation = "Elevated heart rate (possible tachycardia)";
+        }
+        else
+        {
+            evaluation = "Normal heart rate";
+        }
+
+        StatsLabelAvg.Text = avgBpm.ToString();
+        StatsLabelMax.Text = maxBpm.ToString();
+        StatsLabelMin.Text = minBpm.ToString();
+        StatsLabelEvaluation.Text = evaluation;
+
+
     }
+
+    private async Task<EcgSignal> GetEcgSignalById(int id)
+    {
+        var response = await _httpClient.GetAsync($"api/EcgSignal/{id}");
+
+        if (response.IsSuccessStatusCode)
+        {
+            var json = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<EcgSignal>(json);
+        }
+
+        return null;
+    }
+
+
 
 
 
@@ -268,4 +315,14 @@ public class EcgDataPoint
     public int Bpm { get; set; }
     public int Ecg { get; set; }
 }
+
+public class EcgSignalSummary
+{
+    public int Id { get; set; }
+    public int PatientId { get; set; }
+    public DateTime Timestamp { get; set; }
+
+    public override string ToString() => Timestamp.ToString("g"); // pentru afi?are în Picker
+}
+
 

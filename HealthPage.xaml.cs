@@ -1,4 +1,5 @@
-﻿using Android.Gms.Common.Apis;
+﻿using Android.AdServices.Common;
+using Android.Gms.Common.Apis;
 using System.Diagnostics;
 using System.Net.Http.Json;
 using System.Text;
@@ -233,7 +234,6 @@ public partial class HealthPage : ContentPage
                     // Oprește animația dacă e pornită
                     _isBlinking = false;
                     _blinkTokenSource?.Cancel();
-
                     AfiseazaMediaBpm();
 
                     _ = MainThread.InvokeOnMainThreadAsync(() =>
@@ -358,90 +358,97 @@ public partial class HealthPage : ContentPage
                 .ToList();
         }
 
-        string compressed = string.Join("|", filteredReadings
+        if (filteredReadings.Any())
+        {
+            // Calculează statistici
+            int avgBpm = (int)filteredReadings.Average(r => r.Bpm);
+            int maxBpm = filteredReadings.Max(r => r.Bpm);
+            int minBpm = filteredReadings.Min(r => r.Bpm);
+
+            // Determină evaluarea
+            string evaluation = GetHeartRateEvaluation(avgBpm);
+
+            // Actualizează UI-ul
+            await MainThread.InvokeOnMainThreadAsync(() =>
+            {
+                StatsLabelAvg.Text = avgBpm.ToString();
+                StatsLabelMax.Text = maxBpm.ToString();
+                StatsLabelMin.Text = minBpm.ToString();
+                StatsLabelEvaluation.Text = evaluation;
+            });
+
+            string compressed = string.Join("|", filteredReadings
             .Select(r => $"BPM={r.Bpm};ECG={r.EcgValue}"));
 
-        // Dacă vrei limită de 1000 caractere pentru SQL:
-        if (compressed.Length > 1000)
-        {
-            compressed = compressed.Substring(0, 1000);
-        }
-
-        // Trimite la API
-        int? userId = await SessionManager.GetLoggedInUserIdAsync();
-        if (userId == null) return;
-
-        var patient = await _httpClient.GetFromJsonAsync<Patient>($"api/patients/byUserId/{userId}");
-        if (patient == null) return;
-
-        var payload = new
-        {
-            patientId = patient.Id, // înlocuiește cu ID real
-            signal = compressed
-        };
-
-        var json = JsonSerializer.Serialize(payload);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-        try
-        {
-            var response = await _httpClient.PostAsync("api/EcgSignal", content);
-
-            if (response.IsSuccessStatusCode)
+            // Dacă vrei limită de 1000 caractere pentru SQL:
+            if (compressed.Length > 1000)
             {
-                Debug.WriteLine("Date trimise cu succes.");
-                await MainThread.InvokeOnMainThreadAsync(() =>
-                {
-                    LastUploadLabel.Text = $"Last data sent to cloud: {DateTime.Now:HH:mm:ss}";
-                });
+                compressed = compressed.Substring(0, 1000);
             }
-            else
+
+            // Trimite la API
+            int? userId = await SessionManager.GetLoggedInUserIdAsync();
+            if (userId == null) return;
+
+            var patient = await _httpClient.GetFromJsonAsync<Patient>($"api/patients/byUserId/{userId}");
+            if (patient == null) return;
+
+            var payload = new
             {
-                Debug.WriteLine($"Eroare la trimitere: {response.StatusCode}");
+                patientId = patient.Id, // înlocuiește cu ID real
+                signal = compressed
+            };
 
-                await MainThread.InvokeOnMainThreadAsync(() =>
-                {
-                    LastUploadLabel.Text = "Failed to send data to cloud.";
-                });
-            }
-            
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"Eroare rețea/API: {ex.Message}");
-        }
-    }
+            var json = JsonSerializer.Serialize(payload);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-    private async void OnTrimiteDateClicked(object sender, EventArgs e)
-    {
-        await TrimiteDateLaApiAsync();
-    }
-
-    /*
-    private async Task ListenContinuouslyAsync(CancellationToken token)
-    {
-        while (!token.IsCancellationRequested)
-        {
             try
             {
-                await _bluetoothService.EnsurePermissionsAsync(); // dacă e async
+                var response = await _httpClient.PostAsync("api/EcgSignal", content);
 
-                _bluetoothService.ConnectAsync("98:D3:31:F7:44:C0"); // înlocuiește cu MAC-ul corect
+                if (response.IsSuccessStatusCode)
+                {
+                    Debug.WriteLine("Date trimise cu succes.");
 
-                await _bluetoothService.StartListeningAsync(); // încearcă să citească
+                    lock (_readingLock)
+                    {
+                        heartbeatReadings.Clear();
+                    }
 
-                // Dacă ai ieșit din listening înseamnă că s-a pierdut conexiunea
-                _bluetoothService.StatusChanged += OnStatusChanged;
+                    await MainThread.InvokeOnMainThreadAsync(() =>
+                    {
+                        LastUploadLabel.Text = $"Last data sent to cloud: {DateTime.Now:HH:mm:ss}";
+                    });
+                }
+                else
+                {
+                    Debug.WriteLine($"Eroare la trimitere: {response.StatusCode}");
+
+                    await MainThread.InvokeOnMainThreadAsync(() =>
+                    {
+                        LastUploadLabel.Text = "Failed to send data to cloud.";
+                    });
+                }
+
             }
             catch (Exception ex)
             {
-                _bluetoothService.StatusChanged += OnStatusChanged;
+                Debug.WriteLine($"Eroare rețea/API: {ex.Message}");
             }
-
-            await Task.Delay(5000, token); // Așteaptă 5 secunde între încercări
         }
     }
-    */
+
+    private string GetHeartRateEvaluation(int bpm)
+    {
+        return bpm switch
+        {
+            < 60 => "Low heart rate (possible bradycardia)",
+            > 100 => "Elevated heart rate (possible tachycardia)",
+            _ => "Normal heart rate"
+        };
+    }
+
+
     private async Task MonitorConnectionLoop(CancellationToken token)
     {
         while (_isActiveOnPage && !token.IsCancellationRequested)

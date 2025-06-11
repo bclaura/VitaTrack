@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microcharts.Maui;
+using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Controls.Hosting;
 using Microsoft.Maui.Maps;
 using Microsoft.Maui.Maps.Handlers;
@@ -20,7 +21,8 @@ namespace VitaTrack
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                     fonts.AddFont("LeagueSpartan-Regular.ttf", "LeagueSpartan");
-                });
+                })
+                .UseMicrocharts();
 
 
 

@@ -80,6 +80,7 @@
                      BackgroundColor="White"
                      Grid.Row="2">
             <Entry x:Name="MessageEntry"
+                   TextColor="Black"
                    Placeholder="Type a message"
                    HorizontalOptions="FillAndExpand"
                    Completed="OnMessageEntryCompleted"/>

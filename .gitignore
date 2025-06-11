@@ -363,4 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # API keys
-Platforms/Android/Resources/values/google_maps_api.xml
+Platforms/Android/Resources/values/google_maps_key.xml

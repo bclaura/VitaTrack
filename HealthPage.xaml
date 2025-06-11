@@ -79,7 +79,7 @@
        TextColor="#006CFF"
        FontFamily="LeagueSpartan"
        HorizontalOptions="Center"
-       Margin="0,20,0,10"/>
+       Margin="0,10,0,10"/>
 
                 <!-- Tabel informativ -->
                 <Frame BackgroundColor="#F5F7FF"
@@ -137,37 +137,6 @@
                     </Grid>
                 </Frame>
 
-                <!-- DEBUGGING & ISTORIC TEMPORAR DEZACTIVATE -->
-
-                <!--
-                <Label x:Name="StatusLabel"
-                       FontSize="12"
-                       TextColor="#999"/>
-
-                <VerticalStackLayout Padding="20">
-                    <Label Text="Ultima valoare EKG și BPM:" FontAttributes="Bold" />
-                    <Label x:Name="LatestReadingLabel" Text="Aștept date..." TextColor="Black" FontSize="18" />
-
-                    <Label Text="Istoric bătăi (debug):" FontAttributes="Bold" Margin="0,20,0,0" />
-                    <ScrollView HeightRequest="200">
-                        <Label x:Name="DebugLogLabel" Text="" TextColor="Gray" FontSize="14" />
-                    </ScrollView>
-                </VerticalStackLayout>
-
-                <Button Text="Vezi toate citirile"
-                        Clicked="OnShowAllReadingsClicked"
-                        BackgroundColor="LightGray"
-                        TextColor="Black"
-                        Padding="10"
-                        Margin="0,10,0,0"/>
-
-                <Button Text="Trimite date la API"
-                        Clicked="OnTrimiteDateClicked"
-                        BackgroundColor="LightGray"
-                        TextColor="Black"
-                        Padding="10"
-                        Margin="0,10,0,0"/>
-                -->
                 <Label x:Name="LastUploadLabel"
                    Text=""
                    FontSize="12"
@@ -175,6 +144,61 @@
                    HorizontalOptions="Center"
                    Margin="0,10,0,0"/>
 
+
+                <VerticalStackLayout Spacing="10">
+                    <HorizontalStackLayout 
+              VerticalOptions="Center">
+                        <Label Text="Average BPM: "
+    TextColor="#889"
+    FontSize="14"
+    VerticalOptions="Center"/>
+                        <Label x:Name="StatsLabelAvg"
+    Text="--"
+    FontSize="14"
+    FontAttributes="Bold"
+    TextColor="#2260FF"
+    VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout 
+              VerticalOptions="Center">
+                        <Label Text="Max BPM: "
+    TextColor="#889"
+    FontSize="14"
+    VerticalOptions="Center"/>
+                        <Label x:Name="StatsLabelMax"
+    Text="--"
+    FontSize="14"
+    FontAttributes="Bold"
+    TextColor="#2260FF"
+    VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout 
+              VerticalOptions="Center">
+                        <Label Text="Min BPM: "
+    TextColor="#889"
+    FontSize="14"
+    VerticalOptions="Center"/>
+                        <Label x:Name="StatsLabelMin"
+    Text="--"
+    FontSize="14"
+    FontAttributes="Bold"
+    TextColor="#2260FF"
+    VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout 
+              VerticalOptions="Center">
+                        <Label Text="Assessment: "
+    TextColor="#889"
+    FontSize="14"
+    VerticalOptions="Center"/>
+                        <Label x:Name="StatsLabelEvaluation"
+    Text="--"
+    FontSize="14"
+    FontAttributes="Bold"
+    TextColor="#2260FF"
+    VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
 
             </VerticalStackLayout>
         </ScrollView>

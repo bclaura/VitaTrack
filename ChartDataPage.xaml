@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:charts="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
              x:Class="VitaTrack.ChartDataPage"
+             BackgroundColor="White"
              Title="ChartDataPage">
 
     <Grid RowDefinitions="*, Auto">
@@ -37,18 +39,84 @@
 
                 <Picker x:Name="SignalPicker"
                     Title="Select a date"
+                    TextColor="Black"
                     SelectedIndexChanged="OnSignalSelected"
                     FontSize="14"
                     TitleColor="DarkGray"/>
 
 
 
-                <BoxView x:Name="GraphPlaceholder"
-                     HeightRequest="200"
-                     BackgroundColor="#DDDDDD"
-                     CornerRadius="20"
-                     Margin="0,10,0,20"
-                     HorizontalOptions="Fill"/>
+                <charts:ChartView x:Name="ChartView"
+                  HeightRequest="150"
+                  Margin="0,10,0,20"
+                  BackgroundColor="White"
+                  HorizontalOptions="Fill"
+                  VerticalOptions="Center"/>
+
+                <charts:ChartView x:Name="ChartView2"
+                  HeightRequest="150"
+                  Margin="0,10,0,20"
+                  BackgroundColor="White"
+                  HorizontalOptions="Fill"
+                  VerticalOptions="Center"/>
+
+                <VerticalStackLayout Spacing="10">
+                    <HorizontalStackLayout 
+                             VerticalOptions="Center">
+                        <Label Text="Average BPM: "
+                   TextColor="#889"
+                   FontSize="14"
+                   VerticalOptions="Center"/>
+                        <Label x:Name="StatsLabelAvg"
+                   Text="--"
+                   FontSize="14"
+                   FontAttributes="Bold"
+                   TextColor="#2260FF"
+                   VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout 
+                             VerticalOptions="Center">
+                        <Label Text="Max BPM: "
+                   TextColor="#889"
+                   FontSize="14"
+                   VerticalOptions="Center"/>
+                        <Label x:Name="StatsLabelMax"
+                   Text="--"
+                   FontSize="14"
+                   FontAttributes="Bold"
+                   TextColor="#2260FF"
+                   VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout 
+                             VerticalOptions="Center">
+                        <Label Text="Min BPM: "
+                   TextColor="#889"
+                   FontSize="14"
+                   VerticalOptions="Center"/>
+                        <Label x:Name="StatsLabelMin"
+                   Text="--"
+                   FontSize="14"
+                   FontAttributes="Bold"
+                   TextColor="#2260FF"
+                   VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout 
+                             VerticalOptions="Center">
+                        <Label Text="Assessment: "
+                   TextColor="#889"
+                   FontSize="14"
+                   VerticalOptions="Center"/>
+                        <Label x:Name="StatsLabelEvaluation"
+                   Text="--"
+                   FontSize="14"
+                   FontAttributes="Bold"
+                   TextColor="#2260FF"
+                   VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+                
+              
+
 
 
             </VerticalStackLayout>
