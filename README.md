@@ -1,4 +1,9 @@
 # VitaTrack
+An Android health monitoring mobile application using .NET MAUI and C#, designed to connect via Bluetooth to an Arduino device that collects real-time ECG and heart rate data. The app filters and processes sensor readings, handles transmission failures (failsafe mechanism), and displays data through live ECG simulation and additional insightful charts. It includes user authentication, Google Maps integration for patient geolocation, a calendar module that highlights days populated with medical recommendations or physical activity plans suggested by doctors and an integrated messaging system that allows direct communication between patients and
+doctors.
+
+The backend and database are containerized using Docker for seamless cloud deployment. All collected data is stored securely in a PostgreSQL cloud database, managed with DBeaver, and synchronized via a custom-built REST API, enabling reliable access from both the mobile and web platforms.
+
 ![image](https://github.com/user-attachments/assets/d8ef9a10-db78-4ab3-aca7-886ef51c806f)
 ![image](https://github.com/user-attachments/assets/1c9e3202-e0c0-4fb7-864e-ae53b22b8051)
 ![image](https://github.com/user-attachments/assets/760c7b55-2004-4081-8beb-22d9514e24d9)
@@ -23,6 +28,10 @@
 ![image](https://github.com/user-attachments/assets/d695e4ca-51f4-4210-9642-06be906fb020)
 ![image](https://github.com/user-attachments/assets/bd99b30b-d86d-43fa-a373-980f49abd451)
 ![image](https://github.com/user-attachments/assets/92f73da9-14a2-45f8-a46c-bc6c3abcf63b)
+![snap1](https://github.com/user-attachments/assets/3adc7079-c3e2-47b1-b199-91482fb3209e)
+![snap2](https://github.com/user-attachments/assets/b5cfd9f9-ef78-41df-911b-c746c4f57f91)
+![snap3](https://github.com/user-attachments/assets/ead52f70-ceb6-4882-b717-ec0ac09a72b0)
+![vlc_3QHr6U8KSt](https://github.com/user-attachments/assets/62e4658c-b36e-4367-8e69-650329c1c069)
 ![image](https://github.com/user-attachments/assets/d38f45e2-e56f-4e04-a469-422fc3b6a37a)
 
 
