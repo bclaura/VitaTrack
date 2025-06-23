@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Controls.Hosting;
 using Microsoft.Maui.Maps;
 using Microsoft.Maui.Maps.Handlers;
+using System.Net.Http;
 using VitaTrack.Platforms.Android;
 
 namespace VitaTrack
@@ -47,12 +48,14 @@ namespace VitaTrack
 
                 return new HttpClient(handler)
                 {
-                    BaseAddress = new Uri("http://192.168.100.16:5000/")
+                    //BaseAddress = new Uri("http://192.168.100.16:5000/")
+                    BaseAddress = new Uri("https://vitatrackapi.onrender.com/")
+
                 };
             });
 
 #if ANDROID
-            // Adăugăm serviciul Bluetooth
+            
             builder.Services.AddSingleton<IBluetoothClassicService, BluetoothClassicService>();
 #endif
 

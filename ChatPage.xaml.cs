@@ -135,7 +135,7 @@ namespace VitaTrack
 
         private void StartRefreshTimer()
         {
-            refreshTimer = new System.Timers.Timer(5000); // la 5 secunde
+            refreshTimer = new System.Timers.Timer(5000); 
             refreshTimer.Elapsed += async (s, e) => await RefreshMessagesAsync();
             refreshTimer.AutoReset = true;
             refreshTimer.Start();
@@ -143,7 +143,7 @@ namespace VitaTrack
 
         private async Task RefreshMessagesAsync()
         {
-            if (isRefreshing) return; // evit? apeluri suprapuse
+            if (isRefreshing) return; 
             isRefreshing = true;
 
             try
@@ -158,7 +158,7 @@ namespace VitaTrack
                 foreach (var msg in messages)
                     msg.IsOwnMessage = msg.SenderId == userId;
 
-                // Update vizual doar dac? s-a schimbat ceva
+                
                 if (messages.Count != Messages.Count || messages.Any(m => !Messages.Any(x => x.Id == m.Id)))
                 {
                     MainThread.BeginInvokeOnMainThread(() =>

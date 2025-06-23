@@ -52,7 +52,7 @@ public partial class ResetPasswordPage : ContentPage
         MockDatabase.UpdatePassword(userEmail, newPassword);
         await DisplayAlert("Success", "Password updated successfully!", "OK");
 
-        // Navigăm înapoi la pagina de login
+        
         await Navigation.PushAsync(new LoginPage());
     }
 }

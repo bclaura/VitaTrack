@@ -1,8 +1,10 @@
-using Android.OS;
+﻿using Android.OS;
 using AndroidX.CardView.Widget;
 using Microcharts;
+using Microcharts.Maui;
 using Newtonsoft.Json;
 using SkiaSharp;
+using SkiaSharp.Views.Maui;
 using System.Diagnostics;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -13,7 +15,14 @@ namespace VitaTrack;
 public partial class ChartDataPage : ContentPage
 {
     private readonly HttpClient _httpClient;
+    private List<int> ecgValues = new(); 
     private List<EcgSignalEntry> _ecgSignals = new();
+    public int EcgCanvasWidth { get; set; } = 1000;
+    private List<int> ecgValuesFull = new();     
+    private List<int> ecgValuesVisible = new();  
+    private CancellationTokenSource _animationCts;
+    private bool _userScrolled = false;
+    float stepX = 6f;
 
 
 
@@ -43,6 +52,12 @@ public partial class ChartDataPage : ContentPage
 
     }
 
+    private void OnScrollViewScrolled(object sender, ScrolledEventArgs e)
+    {
+        _userScrolled = true;
+    }
+
+
     private List<EcgDataPoint> ParseSignalString(string signalRaw)
     {
         var dataPoints = new List<EcgDataPoint>();
@@ -70,7 +85,7 @@ public partial class ChartDataPage : ContentPage
         return dataPoints;
     }
 
-    private List<EcgDataPoint> CalculateGroupedAverages(List<EcgDataPoint> rawData, int groupSize = 5)
+    private List<EcgDataPoint> CalculateGroupedAverages(List<EcgDataPoint> rawData, int groupSize = 10)
     {
         var grouped = new List<EcgDataPoint>();
 
@@ -140,20 +155,6 @@ public partial class ChartDataPage : ContentPage
     }
 
 
-    /*private void OnSignalSelected(object sender, EventArgs e)
-    {
-        if (SignalPicker.SelectedIndex == -1)
-            return;
-
-        var selectedSignal = (EcgSignalEntry)SignalPicker.SelectedItem;
-        Debug.WriteLine($"Ai selectat: {selectedSignal.Timestamp}");
-
-        // aici urmeaz? parsingul ?i generarea graficului
-        //ParseSignalAndDisplayChart(selectedSignal.Signal);
-    }*/
-
-
-
     private void DisplayChart(List<EcgDataPoint> data)
     {
         var entries = data.Select(p =>
@@ -196,6 +197,87 @@ public partial class ChartDataPage : ContentPage
         };
     }
 
+    /*private void DisplayChart3FilteredECG(List<EcgDataPoint> rawData)
+    {
+        var normalizedEntries = NormalizeEcg(rawData); 
+
+        ChartView3.Chart = new LineChart
+        {
+            Entries = normalizedEntries,
+            LineMode = LineMode.Straight,
+            LineSize = 3,
+            PointMode = PointMode.None,
+            MinValue = -100, 
+            MaxValue = 300,
+            LabelTextSize = 20,
+            BackgroundColor = SKColors.White
+        };
+    }*/
+
+    private List<ChartEntry> NormalizeEcg(List<EcgDataPoint> data)
+    {
+        if (data.Count == 0) return new();
+
+        double avg = data.Average(p => p.Ecg);
+
+        return data.Select(p =>
+        {
+            float shifted = p.Ecg - (float)avg;
+
+            return new ChartEntry(shifted)
+            {
+                Label = "",
+                ValueLabel = "",
+                Color = SKColor.Parse("#FF4C4C")
+            };
+        }).ToList();
+    }
+
+    private void OnCanvasPaint(object sender, SKPaintSurfaceEventArgs e)
+    {
+        var canvas = e.Surface.Canvas;
+        canvas.Clear(SKColors.White);
+
+
+        float baseY = e.Info.Height / 2f;
+        float stepX = 6;
+
+        var paint = new SKPaint
+        {
+            Style = SKPaintStyle.Stroke,
+            Color = SKColors.Blue,
+            StrokeWidth = 2,
+            IsAntialias = true
+        };
+
+        /*canvas.DrawLine(0, baseY, e.Info.Width, baseY, new SKPaint
+        {
+            Color = SKColors.Gray,
+            StrokeWidth = 1,
+            PathEffect = SKPathEffect.CreateDash(new float[] { 10, 5 }, 0)
+        });*/
+
+        for (int i = 1; i < ecgValuesVisible.Count; i++)
+        {
+            float x1 = (i - 1) * stepX;
+            float y1 = baseY - Normalize(ecgValuesVisible[i - 1]);
+
+            float x2 = i * stepX;
+            float y2 = baseY - Normalize(ecgValuesVisible[i]);
+
+            canvas.DrawLine(x1, y1, x2, y2, paint);
+        }
+    }
+
+
+    private float Normalize(int ecgValue)
+    {
+        float center = 600f; 
+        float scale = 0.6f;  
+        return (ecgValue - center) * scale;
+    }
+
+
     private async void OnSignalSelected(object sender, EventArgs e)
     {
         if (SignalPicker.SelectedIndex == -1) return;
@@ -212,6 +294,27 @@ public partial class ChartDataPage : ContentPage
         var groupedData = CalculateGroupedAverages(rawData);
         DisplayChart(groupedData);
         DisplayChart2(groupedData);
+        //DisplayChart3FilteredECG(groupedData);
+
+        /*ecgValues = rawData.Select(p => p.Ecg).ToList();
+        int spacing = 6; // testează cu 6, 8, 10
+        EcgCanvasWidth = ecgValues.Count * spacing;
+        OnPropertyChanged(nameof(EcgCanvasWidth)); 
+        EcgCanvas.InvalidateSurface();*/
+
+        
+        ecgValuesFull = rawData.Select(p => p.Ecg).ToList();
+        ecgValuesVisible = new List<int>(); 
+
+        
+        EcgCanvasWidth = ecgValuesFull.Count * 2;
+        OnPropertyChanged(nameof(EcgCanvasWidth));
+
+        
+        await StartEcgAnimationAsync();
+
+        ecgValuesFull = rawData.Select(p => p.Ecg).ToList();
+        ecgValuesVisible.Clear();
 
         int avgBpm = (int)rawData.Average(p => p.Bpm);
         int maxBpm = rawData.Max(p => p.Bpm);
@@ -238,6 +341,34 @@ public partial class ChartDataPage : ContentPage
 
 
     }
+
+    private async Task StartEcgAnimationAsync()
+    {
+        _animationCts?.Cancel();
+        _animationCts = new CancellationTokenSource();
+        var token = _animationCts.Token;
+
+        for (int i = 0; i < ecgValuesFull.Count; i++)
+        {
+            if (token.IsCancellationRequested) break;
+
+            ecgValuesVisible.Add(ecgValuesFull[i]);
+            EcgCanvas.InvalidateSurface();
+
+            await Task.Delay(30); 
+
+            
+            await MainThread.InvokeOnMainThreadAsync(async () =>
+            {
+                if (!_userScrolled)
+                {
+                    double scrollX = i * stepX; 
+                    await ScrollViewRef.ScrollToAsync(scrollX, 0, animated: true);
+                }
+            });
+        }
+    }
+
 
     private async Task<EcgSignal> GetEcgSignalById(int id)
     {
@@ -287,7 +418,7 @@ public class EcgSignal
 {
     public int Id { get; set; }
     public int PatientId { get; set; }
-    public string Signal { get; set; }  // Ex: BPM=144;ECG=835|BPM=148;ECG=836...
+    public string Signal { get; set; } 
     public DateTime Timestamp { get; set; }
 }
 
@@ -311,7 +442,7 @@ public class EcgSignalEntry
 
 public class EcgDataPoint
 {
-    public int Index { get; set; } // Pentru axa X
+    public int Index { get; set; } 
     public int Bpm { get; set; }
     public int Ecg { get; set; }
 }
@@ -322,7 +453,7 @@ public class EcgSignalSummary
     public int PatientId { get; set; }
     public DateTime Timestamp { get; set; }
 
-    public override string ToString() => Timestamp.ToString("g"); // pentru afi?are �n Picker
+    public override string ToString() => Timestamp.ToString("g");
 }
 
 

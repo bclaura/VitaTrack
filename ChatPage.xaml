@@ -16,7 +16,7 @@
           ColumnDefinitions="Auto,*"
           Padding="20,10,20,10">
 
-                <!-- Back button -->
+                
                 <ImageButton Source="back_icon.png"
                      BackgroundColor="Transparent"
                      WidthRequest="30"
@@ -25,7 +25,7 @@
                      VerticalOptions="Center"
                      Grid.Column="0" />
 
-                <!-- Nume doctor -->
+                
                 <Label x:Name="DoctorNameLabel"
                FontSize="24"
                FontAttributes="Bold"
@@ -37,7 +37,7 @@
             </Grid>
         </Frame>
 
-        <!-- Rând 1: Lista de mesaje -->
+        
         <CollectionView x:Name="MessagesCollectionView"
                         Grid.Row="1"
                         ItemsSource="{Binding Messages}"
@@ -74,7 +74,7 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-        <!-- Rând 2: Composer mesaj -->
+        
         <StackLayout Orientation="Horizontal"
                      Padding="10"
                      BackgroundColor="White"

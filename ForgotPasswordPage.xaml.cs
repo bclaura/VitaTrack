@@ -29,7 +29,7 @@ public partial class ForgotPasswordPage : ContentPage
             return;
         }
 
-        // Navigăm la pagina de schimbare parolă și trimitem emailul
+        
         await Navigation.PushAsync(new ResetPasswordPage(email));
     }
 }

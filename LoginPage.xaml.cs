@@ -32,22 +32,22 @@ public partial class LoginPage : ContentPage
 
         try
         {
-            // Construim DTO-ul pentru login
+            
             var loginDto = new
             {
                 Email = email,
                 Password = password
             };
 
-            // Trimitem cererea de login la API
+            
             var response = await _httpClient.PostAsJsonAsync("api/Users/Login", loginDto);
 
             if (response.IsSuccessStatusCode)
             {
-                // Citim datele utilizatorului din răspuns
+                
                 var user = await response.Content.ReadFromJsonAsync<UserDto>();
 
-                // Salvăm ID-ul utilizatorului pentru sesiune
+                
                 await SecureStorage.SetAsync("UserId", user.Id.ToString());
                 await SecureStorage.SetAsync("UserFirstName", user.FirstName);
                 await SecureStorage.SetAsync("UserLastName", user.LastName);
@@ -55,7 +55,7 @@ public partial class LoginPage : ContentPage
                 await SecureStorage.SetAsync("UserRole", user.Role);
                 await SecureStorage.SetAsync("ProfilePictureBase64", user.ProfilePictureBase64 ?? "");
 
-                // Navigăm la dashboard
+                
                 await Navigation.PushAsync(new UserDashboardPage());
             }
             else

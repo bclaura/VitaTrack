@@ -33,7 +33,7 @@ public partial class LocationPage : ContentPage
         }
         else
         {
-            // Fallback pe Timișoara dacă nu există locație în DB
+            //fallback pe timisoara
             ShowMapOnLocation(45.7489, 21.2087, "Default: Timișoara");
         }
     }
@@ -109,7 +109,7 @@ public partial class LocationPage : ContentPage
                         Location = position
                     });
 
-                    // Trimite la server (doar dacă ești conectată și ai API)
+                   
                     await _httpClient.PostAsJsonAsync("api/locationmap", new
                     {
                         PatientId = await SessionManager.GetLoggedInUserIdAsync(),

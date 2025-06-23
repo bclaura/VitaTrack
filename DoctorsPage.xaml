@@ -8,7 +8,7 @@
         <VerticalStackLayout Padding="30" Spacing="20">
 
             <Grid ColumnDefinitions="Auto,*,Auto" Padding="0,-10,0,0">
-                <!-- Back button -->
+                
                 <ImageButton Source="back_icon.png"
                  BackgroundColor="Transparent"
                  WidthRequest="24"
@@ -17,7 +17,7 @@
                  Grid.Column="0"
                  VerticalOptions="Center"/>
 
-                <!-- Titlu "Doctors" -->
+                
                 <Label Text="Doctors"
            FontSize="28"
            FontFamily="LeagueSpartan"
@@ -28,7 +28,7 @@
            VerticalOptions="Center"
            Grid.Column="1"/>
 
-                <!-- Search & Filter Icons -->
+                
                 <HorizontalStackLayout Spacing="10"
                            HorizontalOptions="End"
                            VerticalOptions="Center"
@@ -47,9 +47,9 @@
 
 
 
-            <!-- Filter Buttons -->
+            
             <HorizontalStackLayout Spacing="10" VerticalOptions="Center"  Margin="0,-10,0,0">
-                <!-- Sort by -->
+                
                 <Label Text="Sort By"
                    FontSize="14"
                    FontAttributes="Bold"
@@ -86,7 +86,7 @@
                              Clicked="OnFemaleFilterClicked"/>
             </HorizontalStackLayout>
 
-            <!-- Lista doctori -->
+            
             <CollectionView x:Name="DoctorsCollectionView"
                             ItemsSource="{Binding Doctors}"
                             SelectionMode="None"
@@ -101,7 +101,7 @@
                                BackgroundColor="#CAD6FF">
 
                             <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto, Auto">
-                                <!-- Poza doctor -->
+                                
                                     <Image Source="{Binding ImagePath}"
                                        WidthRequest="130"
                                        HeightRequest="130"
@@ -114,7 +114,7 @@
                                     </Image.Clip>
                                 </Image>
 
-                                <!-- Nume doctor -->
+                                
                                     <Label Text="{Binding NameTitle}"
                                        FontSize="18"
                                        FontAttributes="Bold"
@@ -123,7 +123,7 @@
                                        FontFamily="LeagueSpartan"
                                        Grid.Column="1"/>
 
-                                <!-- Specializare -->
+                                
                                 <Label Text="{Binding Specialization}"
                                        FontSize="15"
                                        TextColor="Black"
@@ -137,7 +137,7 @@
                            Spacing="3"
                            Margin="-5,-15,0,0"
                            VerticalOptions="Start">
-                                    <!-- Buton Info -->
+                                    
                                     <Button Text="Info"
                             BackgroundColor="#2260FF"
                             TextColor="White"
@@ -151,14 +151,14 @@
                             Clicked="OnInfoClicked"
                             CommandParameter="{Binding}"/>
 
-                                    <!-- Calendar -->
+                                    
                                     <ImageButton Source="calendar_icon.png"
                              BackgroundColor="White"
                              CornerRadius="12"
                              WidthRequest="25"
                              HeightRequest="25" />
 
-                                    <!-- i -->
+                                    
                                     <ImageButton Source="i_icon.png"
                              BackgroundColor="White"
                              CornerRadius="12"
@@ -167,7 +167,7 @@
                              Clicked="OnInfoIconClicked"
                              CommandParameter="{Binding}"/>
 
-                                    <!-- ? -->
+                                    
                                     <ImageButton Source="questionmark_icon.png"
                              BackgroundColor="White"
                              CornerRadius="12"
@@ -176,7 +176,7 @@
                              Clicked="OnHelpIconClicked" 
                              CommandParameter="{Binding}"/>
 
-                                    <!-- Inimioară -->
+                                    
                                         <ImageButton Source="{Binding IsFavorite, Converter={StaticResource FavoriteIconConverter}}"
                              BackgroundColor="White"
                              CornerRadius="12"
@@ -197,7 +197,7 @@
         </VerticalStackLayout>
     </ScrollView>
         
-        <!-- Bottom Navigation Bar: fixată -->
+        
         <Frame Grid.Row="1"
                BackgroundColor="#2260FF"
                CornerRadius="30"

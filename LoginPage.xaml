@@ -7,7 +7,7 @@
     <ScrollView>
         <VerticalStackLayout Padding="30" Spacing="20">
 
-            <!-- Back Button & Title -->
+            
             <HorizontalStackLayout>
                 <ImageButton Source="back_icon.png"
                              HeightRequest="24"
@@ -24,14 +24,14 @@
                        HorizontalOptions="CenterAndExpand" />
             </HorizontalStackLayout>
 
-            <!-- Welcome Title -->
+            
             <Label Text="Welcome back"
                    FontSize="22"
                    FontFamily="LeagueSpartan"
                    FontAttributes="Bold"
                    TextColor="#006CFF" />
 
-            <!-- Subtext -->
+            
             <Label Text="Welcome back. Please log in to securely access your health records, track your heart rate and ECG results, and collaborate with your care team. All your data remains private and secure."
                    FontSize="13"
                    FontFamily="LeagueSpartan"
@@ -39,7 +39,7 @@
                    LineHeight="1.3"
                    Margin="0,-15,0,20"/>
 
-            <!-- Email Entry -->
+            
             <Label Text="Email or Mobile Number"
                FontSize="18"
                FontFamily="LeagueSpartan"
@@ -62,7 +62,7 @@
                Margin="0"/>
             </Frame>
 
-            <!-- Password Entry with Eye -->
+           
             <Label Text="Password"
        FontSize="18"
        FontFamily="LeagueSpartan"
@@ -98,7 +98,7 @@
             </Frame>
 
 
-            <!-- Forget Password -->
+            
             <Label Text="Forgot Your Password?"
                    FontSize="14"
                    FontFamily="LeagueSpartan"
@@ -111,7 +111,7 @@
                 </Label.GestureRecognizers>
             </Label>
 
-            <!-- Log In Button -->
+            
             <Button Text="Log In"
             FontFamily="LeagueSpartan"
             FontSize="25"
@@ -125,7 +125,7 @@
             Margin="0,20,0,0"
             Clicked="OnLoginClicked" />
 
-            <!-- Or sign up with -->
+           
             <Label Text="or sign up with"
                    FontSize="14"
                    FontFamily="LeagueSpartan"
@@ -133,14 +133,14 @@
                    Margin="0,-5,0,0"
                    TextColor="Gray" />
 
-            <!-- Social Buttons -->
+            
             <HorizontalStackLayout Spacing="15" HorizontalOptions="Center" Margin="0,-5,0,0">
                 <ImageButton Source="google_icon.png" HeightRequest="40" WidthRequest="40" BackgroundColor="Transparent"/>
                 <ImageButton Source="facebook_icon.png" HeightRequest="40" WidthRequest="40" BackgroundColor="Transparent"/>
                 <ImageButton Source="print_icon.png" HeightRequest="40" WidthRequest="40" BackgroundColor="Transparent"/>
             </HorizontalStackLayout>
 
-            <!-- Bottom text -->
+            
             <HorizontalStackLayout HorizontalOptions="Center" Margin="0,20,0,0">
                 <Label Text="Don't have an account?" FontSize="14" FontFamily="LeagueSpartan"/>
                 <Label Text=" Sign Up"

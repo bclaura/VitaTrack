@@ -75,7 +75,7 @@ namespace VitaTrack
             {
                 if (doctor.IsFavorite)
                 {
-                    // Elimină din favoriți
+                    
                     var response = await _httpClient.DeleteAsync($"/api/users/{userId}/favorites/{doctor.Id}");
                     if (response.IsSuccessStatusCode)
                     {
@@ -86,7 +86,7 @@ namespace VitaTrack
                 }
                 else
                 {
-                    // Adaugă la favoriți
+                    
                     var response = await _httpClient.PostAsync($"/api/users/{userId}/favorites/{doctor.Id}", null);
                     if (response.IsSuccessStatusCode)
                     {

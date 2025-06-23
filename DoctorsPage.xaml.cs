@@ -77,12 +77,12 @@ public partial class DoctorsPage : ContentPage
         isSortAscending = !isSortAscending;
         isFilterApplied = true;
 
-        // Schimbă imaginea
+        
         SortToggleButton.Source = isSortAscending ? "filter_az_icon_active.png" : "filter_za_active_icon.png";
 
         ResetDoctorList();
 
-        // Sortează doctorii
+        
         var sortedDoctors = isSortAscending
             ? allDoctors.OrderBy(d => d.LastName).ToList()
             : allDoctors.OrderByDescending(d => d.LastName).ToList();
@@ -132,21 +132,21 @@ public partial class DoctorsPage : ContentPage
 
     private void OnMaleFilterClicked(object sender, EventArgs e)
     {
-        // Resetează alte filtre dacă este cazul
+        
         if (isFilterApplied)
         {
             ResetFilterIcons();
             isFilterApplied = false;
         }
 
-        // Aplică filtrul pentru doctorii bărbați
+        
         isFilterApplied = true;
         MaleFilter.Source = "filter_male_icon_active.png";
 
-        // Filtrează lista principală
+        
         var filteredDoctors = allDoctors.Where(d => d.Gender.Equals("M", StringComparison.OrdinalIgnoreCase)).ToList();
 
-        // Actualizează colecția observabilă
+        
         Doctors.Clear();
         foreach (var doc in filteredDoctors)
         {
@@ -221,27 +221,33 @@ public partial class DoctorsPage : ContentPage
             {
                 if (selectedDoctor.IsFavorite)
                 {
-                    // Elimină din favoriți
                     var response = await _httpClient.DeleteAsync($"/api/users/{userId}/favorites/{selectedDoctor.Id}");
                     if (response.IsSuccessStatusCode)
                     {
                         selectedDoctor.IsFavorite = false;
-                        Doctors.Remove(selectedDoctor);
+
+                        var doctorInAll = allDoctors.FirstOrDefault(d => d.Id == selectedDoctor.Id);
+                        if (doctorInAll != null)
+                            doctorInAll.IsFavorite = false;
+
+                        if (isFilterApplied)
+                        {
+                            ApplyFavoriteFilter();
+                        }
                     }
                 }
                 else
                 {
-                    // Adaugă la favoriți
                     var response = await _httpClient.PostAsync($"/api/users/{userId}/favorites/{selectedDoctor.Id}", null);
                     if (response.IsSuccessStatusCode)
                     {
                         selectedDoctor.IsFavorite = true;
+
+                        var doctorInAll = allDoctors.FirstOrDefault(d => d.Id == selectedDoctor.Id);
+                        if (doctorInAll != null)
+                            doctorInAll.IsFavorite = true;
                     }
                 }
-
-                // Actualizează UI-ul
-                DoctorsCollectionView.ItemsSource = null;
-                DoctorsCollectionView.ItemsSource = Doctors;
             }
             catch (Exception ex)
             {
@@ -250,6 +256,7 @@ public partial class DoctorsPage : ContentPage
             }
         }
     }
+
 
 
     private async Task<List<int>> GetFavoriteDoctorIds(int userId)
@@ -268,6 +275,17 @@ public partial class DoctorsPage : ContentPage
         }
 
         return new List<int>();
+    }
+
+    private void ApplyFavoriteFilter()
+    {
+        var filteredDoctors = allDoctors.Where(d => d.IsFavorite).ToList();
+
+        Doctors.Clear();
+        foreach (var doc in filteredDoctors)
+        {
+            Doctors.Add(doc);
+        }
     }
 
     private void OnProfileClicked(object sender, EventArgs e)

@@ -27,7 +27,7 @@ namespace VitaTrack
         [JsonPropertyName("isRead")]
         public bool IsRead { get; set; }
 
-        public bool IsOwnMessage { get; set; } // calculat client-side
+        public bool IsOwnMessage { get; set; } 
     }
 
     public class SendMessageDto

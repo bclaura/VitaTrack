@@ -51,14 +51,14 @@ public partial class SignUpPage : ContentPage
             Email = emailEntry.Text?.Trim(),
             Password = passwordEntry.Text,
             MobileNumber = mobileEntry.Text?.Trim(),
-            DateOfBirth = dob //maybe change dob to some picker
+            DateOfBirth = dob 
         };
 
         try
         {
             Console.WriteLine($"Sending request to: {_httpClient.BaseAddress}api/Users/Register");
 
-            // 4) Trimiterea POST-ului
+            
             var response = await _httpClient.PostAsJsonAsync("api/Users/Register", registrationDto);
 
             Console.WriteLine($"Response status: {response.StatusCode}");
@@ -67,28 +67,28 @@ public partial class SignUpPage : ContentPage
 
             if (response.IsSuccessStatusCode)
             {
-                // 5a) Dacă e ok, poate deserializezi răspunsul
+                
                 var createdUser = await response.Content.ReadFromJsonAsync<User>();
 
                 await DisplayAlert("Succes", "Cont creat cu email: " + createdUser.Email, "OK");
-                // navighează mai departe, de ex. la pagina de login:
+                
                 await Navigation.PushAsync(new LoginPage());
             }
             else if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
             {
-                // 5b) Email duplicat
+                
                 await DisplayAlert("Eroare", "Email-ul există deja.", "OK");
             }
             else
             {
-                // 5c) Orice alt cod
+                
                 var error = await response.Content.ReadAsStringAsync();
                 await DisplayAlert("Eroare", error, "OK");
             }
         }
         catch (Exception ex)
         {
-            // 6) Probleme de rețea, JSON invalid, etc
+            
             await DisplayAlert("Eroare", "Nu am putut lua legătura cu serverul:\n" + ex.Message, "OK");
         }
 

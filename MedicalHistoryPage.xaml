@@ -6,11 +6,11 @@
 
     <Grid RowDefinitions="*, Auto">
 
-        <!-- CONȚINUT SCROLLABIL -->
+        
         <ScrollView Grid.Row="0">
             <VerticalStackLayout Padding="30" Spacing="20">
 
-                <!-- Header cu buton back și titlu -->
+                
                 <Grid ColumnDefinitions="Auto,*,Auto" Padding="0,-10,0,0">
                     <ImageButton Source="back_icon.png"
                                  BackgroundColor="Transparent"
@@ -31,7 +31,7 @@
                            Margin="0,0,-20,0"/>
                 </Grid>
 
-                <!-- Card cu informații despre pacient -->
+                
                 <Frame BackgroundColor="#E9F1FF"
                        CornerRadius="16"
                        Padding="20"
@@ -66,7 +66,7 @@
                     </VerticalStackLayout>
                 </Frame>
 
-                <!-- Titlu secțiune -->
+                
                 <Label Text="Medical Reports"
                        FontSize="22"
                        FontAttributes="Bold"
@@ -75,7 +75,7 @@
                        TextColor="#006CFF"
                        Margin="0,10,0,5" />
 
-                <!-- Istoric medical (dacă există) -->
+                
                 <CollectionView x:Name="MedicalHistory"
                                 ItemsSource="{Binding MedicalHistoryList}">
                     <CollectionView.ItemTemplate>
@@ -110,7 +110,7 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
 
-                <!-- Dacă nu există istoric -->
+                
                 <Label Text="There are no medical reports available." 
                        FontSize="14" 
                        IsVisible="{Binding NoHistoryFound}" 
@@ -121,8 +121,7 @@
             </VerticalStackLayout>
         </ScrollView>
 
-        <!-- BARA DE NAVIGARE (dacă vrei să adaugi) -->
-        <!-- poți adăuga aici dacă o folosești în toate paginile -->
+
         <Frame Grid.Row="1"
        BackgroundColor="#2260FF"
        CornerRadius="30"

@@ -8,7 +8,6 @@
     <ScrollView>
         <VerticalStackLayout Padding="30" Spacing="20">
 
-            <!-- Back & Title -->
             <HorizontalStackLayout>
                 <ImageButton Source="back_icon.png"
                              HeightRequest="24"
@@ -25,7 +24,6 @@
                        HorizontalOptions="CenterAndExpand" />
             </HorizontalStackLayout>
 
-            <!-- CNP -->
             <Label Text="CNP"
                    FontSize="18"
                    FontAttributes="Bold"
@@ -45,7 +43,6 @@
                        FontSize="16" />
             </Frame>
 
-            <!-- Phone -->
             <Label Text="Phone Number"
                    FontSize="18"
                    FontAttributes="Bold"
@@ -65,7 +62,6 @@
                        FontSize="16" />
             </Frame>
 
-            <!-- Email -->
             <Label Text="Email"
                    FontSize="18"
                    FontAttributes="Bold"
@@ -86,7 +82,6 @@
                        IsReadOnly="True"/>
             </Frame>
 
-            <!-- Date of Birth -->
             <Label Text="Date Of Birth"
                    FontSize="18"
                    FontAttributes="Bold"
@@ -106,7 +101,6 @@
                        FontSize="16"/>
             </Frame>
 
-            <!-- Street Address -->
             <Label Text="Street Address"
                    FontSize="18"
                    FontAttributes="Bold"
@@ -126,7 +120,6 @@
                        FontSize="16"/>
             </Frame>
 
-            <!-- City -->
             <Label Text="City"
                    FontSize="18"
                    FontAttributes="Bold"
@@ -146,7 +139,6 @@
                        FontSize="16"/>
             </Frame>
 
-            <!-- County -->
             <Label Text="County"
                    FontSize="18"
                    FontAttributes="Bold"
@@ -166,7 +158,6 @@
                        FontSize="16"/>
             </Frame>
 
-            <!-- Occupation -->
             <Label Text="Occupation"
                    FontSize="18"
                    FontAttributes="Bold"
@@ -186,7 +177,6 @@
                        FontSize="16"/>
             </Frame>
 
-            <!-- Workplace -->
             <Label Text="Workplace"
                    FontSize="18"
                    FontAttributes="Bold"
@@ -206,7 +196,6 @@
                        FontSize="16"/>
             </Frame>
 
-            <!-- Submit Button -->
             <Button Text="Update Profile"
                     BackgroundColor="#006CFF"
                     TextColor="White"

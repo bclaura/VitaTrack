@@ -8,7 +8,7 @@
             <VerticalStackLayout Padding="30" Spacing="20">
 
                 <Grid ColumnDefinitions="Auto,*,Auto" Padding="0,-10,0,0">
-                    <!-- Back button -->
+                   
                     <ImageButton Source="back_icon.png"
                  BackgroundColor="Transparent"
                  WidthRequest="30"
@@ -17,7 +17,7 @@
                  Grid.Column="0"
                  VerticalOptions="Center"/>
 
-                    <!-- Titlu "Select a doctor to chat" -->
+                    
                     <Label Text="Select a Doctor to Chat"
                FontSize="24"
                FontAttributes="Bold"
@@ -28,7 +28,7 @@
 
                 </Grid>
 
-                <!-- Lista doctori -->
+                
                 <CollectionView x:Name="DoctorsCollectionView">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
@@ -79,7 +79,7 @@
             </VerticalStackLayout>
         </ScrollView>
 
-        <!-- Bottom Navigation Bar: fixată -->
+        
         <Frame Grid.Row="1"
                BackgroundColor="#2260FF"
                CornerRadius="30"

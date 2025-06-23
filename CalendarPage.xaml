@@ -4,14 +4,14 @@
              x:Class="VitaTrack.CalendarPage"
              BackgroundColor="#F9F9FB">
 
-    <!-- Structură principală pe 2 rânduri: conținut + bară jos -->
+    
     <Grid RowDefinitions="*,Auto">
 
-        <!-- CONȚINUT SCROLLABIL -->
+        
         <ScrollView Grid.Row="0">
             <StackLayout Padding="20" Spacing="10">
 
-                <!-- Titlu -->
+                
                 <Grid ColumnDefinitions="Auto,*,Auto" VerticalOptions="Center">
                     <Label Text="Health Calendar"
                            FontSize="24"
@@ -22,10 +22,10 @@
                            Grid.Column="1" />
                 </Grid>
 
-                <!-- Spațiu -->
+                
                 <BoxView HeightRequest="10" BackgroundColor="Transparent" />
 
-                <!-- Rând lună -->
+                
                 <Grid ColumnDefinitions="Auto,*,Auto" VerticalOptions="Center" Margin="0,-10,0,15">
                     <ImageButton Source="arrow_left.png"
                                  BackgroundColor="Transparent"
@@ -52,14 +52,14 @@
                                  VerticalOptions="Center"/>
                 </Grid>
 
-                <!-- Calendar -->
+               
                 <Grid x:Name="CalendarGrid"
                       ColumnSpacing="5"
                       RowSpacing="5"
                       Padding="0"
                       HorizontalOptions="FillAndExpand" />
 
-                <!-- Zi selectată -->
+               
                 <Frame BackgroundColor="White"
                        CornerRadius="10"
                        Padding="10"
@@ -71,13 +71,13 @@
                            TextColor="Black"/>
                 </Frame>
 
-                <!-- Legendă -->
+                
                 <StackLayout Orientation="Horizontal"
                              HorizontalOptions="Center"
                              Spacing="20"
                              Margin="0,10,0,0">
 
-                    <!-- Activitate -->
+                    
                     <StackLayout Orientation="Horizontal" Spacing="5">
                         <Frame WidthRequest="20" HeightRequest="20"
                                BackgroundColor="#4CAF50"
@@ -90,7 +90,7 @@
                                FontSize="12"/>
                     </StackLayout>
 
-                    <!-- Nimic -->
+                    
                     <StackLayout Orientation="Horizontal" Spacing="5">
                         <Frame WidthRequest="20" HeightRequest="20"
                                BackgroundColor="White"
@@ -105,7 +105,7 @@
 
                 </StackLayout>
 
-                <!-- ACTIVITĂȚI PE ZI SELECTATĂ -->
+                
                 <StackLayout x:Name="SelectedDayActivitiesPanel"
              IsVisible="False"
              Margin="0,10,0,0"
@@ -194,7 +194,7 @@
             </StackLayout>
         </ScrollView>
 
-        <!-- BARĂ DE NAVIGARE FIXĂ JOS -->
+        
         <Frame Grid.Row="1"
                BackgroundColor="#2260FF"
                CornerRadius="30"

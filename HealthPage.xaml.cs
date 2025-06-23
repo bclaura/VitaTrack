@@ -22,6 +22,12 @@ public partial class HealthPage : ContentPage
     private DateTime _lastDataReceivedTime = DateTime.MinValue;
     private bool _isBlinking = false;
     private CancellationTokenSource _blinkTokenSource;
+    private bool _dataAlreadySent = false;
+    private int zeroStreak = 0;
+    private bool allowZeros = true;
+    private CancellationTokenSource _failsafeCts;
+    private DateTime _firstDataReceivedAt;
+    private bool _failsafeTriggered = false;
 
 
     public HealthPage()
@@ -153,8 +159,25 @@ public partial class HealthPage : ContentPage
         {
             //StatusLabel.Text = status;
 
-            if (status.Contains("Conexiune pierdută") || status.Contains("Socket"))
+            /*if (status.Contains("Conexiune pierdută") || status.Contains("Socket"))
             {
+                _shouldRetry = true;
+            }*/
+
+            if (status.Contains("Connected", StringComparison.OrdinalIgnoreCase))
+            {
+                BluetoothStatusLabel.Text = "Connected to HC-05";
+                BluetoothStatusLabel.TextColor = Colors.Green;
+            }
+            else if (status.Contains("Connecting", StringComparison.OrdinalIgnoreCase))
+            {
+                BluetoothStatusLabel.Text = "Connecting...";
+                BluetoothStatusLabel.TextColor = Colors.Orange;
+            }
+            else if (status.Contains("Conexiune pierdută") || status.Contains("Socket") || status.Contains("Failed"))
+            {
+                BluetoothStatusLabel.Text = "Not connected";
+                BluetoothStatusLabel.TextColor = Colors.Red;
                 _shouldRetry = true;
             }
         });
@@ -163,11 +186,32 @@ public partial class HealthPage : ContentPage
     }
 
 
+
+
     private void OnDataReceived(object sender, string data)
     {
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            if (BluetoothStatusLabel.Text != "Connected to HC-05")
+            {
+                BluetoothStatusLabel.Text = "Connected to HC-05";
+                BluetoothStatusLabel.TextColor = Colors.Green;
+            }
+        });
 
         Debug.WriteLine("Data received: " + data);
+        Debug.WriteLine("Failsafe pornit");
 
+        if (_firstDataReceivedAt == default)
+        {
+            _firstDataReceivedAt = DateTime.Now;
+            _failsafeTriggered = false;
+
+            _failsafeCts?.Cancel();
+            _failsafeCts = new CancellationTokenSource();
+
+            _ = MonitorFailsafeAsync(_failsafeCts.Token);
+        }
 
         var lines = data.Split('\n', StringSplitOptions.RemoveEmptyEntries);
 
@@ -180,58 +224,64 @@ public partial class HealthPage : ContentPage
                 int.TryParse(parts[0], out int ecgValue) &&
                 int.TryParse(parts[1], out int bpmValue))
             {
-                int? filteredBpm = FilterAndSmoothBpm(bpmValue);
+                
+                if (!ShouldAcceptEcg(ecgValue))
+                    continue;
 
-                if (filteredBpm.HasValue)
+               
+                var reading = new HeartbeatReading
                 {
-                    var reading = new HeartbeatReading
-                    {
-                        EcgValue = ecgValue,
-                        Bpm = filteredBpm.Value
-                    };
+                    EcgValue = ecgValue,
+                    Bpm = bpmValue
+                };
 
-                    lock (_readingLock)
-                    {
-                        heartbeatReadings.Add(reading);
-                    }
-
-                    Debug.WriteLine($"Heartbeat adăugat: BPM={reading.Bpm}, ECG={reading.EcgValue}");
-
-
-                    MainThread.BeginInvokeOnMainThread(() =>
-                    {
-                        string displayLog;
-                        lock (_readingLock)
-                        {
-                            displayLog = string.Join("\n", heartbeatReadings
-                                .TakeLast(5)
-                                .Select(r => r.ToString()));
-                        }
-                        //DebugLogLabel.Text = displayLog;
-                    });
-
-                    _lastDataReceivedTime = DateTime.Now;
-                    _awaitingReset = false;
-
-                    if (!_isBlinking)
-                    {
-                        _isBlinking = true;
-                        _blinkTokenSource = new CancellationTokenSource();
-                        _ = BlinkBpmAsync(_blinkTokenSource.Token);
-                    }
+                lock (_readingLock)
+                {
+                    heartbeatReadings.Add(reading);
                 }
 
-            }
+                Debug.WriteLine($"Heartbeat adăugat: BPM={reading.Bpm}, ECG={reading.EcgValue}");
 
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    string displayLog;
+                    lock (_readingLock)
+                    {
+                        displayLog = string.Join("\n", heartbeatReadings
+                            .TakeLast(5)
+                            .Select(r => r.ToString()));
+                    }
+                    
+                });
+
+                _lastDataReceivedTime = DateTime.Now;
+                _awaitingReset = false;
+
+                if (!_isBlinking)
+                {
+                    _isBlinking = true;
+                    _blinkTokenSource = new CancellationTokenSource();
+                    _ = BlinkBpmAsync(_blinkTokenSource.Token);
+                }
+            }
+        
+
+            
             if (line.Contains("Stopped", StringComparison.OrdinalIgnoreCase))
             {
+                _failsafeCts?.Cancel();
+                _firstDataReceivedAt = default;
+                _failsafeTriggered = false;
+
                 Debug.WriteLine("Mesaj de oprire detectat din Arduino: " + line);
 
-                if (!_awaitingReset)
+                
+                if (!_awaitingReset && !_dataAlreadySent)
                 {
                     _awaitingReset = true;
+                    _dataAlreadySent = true; 
 
-                    // Oprește animația dacă e pornită
+                    
                     _isBlinking = false;
                     _blinkTokenSource?.Cancel();
                     AfiseazaMediaBpm();
@@ -243,23 +293,79 @@ public partial class HealthPage : ContentPage
 
                     _ = Task.Run(async () =>
                     {
+                        Debug.WriteLine("==== Încep trimiterea datelor către API ====");
                         await TrimiteDateLaApiAsync();
+                        Debug.WriteLine("==== Trimiterea s-a încheiat ====");
 
                         await MainThread.InvokeOnMainThreadAsync(() =>
                         {
                             LastUploadLabel.Text = $"Last data sent to cloud: {DateTime.Now:HH:mm:ss}";
                         });
 
-                        Debug.WriteLine("Aștept 30 secunde pentru o posibilă reconectare...");
-                        await Task.Delay(30000);
+                        Debug.WriteLine("Aștept 10 secunde pentru o posibilă reconectare...");
+                        await Task.Delay(10000);
 
                         _shouldRetry = true;
+                        _dataAlreadySent = false; 
                         Debug.WriteLine("Pregătit pentru reconectare dacă Arduino e resetat.");
                     });
 
-                    return; // ieșim, nu mai procesăm nimic în acest pachet
+                    return; 
+                }
+                else
+                {
+                    Debug.WriteLine("Trimiterea deja a fost inițiată. Ignor acest mesaj duplicat.");
                 }
             }
+        }
+    }
+
+    private async Task MonitorFailsafeAsync(CancellationToken token)
+    {
+        try
+        {
+            await Task.Delay(TimeSpan.FromSeconds(70), token);
+
+            if (!token.IsCancellationRequested && !_dataAlreadySent && !_failsafeTriggered)
+            {
+                _failsafeTriggered = true;
+                Debug.WriteLine("Failsafe activat – nu a venit mesajul 'Stopped'");
+
+                await MainThread.InvokeOnMainThreadAsync(() =>
+                {
+                    LastUploadLabel.Text = "Timeout: Sending data to cloud...";
+                });
+
+                _isBlinking = false;
+                _blinkTokenSource?.Cancel();
+                AfiseazaMediaBpm();
+
+                lock (_readingLock)
+                {
+                    if (heartbeatReadings.Count < 30)
+                    {
+                        Debug.WriteLine($"Failsafe: prea puține date ({heartbeatReadings.Count}), nu trimit nimic.");
+                        return;
+                    }
+                }
+
+                await TrimiteDateLaApiAsync();
+
+                await MainThread.InvokeOnMainThreadAsync(() =>
+                {
+                    LastUploadLabel.Text = $"Data send at: {DateTime.Now:HH:mm:ss}";
+                });
+
+                _dataAlreadySent = true;
+                _awaitingReset = true;
+
+                await Task.Delay(10000);
+                _dataAlreadySent = false;
+            }
+        }
+        catch (TaskCanceledException)
+        {
+            Debug.WriteLine("Failsafe timer anulat – mesaj 'Stopped' primit între timp.");
         }
     }
 
@@ -278,12 +384,12 @@ public partial class HealthPage : ContentPage
 
             await MainThread.InvokeOnMainThreadAsync(async () =>
             {
-                // Scale animat pe inimă
+                
                 await HeartIcon.ScaleTo(1.1, 250, Easing.CubicInOut);
                 await HeartIcon.ScaleTo(1.0, 250, Easing.CubicInOut);
             });
 
-            await Task.Delay(500, token); // sincron cu efectul
+            await Task.Delay(500, token); 
         }
     }
 
@@ -322,11 +428,11 @@ public partial class HealthPage : ContentPage
     private int? FilterAndSmoothBpm(int rawBpm)
     {
 
-        // Rejecrez valori imposibile
+        
         if (rawBpm < 40 || rawBpm > 180)
             return null;
 
-        // Poți adăuga un filtru de tip "media ultimelor 3-5 valori"
+        
         bpmHistory.Enqueue(rawBpm);
         if (bpmHistory.Count > 5)
             bpmHistory.Dequeue();
@@ -353,22 +459,22 @@ public partial class HealthPage : ContentPage
 
         lock (_readingLock)
         {
-            filteredReadings = heartbeatReadings
-                .Where(r => r.Bpm >= 40 && r.Bpm <= 180 && r.EcgValue >= 600 && r.EcgValue <= 1023)
-                .ToList();
+            filteredReadings = new List<HeartbeatReading>(heartbeatReadings);
         }
+
+        var statsForBpm = filteredReadings.Where(r => r.Bpm >= 40 && r.Bpm <= 180).ToList();
 
         if (filteredReadings.Any())
         {
-            // Calculează statistici
-            int avgBpm = (int)filteredReadings.Average(r => r.Bpm);
-            int maxBpm = filteredReadings.Max(r => r.Bpm);
-            int minBpm = filteredReadings.Min(r => r.Bpm);
+            
+            int avgBpm = (int)statsForBpm.Average(r => r.Bpm);
+            int maxBpm = statsForBpm.Max(r => r.Bpm);
+            int minBpm = statsForBpm.Min(r => r.Bpm);
 
-            // Determină evaluarea
+            
             string evaluation = GetHeartRateEvaluation(avgBpm);
 
-            // Actualizează UI-ul
+            
             await MainThread.InvokeOnMainThreadAsync(() =>
             {
                 StatsLabelAvg.Text = avgBpm.ToString();
@@ -380,13 +486,13 @@ public partial class HealthPage : ContentPage
             string compressed = string.Join("|", filteredReadings
             .Select(r => $"BPM={r.Bpm};ECG={r.EcgValue}"));
 
-            // Dacă vrei limită de 1000 caractere pentru SQL:
-            if (compressed.Length > 1000)
+            
+            if (compressed.Length > 3800)
             {
-                compressed = compressed.Substring(0, 1000);
+                compressed = compressed.Substring(0, 3800);
             }
 
-            // Trimite la API
+            
             int? userId = await SessionManager.GetLoggedInUserIdAsync();
             if (userId == null) return;
 
@@ -395,7 +501,7 @@ public partial class HealthPage : ContentPage
 
             var payload = new
             {
-                patientId = patient.Id, // înlocuiește cu ID real
+                patientId = patient.Id, 
                 signal = compressed
             };
 
@@ -438,6 +544,28 @@ public partial class HealthPage : ContentPage
         }
     }
 
+    private bool ShouldAcceptEcg(int ecgValue)
+    {
+        if (ecgValue == 0)
+        {
+            if (!allowZeros) return false;
+
+            zeroStreak++;
+            if (zeroStreak >= 10)
+            {
+                allowZeros = false;
+            }
+
+            return true;
+        }
+        else
+        {
+            zeroStreak = 0;
+            allowZeros = true;
+            return true;
+        }
+    }
+
     private string GetHeartRateEvaluation(int bpm)
     {
         return bpm switch
@@ -466,7 +594,7 @@ public partial class HealthPage : ContentPage
                     }
 
                     bool success = await _bluetoothService.StartListeningAsync();
-                    _shouldRetry = !success; // doar dacă a mers, oprim retry-ul
+                    _shouldRetry = !success; 
                 }
             }
             catch (Exception ex)

@@ -8,11 +8,11 @@
 
     <Grid RowDefinitions="*, Auto">
 
-        <!-- CONȚINUT SCROLLABIL -->
+        
         <ScrollView Grid.Row="0">
             <VerticalStackLayout Padding="30" Spacing="20">
 
-                <!-- Buton back -->
+                
                 <Grid ColumnDefinitions="Auto,*,Auto" Padding="0,-10,0,0">
                     <ImageButton Source="back_icon.png"
                                  BackgroundColor="Transparent"
@@ -32,21 +32,21 @@
                                    Grid.Column="1"/>    
                 </Grid>
 
-                <!-- Eticheta locație -->
+                
                 <Label x:Name="LocationLabel"
                        Text="Last known location:"
                        FontSize="16"
                        TextColor="Black"
                        HorizontalOptions="Center"/>
 
-                <!-- HARTA -->
+                
                 <maps:Map x:Name="UserMap"
                           HeightRequest="300"
                           IsShowingUser="false"
                           VerticalOptions="FillAndExpand"
                           Margin="0,10,0,0"/>
 
-                <!-- BUTON REFRESH -->
+                
                 <Button Text="Refresh Location"
                         Clicked="OnRefreshLocationClicked"
                         BackgroundColor="#006CFF"
@@ -59,7 +59,7 @@
                         WidthRequest="200"
                         Margin="0,20,0,0"/>
 
-                <!-- BUTON EMERGENCY -->
+                
                 <Button Text="Emergency Call 112"
                         Clicked="OnEmergencyCallClicked"
                         BackgroundColor="#FF3B30"
@@ -74,7 +74,7 @@
             </VerticalStackLayout>
         </ScrollView>
 
-        <!-- NAVBAR FIX JOS -->
+        
         <Frame Grid.Row="1"
                BackgroundColor="#2260FF"
                CornerRadius="30"

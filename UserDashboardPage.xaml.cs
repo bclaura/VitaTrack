@@ -21,7 +21,6 @@ public partial class UserDashboardPage : ContentPage
         }
         else
         {
-            // Imagine default
             profileImage.Source = "default_user_icon.png";
         }
 

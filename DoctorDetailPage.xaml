@@ -55,7 +55,7 @@
            MaxLines="30" />
 
 
-            <!-- Log In Button -->
+            
             <Button Text="Book Appointment"
             FontFamily="LeagueSpartan"
             FontSize="25"
@@ -71,7 +71,7 @@
             </VerticalStackLayout>
     </ScrollView>
     
-    <!-- Bottom Navigation Bar: fixată -->
+    
     <Frame Grid.Row="1"
        BackgroundColor="#2260FF"
        CornerRadius="30"

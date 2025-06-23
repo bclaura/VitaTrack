@@ -53,7 +53,7 @@ public static class SessionManager
             var json = File.ReadAllText(UserFilePath);
             var loadedUser = JsonSerializer.Deserialize<User>(json);
 
-            // Verific?m dac? e acela?i utilizator (ex. dup? Email)
+            
             if (loadedUser != null && loadedUser.Email == LoggedInUser?.Email)
             {
                 LoggedInUser = loadedUser;
@@ -65,7 +65,7 @@ public static class SessionManager
     {
         if (LoggedInUser != null)
         {
-            // Actualizeaz? datele utilizatorului
+            
             LoggedInUser.Id = user.Id;
             LoggedInUser.FirstName = user.FirstName;
             LoggedInUser.LastName = user.LastName;
@@ -76,7 +76,7 @@ public static class SessionManager
         }
     }
 
-    // Verific? dac? utilizatorul este logat
+    
     public static async Task<bool> IsUserLoggedInAsync()
     {
         string userId = await SecureStorage.GetAsync("UserId");
@@ -98,12 +98,12 @@ public static class SessionManager
     }
 
 
-    // Logout ?i ?tergere date utilizator
+    
     public static async Task LogoutAsync()
     {
         try
         {
-            // ?tergem datele de sesiune
+            
             SecureStorage.Remove("UserId");
             SecureStorage.Remove("UserFirstName");
             SecureStorage.Remove("UserLastName");
@@ -113,7 +113,7 @@ public static class SessionManager
 
             await Application.Current.MainPage.DisplayAlert("Logout", "Successfully logged out.", "OK");
 
-            // Schimb?m pagina principal?
+            
             Application.Current.MainPage = new NavigationPage(new LoginPage());
         }
         catch (Exception ex)

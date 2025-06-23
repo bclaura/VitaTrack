@@ -166,7 +166,6 @@ namespace VitaTrack
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        // Metod? pentru a actualiza imaginea de profil
         public void UpdateProfileImage(string imagePath)
         {
             SessionManager.UpdateProfileImage(imagePath);

@@ -18,12 +18,25 @@ public class Doctor : INotifyPropertyChanged
     public string Bio {  get; set; }
     public string AvailabilityHours { get; set; }
     public string ClinicAddress { get; set; }
-    public bool IsFavorite { get; set; }
+    private bool _isFavorite;
     public string HonorificTitle { get; set; }
     public string Specialization {  get; set; }
 
     public string ImagePath => $"doctor{Id}.jpeg";
     public string NameTitle => "Dr. " + FullName + ", " + HonorificTitle;
+
+    public bool IsFavorite
+    {
+        get => _isFavorite;
+        set
+        {
+            if (_isFavorite != value)
+            {
+                _isFavorite = value;
+                OnPropertyChanged(nameof(IsFavorite));
+            }
+        }
+    }
 
     public event PropertyChangedEventHandler PropertyChanged;
 

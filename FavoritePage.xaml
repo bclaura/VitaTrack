@@ -8,7 +8,7 @@
             <VerticalStackLayout Padding="30" Spacing="20">
 
                 <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,*">
-                    <!-- Back button -->
+                    
                     <HorizontalStackLayout Grid.Row="0" Grid.ColumnSpan="2" HorizontalOptions="Fill" Padding="0,0,0,10">
                     <ImageButton Source="back_icon.png"
                          BackgroundColor="Transparent"
@@ -19,7 +19,7 @@
                          Grid.Column="0"
                          VerticalOptions="Center"/>
 
-                    <!-- Titlu "Doctors" -->
+                    
                     <Label Text="Favorite Doctors"
                        FontSize="28"
                        FontFamily="LeagueSpartan"
@@ -31,7 +31,7 @@
                        Grid.Column="1"/>
                     </HorizontalStackLayout>
 
-                    <!-- Aici vine Label-ul dacă lista e goală -->
+                    
                     <VerticalStackLayout Grid.Row="1" Grid.ColumnSpan="2" Spacing="10" HorizontalOptions="Center">
                         <Label Text="You don't have any favorite doctors yet."
                FontSize="16"
@@ -52,7 +52,7 @@
                     </VerticalStackLayout>
                 </Grid>
 
-                <!-- Lista doctori -->
+                
                 <CollectionView x:Name="FavoritesCollectionView"
                             ItemsSource="{Binding FavoriteDoctors}"
                             SelectionMode="None"
@@ -67,7 +67,7 @@
                                BackgroundColor="#CAD6FF">
 
                                 <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto, Auto">
-                                    <!-- Poza doctor -->
+                                    
                                     <Image Source="{Binding ImagePath}"
                                        WidthRequest="130"
                                        HeightRequest="130"
@@ -80,7 +80,7 @@
                                         </Image.Clip>
                                     </Image>
 
-                                    <!-- Nume doctor -->
+                                    
                                     <Label Text="{Binding NameTitle}"
                                        FontSize="18"
                                        FontAttributes="Bold"
@@ -89,7 +89,7 @@
                                        FontFamily="LeagueSpartan"
                                        Grid.Column="1"/>
 
-                                    <!-- Specializare -->
+                                    
                                     <Label Text="{Binding Specialization}"
                                        FontSize="15"
                                        TextColor="Black"
@@ -103,7 +103,7 @@
                            Spacing="3"
                            Margin="-5,-15,0,0"
                            VerticalOptions="Start">
-                                        <!-- Buton Info -->
+                                        
                                         <Button Text="Info"
                             BackgroundColor="#2260FF"
                             TextColor="White"
@@ -115,28 +115,28 @@
                             Margin="-12,0,5,0"
                             VerticalOptions="Center" />
 
-                                        <!-- Calendar -->
+                                        
                                         <ImageButton Source="calendar_icon.png"
                              BackgroundColor="White"
                              CornerRadius="12"
                              WidthRequest="25"
                              HeightRequest="25" />
 
-                                        <!-- i -->
+                                        
                                         <ImageButton Source="i_icon.png"
                              BackgroundColor="White"
                              CornerRadius="12"
                              WidthRequest="25"
                              HeightRequest="25" />
 
-                                        <!-- ? -->
+                                        
                                         <ImageButton Source="questionmark_icon.png"
                              BackgroundColor="White"
                              CornerRadius="12"
                              WidthRequest="25"
                              HeightRequest="25" />
 
-                                        <!-- Inimioară -->
+                                        
                                         <ImageButton
                             Source="fav_icon_active.png"
                             BackgroundColor="White"
@@ -158,7 +158,7 @@
             </VerticalStackLayout>
         </ScrollView>
 
-        <!-- Bottom Navigation Bar: fixată -->
+        
         <Frame Grid.Row="1"
                BackgroundColor="#2260FF"
                CornerRadius="30"

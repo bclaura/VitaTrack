@@ -76,7 +76,6 @@ public partial class UserProfileEditPage : ContentPage
                 return;
             }
 
-            // Ob?ine ID-ul pacientului asociat (poate fi salvat în ViewModel dup? `LoadProfileAsync()`)
             var patient = await _httpClient.GetFromJsonAsync<Patient>($"api/patients/byUserId/{userId}");
             if (patient == null)
             {
@@ -117,7 +116,6 @@ public partial class UserProfileEditPage : ContentPage
 
     private async void OnSaveProfileClicked(object sender, EventArgs e)
     {
-        // Salv?m modific?rile utilizatorului
         SessionManager.UpdateUser(LoggedInUser);
         await DisplayAlert("Success", "Profile updated successfully.", "OK");
         await Navigation.PopAsync();
@@ -125,7 +123,6 @@ public partial class UserProfileEditPage : ContentPage
 
     private async void OnEditProfileImageClicked(object sender, EventArgs e)
     {
-        // Alege imaginea de profil (po?i reutiliza logica pentru schimbarea imaginii)
         await DisplayAlert("Change Profile Image", "This feature is coming soon.", "OK");
     }
 

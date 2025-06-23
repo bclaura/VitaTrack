@@ -6,11 +6,9 @@
     <ScrollView>
         <VerticalStackLayout Padding="10" Spacing="20">
 
-            <!-- Header -->
-            <!-- HEADER: Nume utilizator + notificări + setări -->
+
             <Grid ColumnDefinitions="*, Auto" Padding="20,10,20,10">
                 <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
-                <!-- Imagine profil -->
                     <Image x:Name="profileImage"
                    WidthRequest="40"
                    HeightRequest="40"
@@ -22,7 +20,7 @@
                         <EllipseGeometry Center="20,20" RadiusX="20" RadiusY="20" />
                     </Image.Clip>
                 </Image>
-                <!-- Bine ai venit + nume -->
+                
                 <VerticalStackLayout Grid.Column="0" Spacing="2">
                     <Label Text="Hi, Welcome Back"
                FontSize="13"
@@ -36,7 +34,7 @@
                 </VerticalStackLayout>
                 </HorizontalStackLayout>
 
-                <!-- Iconițe notificări + setări -->
+               
                 <HorizontalStackLayout Grid.Column="1" Spacing="10" VerticalOptions="Center">
                     <ImageButton Source="notification_off_icon.png"
                      BackgroundColor="Transparent"
@@ -84,14 +82,14 @@
        HasShadow="False">
 
                     <Grid ColumnDefinitions="Auto,*,Auto" VerticalOptions="Center" Padding="10,0">
-                        <!-- FILTRU (stânga) -->
+                       
                         <Image Source="filter_circle_icon.png"
                WidthRequest="30"
                HeightRequest="30"
                VerticalOptions="Center"
                Margin="-5,0,10,0"/>
 
-                        <!-- ENTRY -->
+                        
                         <Entry Placeholder="Search..."
                BackgroundColor="#ccdcff"
                FontSize="14"
@@ -101,7 +99,7 @@
                Margin="0"
                Grid.Column="1"/>
 
-                        <!-- LUPĂ (dreapta) -->
+                        
                         <Image Source="search_icon.png"
                Grid.Column="2"
                WidthRequest="20"
@@ -112,14 +110,14 @@
                 </Frame>
             </Grid>
 
-            <!-- Dashboard Buttons -->
+            
             <Grid RowDefinitions="135,135,135,135"
                   ColumnDefinitions="*,*"
                   ColumnSpacing="-10"
                   RowSpacing="15"
                   Padding="20,10">
 
-                <!-- Row 1 -->
+                
                 <ImageButton Source="profile_icon.png"
                              Grid.Row="0" Grid.Column="0"
                              BackgroundColor="Transparent"
@@ -129,7 +127,7 @@
                              Clicked="OnMessagesClicked"
                              BackgroundColor="Transparent"/>
 
-                <!-- Row 2 -->
+                
                 <ImageButton Source="recommandations_icon.png"
                              Grid.Row="1" Grid.Column="0"
                              BackgroundColor="Transparent"
@@ -140,7 +138,7 @@
                              Clicked="OnChartDataClicked"
                              />
 
-                <!-- Row 3 -->
+               
                 <ImageButton Source="localisation_icon.png"
                              Grid.Row="2" Grid.Column="0"
                              BackgroundColor="Transparent"
@@ -150,7 +148,7 @@
                              BackgroundColor="Transparent"
                              Clicked="OnHealthClicked"/>
 
-                <!-- Row 4 -->
+                
                 <ImageButton Source="settings_icon.png"
                              Grid.Row="3" Grid.Column="0"
                              BackgroundColor="Transparent"/>

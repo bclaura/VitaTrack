@@ -31,7 +31,7 @@ public partial class UserProfilePage : ContentPage
     {
         base.OnAppearing();
 
-        // Cite?te imaginea din SecureStorage
+
         string profilePictureBase64 = await SecureStorage.GetAsync("ProfilePictureBase64");
         if (!string.IsNullOrEmpty(profilePictureBase64))
         {
@@ -39,7 +39,6 @@ public partial class UserProfilePage : ContentPage
         }
         else
         {
-            // Imagine default
             profileImage.Source = "default_user_icon.png";
         }
 
@@ -118,7 +117,6 @@ public partial class UserProfilePage : ContentPage
     {
         try
         {
-            // Verific?m permisiunile pentru camer?
             var status = await Permissions.RequestAsync<Permissions.Camera>();
             if (status != PermissionStatus.Granted)
             {
@@ -129,14 +127,11 @@ public partial class UserProfilePage : ContentPage
             var photo = await MediaPicker.CapturePhotoAsync();
             if (photo != null)
             {
-                // Converte?te imaginea la Base64
                 string base64Image = await ConvertToBase64Async(photo);
 
-                // Trimite imaginea la server
                 await UploadProfilePictureAsync(base64Image);
                 await SecureStorage.SetAsync("ProfilePictureBase64", base64Image);
 
-                // Actualizeaz? imaginea în UI
                 _viewModel.UpdateProfileImage(photo.FullPath);
             }
         }
@@ -150,7 +145,6 @@ public partial class UserProfilePage : ContentPage
     {
         try
         {
-            // Verific?m permisiunile pentru galerie
             var status = await Permissions.RequestAsync<Permissions.StorageRead>();
             if (status != PermissionStatus.Granted)
             {
@@ -161,14 +155,11 @@ public partial class UserProfilePage : ContentPage
             var photo = await MediaPicker.PickPhotoAsync();
             if (photo != null)
             {
-                // Converte?te imaginea la Base64
                 string base64Image = await ConvertToBase64Async(photo);
 
-                // Trimite imaginea la server
                 await UploadProfilePictureAsync(base64Image);
                 await SecureStorage.SetAsync("ProfilePictureBase64", base64Image);
 
-                // Actualizeaz? imaginea în UI
                 _viewModel.UpdateProfileImage(photo.FullPath);
             }
         }
@@ -193,7 +184,6 @@ public partial class UserProfilePage : ContentPage
         await Navigation.PushAsync(new PrivacyPolicy());
     }
 
-    // Codificare imagine în Base64
     private async Task<string> ConvertToBase64Async(FileResult photo)
     {
         if (photo == null) return null;
@@ -206,7 +196,6 @@ public partial class UserProfilePage : ContentPage
         }
     }
 
-    // Decodificare Base64 în imagine
     private ImageSource ConvertFromBase64(string base64String)
     {
         byte[] imageBytes = Convert.FromBase64String(base64String);

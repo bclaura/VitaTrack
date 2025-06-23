@@ -21,7 +21,7 @@
            HorizontalTextAlignment="Start"
            WidthRequest="120"
            Margin="10,0,0,10"/>
-                <!-- Ajustați lățimea după necesitate -->
+                
 
                 <Label Text="Track"
            FontSize="43"
@@ -31,7 +31,7 @@
            HorizontalTextAlignment="Start"
            WidthRequest="120" 
            Margin="10,-24,0,35"/>
-                <!-- Aceeași lățime ca pentru "Vita" -->
+                
             </VerticalStackLayout>
 
 
